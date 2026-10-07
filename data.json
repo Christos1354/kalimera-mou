@@ -1,0 +1,232 @@
+{
+  "version": "7-10-2026",
+  "checked": "2026-10-07",
+  "electricity": {
+    "pricePerKwh": 0.3,
+    "noteEl": "Στο οικιακό τιμολόγιο 01 της ΑΗΚ (από 1 Μαΐου 2026) η ενέργεια και το δίκτυο κοστίζουν 21,82 σεντ/kWh. Μαζί με την αναπροσαρμογή καυσίμων, τα άλλα τέλη και τον ΦΠΑ, το σύνολο φτάνει περίπου 28–32 σεντ. Για ακρίβεια, βάλτε την τιμή από τον δικό σας λογαριασμό.",
+    "noteEn": "On EAC household tariff 01 (from 1 May 2026) energy plus network cost 21.82 cents/kWh. With the fuel adjustment, other charges and VAT, the total is about 28–32 cents. For accuracy, enter the price from your own bill.",
+    "source": "https://www.eac.com.cy"
+  },
+  "flight": {
+    "amounts": {
+      "short": 250,
+      "medium": 400,
+      "long": 600
+    },
+    "ukAmounts": {
+      "short": 220,
+      "medium": 350,
+      "long": 520
+    },
+    "delayHours": 3,
+    "cancelNoticeDays": 14,
+    "reformEl": "Τον Ιούνιο 2026 η ΕΕ συμφώνησε σε αναθεώρηση των κανόνων. Δεν ισχύει ακόμη: μετά την επίσημη έγκριση και δημοσίευση υπάρχει μεταβατική περίοδος 12 μηνών. Μέχρι τότε ισχύουν οι σημερινοί κανόνες (EC 261/2004).",
+    "reformEn": "In June 2026 the EU agreed a revision of the rules. It is not in force yet: after formal approval and publication there is a 12-month transition. Until then the current rules (EC 261/2004) apply.",
+    "source": "https://europa.eu/youreurope/citizens/travel/passenger-rights/air/index_el.htm"
+  },
+  "warranty": {
+    "months": 24,
+    "presumptionMonths": 12,
+    "notifyMonths": 2,
+    "repairMaxDays": 25,
+    "lawEl": "Νόμος 154(Ι)/2021 για ορισμένες πτυχές των συμβάσεων πώλησης αγαθών (Οδηγία ΕΕ 2019/771)",
+    "lawEn": "Cyprus Law 154(I)/2021 on certain aspects of contracts for the sale of goods (EU Directive 2019/771)",
+    "source": "https://europa.eu/youreurope/citizens/consumers/shopping/guarantees-returns/index_el.htm"
+  },
+  "tax2026": {
+    "taxFree": 22000,
+    "bands": [
+      [
+        22000,
+        0
+      ],
+      [
+        32000,
+        0.2
+      ],
+      [
+        42000,
+        0.25
+      ],
+      [
+        72000,
+        0.3
+      ],
+      [
+        999999999,
+        0.35
+      ]
+    ],
+    "child": [
+      1000,
+      1250,
+      1500
+    ],
+    "incomeLimits": {
+      "upTo2": 100000,
+      "upTo4": 150000,
+      "more": 200000
+    },
+    "rentOrMortgageMax": 2000,
+    "greenMax": 1000,
+    "homeInsuranceMax": 500,
+    "source": "https://www.businessincyprus.gov.cy"
+  },
+  "guide": [
+    {
+      "e": "🤝",
+      "el": "Επιδόματα & συντάξεις",
+      "en": "Benefits & pensions",
+      "items": [
+        {
+          "e": "🏠",
+          "el": "Ελάχιστο Εγγυημένο Εισόδημα",
+          "en": "Guaranteed Minimum Income",
+          "dEl": "Μηνιαία στήριξη για νοικοκυριά με χαμηλό εισόδημα, μαζί με βοήθεια για ενοίκιο ή δάνειο κατοικίας. Αίτηση στο Υφυπουργείο Κοινωνικής Πρόνοιας.",
+          "dEn": "Monthly support for low-income households, plus help with rent or a housing loan. Apply to the Deputy Ministry of Social Welfare.",
+          "url": "https://www.dmsw.gov.cy"
+        },
+        {
+          "e": "🧓",
+          "el": "Επίδομα χαμηλοσυνταξιούχων",
+          "en": "Low-income pensioners' allowance",
+          "dEl": "Για συνταξιούχους με χαμηλό συνολικό εισόδημα νοικοκυριού. Αν το δικαιούστε, δικαιούστε συνήθως και το φθηνότερο ειδικό τιμολόγιο ρεύματος της ΑΗΚ.",
+          "dEn": "For pensioners with low total household income. If you receive it, you usually also qualify for EAC's cheaper special electricity tariff.",
+          "url": "https://www.dmsw.gov.cy"
+        },
+        {
+          "e": "👨‍👩‍👧",
+          "el": "Επίδομα τέκνου & μονογονεϊκής οικογένειας",
+          "en": "Child benefit & single-parent benefit",
+          "dEl": "Για οικογένειες με εξαρτώμενα παιδιά, ανάλογα με το εισόδημα. Οι πολύτεκνοι και οι μονογονεϊκές οικογένειες έχουν επιπλέον στήριξη.",
+          "dEn": "For families with dependent children, depending on income. Large families and single parents receive extra support.",
+          "url": "https://www.dmsw.gov.cy"
+        },
+        {
+          "e": "📜",
+          "el": "Συντάξεις & κοινωνική σύνταξη",
+          "en": "Pensions & social pension",
+          "dEl": "Οι Υπηρεσίες Κοινωνικών Ασφαλίσεων πληρώνουν τις συντάξεις. Όποιος έχει συμπληρώσει τα 65 και δεν δικαιούται σύνταξη ή παίρνει πολύ μικρή, μπορεί να ζητήσει κοινωνική σύνταξη.",
+          "dEn": "Social Insurance Services pay pensions. Anyone aged 65+ who is not entitled to a pension, or receives a very small one, can apply for a social pension.",
+          "url": "https://www.mlsi.gov.cy/mlsi/sid/sidv2.nsf"
+        }
+      ]
+    },
+    {
+      "e": "⚡",
+      "el": "Ρεύμα & σπίτι",
+      "en": "Electricity & home",
+      "items": [
+        {
+          "e": "💡",
+          "el": "Ειδικό φθηνότερο τιμολόγιο ΑΗΚ (κωδικός 08)",
+          "en": "EAC cheaper special tariff (code 08)",
+          "dEl": "Για ευάλωτους πελάτες: δικαιούχους δημοσίου βοηθήματος ή Ελάχιστου Εγγυημένου Εισοδήματος, πολύτεκνους, χαμηλοσυνταξιούχους, μονογονεϊκές οικογένειες, άτομα με σοβαρή κινητική αναπηρία, αιμοκαθαιρόμενους, θύματα πολέμου και ορισμένες σοβαρές παθήσεις. Ζητήστε το από την ΑΗΚ.",
+          "dEn": "For vulnerable customers: recipients of public assistance or Guaranteed Minimum Income, large families, low-income pensioners, single parents, people with severe mobility disability, dialysis patients, war victims and certain serious illnesses. Ask EAC for it.",
+          "url": "https://www.eac.com.cy"
+        },
+        {
+          "e": "☀️",
+          "el": "Χορηγίες για φωτοβολταϊκά & θερμομόνωση",
+          "en": "Grants for solar panels & insulation",
+          "dEl": "Το Ταμείο ΑΠΕ προκηρύσσει σχέδια χορηγιών για φωτοβολταϊκά και θερμομόνωση οροφής, με μεγαλύτερη χορηγία για ευάλωτα νοικοκυριά. Δείτε ποιο σχέδιο είναι ανοιχτό τώρα.",
+          "dEn": "The RES Fund runs grant schemes for solar panels and roof insulation, with larger grants for vulnerable households. Check which scheme is open now.",
+          "url": "https://resecfund.org.cy"
+        },
+        {
+          "e": "💶",
+          "el": "Έκπτωση φόρου €1.000 για πράσινες αναβαθμίσεις",
+          "en": "€1,000 tax deduction for green upgrades",
+          "dEl": "Από το 2026, για θερμομόνωση, φωτοβολταϊκά, μπαταρίες ή ηλεκτρικό αυτοκίνητο. Υπολογίστε τι κερδίζετε.",
+          "dEn": "From 2026, for insulation, solar panels, batteries or an electric car. Calculate what you gain.",
+          "route": "rights/tax"
+        }
+      ]
+    },
+    {
+      "e": "🧾",
+      "el": "Αγορές & καταναλωτής",
+      "en": "Shopping & consumer",
+      "items": [
+        {
+          "e": "🛒",
+          "el": "e-kalathi: σύγκριση τιμών σούπερ μάρκετ",
+          "en": "e-kalathi: supermarket price comparison",
+          "dEl": "Η επίσημη πλατφόρμα: φτιάχνετε το καλάθι σας και βλέπετε ποια αλυσίδα είναι φθηνότερη.",
+          "dEn": "The official platform: build your basket and see which chain is cheapest.",
+          "url": "https://www.e-kalathi.gov.cy"
+        },
+        {
+          "e": "🛡️",
+          "el": "Εγγυήσεις & επιστροφές στην ΕΕ",
+          "en": "Guarantees & returns in the EU",
+          "dEl": "Η νόμιμη εγγύηση 2 ετών, το δικαίωμα επιστροφής 14 ημερών στις αγορές από το ίντερνετ, και τι κάνετε όταν ο πωλητής αρνείται.",
+          "dEn": "The 2-year legal guarantee, the 14-day right to return online purchases, and what to do when the seller refuses.",
+          "url": "https://europa.eu/youreurope/citizens/consumers/shopping/guarantees-returns/index_el.htm"
+        },
+        {
+          "e": "🤝",
+          "el": "Κυπριακός Σύνδεσμος Καταναλωτών",
+          "en": "Cyprus Consumers Association",
+          "dEl": "Συμβουλές, νομοθεσία και βοήθεια σε παράπονα καταναλωτών.",
+          "dEn": "Advice, legislation and help with consumer complaints.",
+          "url": "https://katanalotis.org.cy"
+        }
+      ]
+    },
+    {
+      "e": "✈️",
+      "el": "Ταξίδια & υγεία",
+      "en": "Travel & health",
+      "items": [
+        {
+          "e": "✈️",
+          "el": "Δικαιώματα επιβατών αεροπλάνου",
+          "en": "Air passenger rights",
+          "dEl": "Αποζημίωση, φαγητό, ξενοδοχείο και επιστροφή χρημάτων σε καθυστερήσεις, ακυρώσεις και χαμένες αποσκευές.",
+          "dEn": "Compensation, meals, hotel and refunds for delays, cancellations and lost luggage.",
+          "url": "https://europa.eu/youreurope/citizens/travel/passenger-rights/air/index_el.htm"
+        },
+        {
+          "e": "🏥",
+          "el": "ΓεΣΥ – Γενικό Σύστημα Υγείας",
+          "en": "GESY – General Healthcare System",
+          "dEl": "Προσωπικός γιατρός, ειδικοί, εξετάσεις και φάρμακα με μικρή συμμετοχή.",
+          "dEn": "Personal doctor, specialists, tests and medicines with a small co-payment.",
+          "url": "https://www.gesy.org.cy"
+        },
+        {
+          "e": "💳",
+          "el": "Ευρωπαϊκή Κάρτα Ασφάλισης Υγείας",
+          "en": "European Health Insurance Card",
+          "dEl": "Δωρεάν κάρτα για ιατρική περίθαλψη όταν ταξιδεύετε σε άλλη χώρα της ΕΕ, με τους ίδιους όρους με τους κατοίκους της.",
+          "dEn": "A free card for medical care when travelling in another EU country, on the same terms as residents.",
+          "url": "https://europa.eu/youreurope/citizens/health/unplanned-healthcare/temporary-stays/index_el.htm"
+        }
+      ]
+    },
+    {
+      "e": "🏛️",
+      "el": "Κράτος & φόροι",
+      "en": "Government & tax",
+      "items": [
+        {
+          "e": "💶",
+          "el": "Τμήμα Φορολογίας",
+          "en": "Tax Department",
+          "dEl": "Δήλωση εισοδήματος, επιστροφές φόρου και οι νέες εκπτώσεις του 2026.",
+          "dEn": "Income tax returns, tax refunds and the new 2026 deductions.",
+          "url": "https://www.mof.gov.cy/mof/tax/taxdep.nsf"
+        },
+        {
+          "e": "🏛️",
+          "el": "gov.cy – όλες οι κρατικές υπηρεσίες",
+          "en": "gov.cy – all government services",
+          "dEl": "Αιτήσεις, πιστοποιητικά και τα Κέντρα Εξυπηρέτησης του Πολίτη.",
+          "dEn": "Applications, certificates and the Citizen Service Centres.",
+          "url": "https://www.gov.cy"
+        }
+      ]
+    }
+  ]
+}

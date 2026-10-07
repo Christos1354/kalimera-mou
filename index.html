@@ -1,0 +1,1670 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Καλή Μέρα μου · My Good Day</title>
+<meta name="description" content="Ένα λεπτό που αξίζει, κάθε μέρα. A minute worth having, every day.">
+<meta name="theme-color" content="#0f3b5f">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Καλή Μέρα μου">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+/* Έκδοση / Version: 7-10-2026 12:40 */
+:root{
+  --bg:#f4f1ea; --card:#ffffff; --ink:#1d2433; --soft:#5b6475; --line:rgba(127,127,127,.22);
+  --blue:#1f6fd1; --teal:#0f9e8e; --gold:#e8a317; --rose:#e0566b; --violet:#7a4fd6; --green:#2f9a46;
+  --red:#d33b3b; --orange:#e07a12;
+  --shadow:0 6px 18px rgba(20,30,50,.12), 0 2px 4px rgba(20,30,50,.08);
+  --radius:22px;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#11151d; --card:#1b212d; --ink:#f2f4f8; --soft:#aab3c5; --shadow:0 6px 18px rgba(0,0,0,.45); }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans",Arial,sans-serif;
+  font-size:20px;line-height:1.5;min-height:100vh;padding-bottom:env(safe-area-inset-bottom);}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--bg);border:2px solid var(--line);
+  border-radius:14px;padding:12px 14px;width:100%;min-height:54px}
+textarea{min-height:120px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:3px solid var(--blue);outline-offset:1px}
+label.f{display:block;font-weight:700;margin:14px 0 6px}
+.wrap{max-width:1320px;margin:0 auto;padding:0 16px}
+
+/* ---------- top bar ---------- */
+.top{position:sticky;top:0;z-index:20;background:var(--bg);
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:calc(8px + env(safe-area-inset-top)) 16px 8px;max-width:1320px;margin:0 auto}
+.brand{font-weight:800;font-size:1.15rem;display:flex;align-items:center;gap:10px;min-width:0}
+.brand .logo{width:46px;height:46px;flex:none;border-radius:12px;box-shadow:var(--shadow)}
+.topbtns{display:flex;gap:8px;align-items:center}
+.tb{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:1.05rem;
+  background:var(--card);padding:10px 16px;border-radius:999px;box-shadow:var(--shadow);white-space:nowrap}
+.tb.home{padding:10px 14px}
+.lang{display:flex;background:var(--card);border-radius:999px;box-shadow:var(--shadow);padding:4px}
+.lang button{padding:7px 13px;border-radius:999px;font-weight:700;font-size:1rem;min-width:50px}
+.lang button.on{background:var(--blue);color:#fff}
+body.r-home #backBtn, body.r-home #homeBtn{display:none}
+@media (max-width:420px){ .brand span{display:none} }
+
+/* ---------- layout: main + projects on the right ---------- */
+.layout{display:grid;grid-template-columns:1fr;gap:22px;align-items:start}
+@media (min-width:1000px){
+  .layout{grid-template-columns:minmax(0,1fr) 300px}
+  aside{position:sticky;top:76px}
+}
+@media (max-width:999px){ body:not(.r-home) aside{display:none} }
+aside h3{font-size:1.3rem;margin:6px 0 12px}
+.plinks{display:flex;flex-direction:column;gap:12px}
+.plink{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:18px;
+  color:#fff;text-decoration:none;background:var(--c);
+  box-shadow:var(--shadow), inset 0 2px 0 rgba(255,255,255,.3), inset 0 -4px 0 rgba(0,0,0,.18)}
+.plink:active{transform:scale(.97)}
+.plink .pe{font-size:1.9rem;width:50px;height:50px;flex:none;display:grid;place-items:center;border-radius:14px;
+  background:rgba(255,255,255,.22)}
+.plink b{display:block;font-size:1.15rem}
+.plink small{display:block;font-size:.92rem;line-height:1.3;opacity:.95}
+.plink .go{margin-left:auto;font-size:1.4rem}
+
+/* ---------- scene ---------- */
+.scene{position:relative;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);
+  height:clamp(230px,30vw,340px);margin-top:6px}
+.scene svg{position:absolute;inset:0;width:100%;height:100%}
+.greet{position:absolute;left:0;right:0;bottom:0;padding:18px 22px;
+  background:linear-gradient(to top,rgba(0,0,0,.55),rgba(0,0,0,0));color:#fff}
+.greet h1{margin:0;font-size:clamp(1.9rem,6vw,2.8rem);line-height:1.1;text-shadow:0 2px 8px rgba(0,0,0,.4)}
+.greet p{margin:4px 0 0;font-size:1.1rem;opacity:.95;text-shadow:0 1px 6px rgba(0,0,0,.4)}
+.wave1{animation:drift 9s ease-in-out infinite alternate}
+.wave2{animation:drift 13s ease-in-out infinite alternate-reverse}
+@keyframes drift{from{transform:translateX(-30px)}to{transform:translateX(30px)}}
+.bird{animation:fly 26s linear infinite}
+.bird.b2{animation-duration:34s;animation-delay:-12s}
+@keyframes fly{from{transform:translateX(-80px)}to{transform:translateX(520px)}}
+.star{animation:tw 3s ease-in-out infinite alternate}
+@keyframes tw{from{opacity:.25}to{opacity:1}}
+.glow{animation:pulse 6s ease-in-out infinite alternate}
+@keyframes pulse{from{opacity:.55}to{opacity:.9}}
+
+/* ---------- tiles ---------- */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+@media (max-width:600px){.tiles{grid-template-columns:1fr}}
+.tile{position:relative;display:flex;align-items:center;gap:16px;text-align:left;width:100%;
+  padding:20px;border-radius:var(--radius);color:#fff;min-height:110px;
+  box-shadow:var(--shadow), inset 0 2px 0 rgba(255,255,255,.35), inset 0 -4px 0 rgba(0,0,0,.15);
+  transition:transform .15s}
+.tile:active{transform:scale(.97)}
+.tile .ic{font-size:2.4rem;width:62px;height:62px;flex:none;display:grid;place-items:center;
+  background:rgba(255,255,255,.22);border-radius:18px}
+.tile h2{margin:0;font-size:1.4rem;line-height:1.2}
+.tile p{margin:4px 0 0;font-size:1rem;opacity:.95}
+.tile .tag{display:inline-block;margin-top:6px;font-size:.85rem;font-weight:800;
+  background:rgba(255,255,255,.3);padding:2px 12px;border-radius:999px}
+.t-minute{background:linear-gradient(135deg,#f0a92e,#e0566b)}
+.t-money{background:linear-gradient(135deg,#21a67a,#0f7f8e)}
+.t-rights{background:linear-gradient(135deg,#3a7fe0,#5a4fd6)}
+.t-house{background:linear-gradient(135deg,#9a5fd8,#d04f9a)}
+.t-a{background:linear-gradient(135deg,#2a8be0,#1667b8)}
+.t-b{background:linear-gradient(135deg,#e88a1a,#d0581b)}
+.t-c{background:linear-gradient(135deg,#2fa36b,#1b7d55)}
+.t-d{background:linear-gradient(135deg,#7a5ae0,#5a3fb8)}
+
+/* ---------- pages ---------- */
+.page{display:none;padding-bottom:40px}
+.page.on{display:block}
+.back{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:1.1rem;
+  background:var(--card);padding:12px 20px;border-radius:999px;box-shadow:var(--shadow);margin:6px 0 16px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;margin-bottom:16px}
+.h{font-size:1.75rem;margin:0 0 6px;line-height:1.2}
+.h3{font-size:1.3rem;margin:0 0 8px}
+.sub{color:var(--soft);margin:0 0 14px}
+.small{font-size:.9rem;color:var(--soft)}
+.big-btn{display:block;width:100%;padding:17px;border-radius:18px;font-size:1.2rem;font-weight:800;text-align:center;
+  color:#fff;background:linear-gradient(135deg,#1f6fd1,#0f9e8e);margin-top:16px;text-decoration:none;
+  box-shadow:var(--shadow), inset 0 2px 0 rgba(255,255,255,.3)}
+.big-btn.alt{background:var(--card);color:var(--ink);border:2px solid var(--line)}
+.big-btn.green{background:linear-gradient(135deg,#2f9a46,#1f7a3a)}
+.big-btn.red{background:linear-gradient(135deg,#e0566b,#c23a50)}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row > *{flex:1 1 160px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 16px;border-radius:14px;
+  font-weight:800;font-size:1rem;background:var(--bg);border:2px solid var(--line);min-height:52px;color:var(--ink);text-decoration:none}
+.btn.pri{background:var(--blue);color:#fff;border-color:transparent}
+.steps{display:flex;gap:8px;justify-content:center;margin:0 0 16px}
+.steps span{width:46px;height:8px;border-radius:9px;background:rgba(127,127,127,.25)}
+.steps span.on{background:var(--gold)}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{padding:10px 14px;border-radius:999px;border:2px solid var(--line);background:var(--bg);font-weight:700;font-size:1rem}
+.chip.on{background:var(--blue);color:#fff;border-color:transparent}
+.types{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.types .chip{border-radius:16px;padding:14px;font-size:1.05rem}
+.result{border-radius:18px;padding:18px;margin-top:16px;font-size:1.1rem}
+.result.ok{background:rgba(47,154,70,.14);border:2px solid rgba(47,154,70,.45)}
+.result.no{background:rgba(211,59,59,.10);border:2px solid rgba(211,59,59,.4)}
+.result.mid{background:rgba(232,163,23,.14);border:2px solid rgba(232,163,23,.5)}
+.result .amt{font-size:2.2rem;font-weight:900;line-height:1.1;margin:4px 0}
+.note{background:rgba(31,111,209,.08);border-left:6px solid var(--blue);padding:12px 14px;border-radius:12px;
+  font-size:.95rem;margin-top:14px}
+.src{font-size:.88rem;color:var(--soft);margin-top:12px}
+.src a{color:var(--blue)}
+
+/* thought / breath / game */
+.thought{font-size:clamp(1.5rem,4.6vw,2rem);line-height:1.4;font-weight:600;margin:10px 0 8px;
+  font-family:Georgia,"Times New Roman",serif}
+.who{color:var(--soft);font-style:italic}
+.breath{display:grid;place-items:center;height:300px}
+.ball{width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#bfe9ff,#3aa0e8 55%,#1f5fbf);
+  box-shadow:0 0 40px rgba(58,160,232,.55);transition:transform 4s ease-in-out}
+.ball.in{transform:scale(2)}
+.ball.out{transform:scale(1);transition-duration:6s}
+.breath-word{font-size:1.8rem;font-weight:800;text-align:center;margin-top:-10px}
+.breath-count{text-align:center;color:var(--soft)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:520px;margin:0 auto}
+@media (max-width:420px){.grid{grid-template-columns:repeat(3,1fr)}}
+.mc{display:block;width:100%;padding:0;aspect-ratio:1;perspective:600px}
+.mc .in{display:block;position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
+.mc.flip .in{transform:rotateY(180deg)}
+.mc .f,.mc .b{position:absolute;inset:0;border-radius:16px;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  display:grid;place-items:center;box-shadow:var(--shadow)}
+.mc .f{background:linear-gradient(135deg,#f0a92e,#e0566b);
+  box-shadow:var(--shadow), inset 0 2px 0 rgba(255,255,255,.4), inset 0 -4px 0 rgba(0,0,0,.15)}
+.mc .f::after{content:"✦";color:rgba(255,255,255,.75);font-size:1.6rem}
+.mc .b{background:var(--card);transform:rotateY(180deg);font-size:clamp(2rem,9vw,3rem)}
+.mc.done .b{background:linear-gradient(135deg,#dff7e6,#bdeccb)}
+.moves{text-align:center;color:var(--soft);margin:12px 0 0}
+.gamebar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.gamebar .sub{margin:0}
+.snd{font-size:1.6rem;width:56px;height:56px;border-radius:50%;background:var(--bg);box-shadow:var(--shadow)}
+.done-ic{font-size:4rem;text-align:center}
+
+/* money */
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media (max-width:560px){.sum{gap:8px}.sum div{padding:10px 4px}.sum b{font-size:1.2rem}.sum span{font-size:.8rem;line-height:1.2;display:block}}
+.sum div{background:var(--bg);border-radius:16px;padding:12px;text-align:center}
+.sum b{display:block;font-size:1.5rem}
+.sum span{font-size:.9rem;color:var(--soft)}
+.item{display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line)}
+.item:last-child{border:0}
+.item .ie{font-size:1.9rem;width:52px;height:52px;flex:none;display:grid;place-items:center;border-radius:14px;background:var(--bg)}
+.item .it{flex:1;min-width:0}
+.item .it b{font-size:1.15rem;display:block;word-break:break-word}
+.item .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.item .acts .btn{min-height:46px;padding:8px 12px;font-size:.95rem}
+.pill{display:inline-block;padding:2px 10px;border-radius:999px;font-weight:800;font-size:.9rem;color:#fff}
+.pill.g{background:var(--green)} .pill.o{background:var(--orange)} .pill.r{background:var(--red)} .pill.s{background:#7b8496}
+.thumb{width:64px;height:64px;object-fit:cover;border-radius:12px;flex:none;cursor:zoom-in}
+.empty{text-align:center;color:var(--soft);padding:20px 0}
+.photoPrev{max-width:100%;max-height:240px;border-radius:14px;margin-top:10px;display:block}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;place-items:center;z-index:50;padding:16px}
+.overlay.on{display:grid}
+.overlay img{max-width:100%;max-height:85vh;border-radius:12px}
+.overlay button{position:absolute;top:calc(14px + env(safe-area-inset-top));right:14px;background:#fff;color:#111;
+  font-weight:800;padding:12px 18px;border-radius:999px}
+
+/* recipes */
+.recipe{border-top:1px solid var(--line);padding:14px 0}
+.recipe:first-child{border:0}
+.recipe b{font-size:1.15rem}
+.recipe .miss{color:var(--orange);font-size:.95rem}
+.recipe ol{margin:8px 0 0;padding-left:22px}
+details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:6px}
+
+/* links list */
+.gi{background:var(--bg);border-radius:16px;padding:14px 16px;margin-bottom:12px}
+.gi .gt{display:flex;align-items:center;gap:10px;font-size:1.12rem}
+.gi .ge{font-size:1.6rem}
+.gi p{margin:6px 0 10px;font-size:1rem}
+.gi .btn{width:100%}
+.olinks-old a{display:flex;align-items:center;gap:12px;padding:14px;border-radius:16px;background:var(--bg);
+  margin-bottom:10px;text-decoration:none;color:var(--ink);font-weight:700}
+.olinks-old a span:first-child{font-size:1.6rem}
+.olinks-old a span:last-child{margin-left:auto;color:var(--blue)}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);
+  background:#1d2433;color:#fff;padding:14px 22px;border-radius:999px;font-weight:700;z-index:60;
+  box-shadow:var(--shadow);opacity:0;transition:opacity .3s;pointer-events:none;max-width:90vw;text-align:center}
+.toast.on{opacity:1}
+.foot{text-align:center;color:var(--soft);font-size:.85rem;margin:24px 0 30px}
+</style>
+</head>
+<body class="r-home">
+
+<header class="top">
+  <div class="brand"><svg class="logo" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+ <defs>
+  <linearGradient id="lgbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f8fe8"/><stop offset="1" stop-color="#7cc4f7"/></linearGradient>
+  <linearGradient id="lgsea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1673c9"/><stop offset="1" stop-color="#0b4f96"/></linearGradient>
+  <radialGradient id="lgsun" cx=".4" cy=".35"><stop offset="0" stop-color="#fff6b0"/><stop offset=".6" stop-color="#ffd23f"/><stop offset="1" stop-color="#ffb000"/></radialGradient>
+ </defs>
+ <rect width="100" height="100" rx="22" fill="url(#lgbg)"/>
+ <g stroke="#ffd23f" stroke-width="5.5" stroke-linecap="round">
+  <line x1="50" y1="10" x2="50" y2="19"/><line x1="22" y1="22" x2="28.5" y2="28.5"/><line x1="78" y1="22" x2="71.5" y2="28.5"/>
+  <line x1="10" y1="50" x2="18" y2="50"/><line x1="90" y1="50" x2="82" y2="50"/>
+ </g>
+ <circle cx="50" cy="52" r="22" fill="url(#lgsun)"/>
+ <path d="M0 64 Q12.5 58 25 64 T50 64 T75 64 T100 64 V100 H0Z" fill="url(#lgsea)"/>
+ <path d="M8 77 Q16 72 24 77 T40 77 T56 77 T72 77 T88 77" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>
+ <path d="M18 89 Q26 84 34 89 T50 89 T66 89 T82 89" stroke="#fff" stroke-opacity=".75" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+</svg><span data-t="appName"></span></div>
+  <div class="topbtns">
+    <button class="tb" id="backBtn" onclick="goBack()">← <span data-t="back"></span></button>
+    <button class="tb home" id="homeBtn" onclick="go('home')" aria-label="home">🏠</button>
+    <div class="lang" role="group" aria-label="Language">
+      <button id="l-el" onclick="setLang('el')">ΕΛ</button>
+      <button id="l-en" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap layout">
+<main>
+
+<!-- ================= HOME ================= -->
+<section id="p-home" class="page on">
+  <div class="scene">
+    <svg id="sky" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+    <div class="greet"><h1 id="greet"></h1><p id="today"></p></div>
+  </div>
+  <div class="tiles">
+    <button class="tile t-minute" onclick="go('minute')">
+      <span class="ic">☀️</span><span><h2 data-t="tMinute"></h2><p data-t="tMinuteD"></p></span></button>
+    <button class="tile t-money" onclick="go('money')">
+      <span class="ic">💶</span><span><h2 data-t="tMoney"></h2><p data-t="tMoneyD"></p><span class="tag" id="moneyTag" hidden></span></span></button>
+    <button class="tile t-rights" onclick="go('rights')">
+      <span class="ic">⚖️</span><span><h2 data-t="tRights"></h2><p data-t="tRightsD"></p></span></button>
+    <button class="tile t-house" onclick="go('house')">
+      <span class="ic">🏠</span><span><h2 data-t="tHouse"></h2><p data-t="tHouseD"></p><span class="tag" id="fridgeTag" hidden></span></span></button>
+  </div>
+</section>
+
+<!-- ================= MY MINUTE ================= -->
+<section id="p-minute" class="page">
+  <div class="steps"><span id="s1"></span><span id="s2"></span><span id="s3"></span></div>
+  <div class="card" id="m-thought">
+    <p class="sub" data-t="step1"></p>
+    <div class="thought" id="thought"></div>
+    <div class="who" id="who"></div>
+    <button class="big-btn" onclick="minuteStep(2)" data-t="next"></button>
+  </div>
+  <div class="card" id="m-breath" hidden>
+    <p class="sub" data-t="step2"></p>
+    <div class="breath"><div class="ball" id="ball"></div></div>
+    <div class="breath-word" id="bword"></div>
+    <div class="breath-count" id="bcount"></div>
+    <button class="big-btn alt" onclick="minuteStep(3)" data-t="skip"></button>
+  </div>
+  <div class="card" id="m-game" hidden>
+    <div class="gamebar"><p class="sub" data-t="step3"></p>
+      <button class="snd" id="snd" onclick="toggleSound()" aria-label="sound"></button></div>
+    <div class="grid" id="grid"></div>
+    <p class="moves" id="moves"></p>
+    <button class="big-btn alt" onclick="minuteStep(4)" data-t="skip"></button>
+  </div>
+  <div class="card" id="m-done" hidden>
+    <div class="done-ic">🌿</div>
+    <h2 class="h" style="text-align:center" data-t="doneT"></h2>
+    <p class="sub" style="text-align:center" data-t="doneD"></p>
+    <button class="big-btn" onclick="go('home')" data-t="home"></button>
+    <button class="big-btn alt" onclick="startMinute(true)" data-t="again"></button>
+  </div>
+</section>
+
+<!-- ================= MY MONEY ================= -->
+<section id="p-money" class="page">
+  <div class="card">
+    <h2 class="h">💶 <span data-t="tMoney"></span></h2>
+    <div class="sum">
+      <div><b id="sumM">€0</b><span data-t="perMonth"></span></div>
+      <div><b id="sumY">€0</b><span data-t="perYear"></span></div>
+      <div><b id="sumSoon">0</b><span data-t="next30"></span></div>
+    </div>
+    <button class="big-btn green" onclick="go('money/add')">＋ <span data-t="addNew"></span></button>
+  </div>
+  <div class="card"><div id="moneyList"></div></div>
+  <div class="card">
+    <h3 class="h3">💾 <span data-t="backupT"></span></h3>
+    <p class="sub" data-t="backupD"></p>
+    <div class="row">
+      <button class="btn pri" onclick="exportBackup()">⬇️ <span data-t="backupSave"></span></button>
+      <button class="btn" onclick="document.getElementById('impFile').click()">⬆️ <span data-t="backupLoad"></span></button>
+    </div>
+    <input type="file" id="impFile" accept="application/json,.json" hidden onchange="importBackup(this)">
+  </div>
+</section>
+
+<section id="p-money-add" class="page">
+  <div class="card">
+    <h2 class="h" id="formTitle"></h2>
+    <label class="f" data-t="fType"></label>
+    <div class="types" id="typeChips"></div>
+    <label class="f" for="fName" data-t="fName"></label>
+    <input id="fName" maxlength="80">
+    <div id="grpAmount">
+      <label class="f" for="fAmount" data-t="fAmount"></label>
+      <input id="fAmount" type="number" inputmode="decimal" step="0.01" min="0">
+    </div>
+    <div id="grpFreq">
+      <label class="f" for="fFreq" data-t="fFreq"></label>
+      <select id="fFreq"></select>
+    </div>
+    <label class="f" for="fDate" id="fDateLbl"></label>
+    <input id="fDate" type="date">
+    <div id="grpWarranty">
+      <label class="f" for="fMonths" data-t="fMonths"></label>
+      <input id="fMonths" type="number" inputmode="numeric" min="1" max="240" value="24">
+      <label class="f" for="fStore" data-t="fStore"></label>
+      <input id="fStore" maxlength="80">
+    </div>
+    <label class="f" for="fNotes" data-t="fNotes"></label>
+    <input id="fNotes" maxlength="200">
+    <label class="f" data-t="fPhoto"></label>
+    <div class="row">
+      <button class="btn" onclick="document.getElementById('fPhotoIn').click()">📷 <span data-t="fPhotoBtn"></span></button>
+      <button class="btn" id="fPhotoDel" onclick="setPhoto(null)">🗑️ <span data-t="fPhotoDel"></span></button>
+    </div>
+    <input type="file" id="fPhotoIn" accept="image/*" hidden onchange="pickPhoto(this)">
+    <img id="fPhotoPrev" class="photoPrev" alt="" hidden>
+    <button class="big-btn green" onclick="saveItem()">✓ <span data-t="save"></span></button>
+    <button class="big-btn alt" onclick="goBack()" data-t="cancel"></button>
+  </div>
+</section>
+
+<!-- ================= MY RIGHTS ================= -->
+<section id="p-rights" class="page">
+  <h2 class="h">⚖️ <span data-t="tRights"></span></h2>
+  <p class="sub" data-t="rightsIntro"></p>
+  <div class="tiles">
+    <button class="tile t-a" onclick="go('rights/flight')"><span class="ic">✈️</span><span><h2 data-t="rFlight"></h2><p data-t="rFlightD"></p></span></button>
+    <button class="tile t-b" onclick="go('rights/warranty')"><span class="ic">🔧</span><span><h2 data-t="rWar"></h2><p data-t="rWarD"></p></span></button>
+    <button class="tile t-c" onclick="go('rights/tax')"><span class="ic">💶</span><span><h2 data-t="rTax"></h2><p data-t="rTaxD"></p></span></button>
+    <button class="tile t-d" onclick="go('rights/links')"><span class="ic">🏛️</span><span><h2 data-t="rLinks"></h2><p data-t="rLinksD"></p></span></button>
+  </div>
+  <p class="src" id="checkedRights"></p>
+</section>
+
+<section id="p-rights-flight" class="page">
+  <div class="card">
+    <h2 class="h">✈️ <span data-t="rFlight"></span></h2>
+    <p class="sub" data-t="flIntro"></p>
+    <label class="f" for="flFrom" data-t="flFrom"></label><select id="flFrom"></select>
+    <label class="f" for="flTo" data-t="flTo"></label><select id="flTo"></select>
+    <div id="grpKm" hidden><label class="f" for="flKm" data-t="flKm"></label>
+      <input id="flKm" type="number" inputmode="numeric" min="0"></div>
+    <label class="f" data-t="flWhat"></label>
+    <div class="chips" id="flWhat"></div>
+    <div id="grpDelay"><label class="f" for="flHours" data-t="flHours"></label>
+      <input id="flHours" type="number" inputmode="decimal" step="0.25" min="0" value="3"></div>
+    <div id="grpNotice" hidden><label class="f" data-t="flNotice"></label><div class="chips" id="flNotice"></div></div>
+    <label class="f" data-t="flWhy"></label>
+    <div class="chips" id="flWhy"></div>
+    <div id="grpEuAir" hidden><label class="f" data-t="flEuAir"></label><div class="chips" id="flEuAir"></div></div>
+    <button class="big-btn" onclick="calcFlight()" data-t="check"></button>
+    <div id="flResult"></div>
+  </div>
+  <div class="card" id="flLetterCard" hidden>
+    <h3 class="h3">✉️ <span data-t="letterT"></span></h3>
+    <div class="row">
+      <div><label class="f" for="lName" data-t="lName"></label><input id="lName"></div>
+      <div><label class="f" for="lAir" data-t="lAir"></label><input id="lAir"></div>
+    </div>
+    <div class="row">
+      <div><label class="f" for="lFlight" data-t="lFlight"></label><input id="lFlight" placeholder="CY 482"></div>
+      <div><label class="f" for="lDate" data-t="lDate"></label><input id="lDate" type="date"></div>
+      <div><label class="f" for="lRef" data-t="lRef"></label><input id="lRef"></div>
+    </div>
+    <button class="big-btn" onclick="makeFlightLetter()" data-t="makeLetter"></button>
+    <div id="flLetterOut"></div>
+  </div>
+  <p class="src" id="flSrc"></p>
+</section>
+
+<section id="p-rights-warranty" class="page">
+  <div class="card">
+    <h2 class="h">🔧 <span data-t="rWar"></span></h2>
+    <p class="sub" id="warIntro"></p>
+    <div class="row">
+      <div><label class="f" for="wProd" data-t="wProd"></label><input id="wProd"></div>
+      <div><label class="f" for="wStore" data-t="fStore"></label><input id="wStore"></div>
+    </div>
+    <div class="row">
+      <div><label class="f" for="wBuy" data-t="wBuy"></label><input id="wBuy" type="date"></div>
+      <div><label class="f" for="wSeen" data-t="wSeen"></label><input id="wSeen" type="date"></div>
+    </div>
+    <label class="f" for="wProb" data-t="wProb"></label><input id="wProb">
+    <button class="big-btn" onclick="calcWarranty()" data-t="check"></button>
+    <div id="wResult"></div>
+    <div id="wLetterOut"></div>
+  </div>
+  <p class="src" id="wSrc"></p>
+</section>
+
+<section id="p-rights-tax" class="page">
+  <div class="card">
+    <h2 class="h">💶 <span data-t="rTax"></span></h2>
+    <p class="sub" data-t="taxIntro"></p>
+    <div class="row">
+      <div><label class="f" for="tInc" data-t="tInc"></label><input id="tInc" type="number" inputmode="numeric" min="0"></div>
+      <div><label class="f" for="tFam" data-t="tFam"></label><input id="tFam" type="number" inputmode="numeric" min="0"></div>
+    </div>
+    <div class="row">
+      <div><label class="f" for="tKids" data-t="tKids"></label><input id="tKids" type="number" inputmode="numeric" min="0" max="15" value="0"></div>
+      <div><label class="f" data-t="tSingle"></label><div class="chips" id="tSingle"></div></div>
+    </div>
+    <div class="row">
+      <div><label class="f" for="tRent" data-t="tRent"></label><input id="tRent" type="number" inputmode="numeric" min="0" value="0"></div>
+      <div><label class="f" for="tGreen" data-t="tGreen"></label><input id="tGreen" type="number" inputmode="numeric" min="0" value="0"></div>
+      <div><label class="f" for="tIns" data-t="tIns"></label><input id="tIns" type="number" inputmode="numeric" min="0" value="0"></div>
+    </div>
+    <button class="big-btn" onclick="calcTax()" data-t="calc"></button>
+    <div id="tResult"></div>
+  </div>
+  <p class="src" id="tSrc"></p>
+</section>
+
+<section id="p-rights-links" class="page">
+  <div class="card">
+    <h2 class="h">🏛️ <span data-t="rLinks"></span></h2>
+    <p class="sub" data-t="linksIntro"></p>
+    <div class="olinks" id="olinks"></div>
+  </div>
+</section>
+
+<!-- ================= MY HOME ================= -->
+<section id="p-house" class="page">
+  <h2 class="h">🏠 <span data-t="tHouse"></span></h2>
+  <div class="tiles">
+    <button class="tile t-c" onclick="go('house/fridge')"><span class="ic">🥕</span><span><h2 data-t="hFridge"></h2><p data-t="hFridgeD"></p></span></button>
+    <button class="tile t-b" onclick="go('house/cook')"><span class="ic">🍲</span><span><h2 data-t="hCook"></h2><p data-t="hCookD"></p></span></button>
+    <button class="tile t-a" onclick="go('house/power')"><span class="ic">⚡</span><span><h2 data-t="hPower"></h2><p data-t="hPowerD"></p></span></button>
+    <button class="tile t-d" onclick="go('house/repair')"><span class="ic">🛠️</span><span><h2 data-t="hRepair"></h2><p data-t="hRepairD"></p></span></button>
+  </div>
+</section>
+
+<section id="p-house-fridge" class="page">
+  <div class="card">
+    <h2 class="h">🥕 <span data-t="hFridge"></span></h2>
+    <div class="row">
+      <div><label class="f" for="frName" data-t="frName"></label><input id="frName" maxlength="60"></div>
+      <div><label class="f" for="frDate" data-t="frDate"></label><input id="frDate" type="date"></div>
+    </div>
+    <button class="big-btn green" onclick="addFridge()">＋ <span data-t="add"></span></button>
+  </div>
+  <div class="card"><div id="fridgeList"></div>
+    <button class="big-btn" onclick="go('house/cook')">🍲 <span data-t="hCook"></span></button></div>
+</section>
+
+<section id="p-house-cook" class="page">
+  <div class="card">
+    <h2 class="h">🍲 <span data-t="hCook"></span></h2>
+    <p class="sub" data-t="cookIntro"></p>
+    <div class="chips" id="ingChips"></div>
+  </div>
+  <div class="card"><div id="recipes"></div></div>
+</section>
+
+<section id="p-house-power" class="page">
+  <div class="card">
+    <h2 class="h">⚡ <span data-t="hPower"></span></h2>
+    <label class="f" for="pwApp" data-t="pwApp"></label><select id="pwApp" onchange="pwPreset()"></select>
+    <div class="row">
+      <div><label class="f" for="pwW" data-t="pwW"></label><input id="pwW" type="number" inputmode="numeric" min="0"></div>
+      <div><label class="f" for="pwH" data-t="pwH"></label><input id="pwH" type="number" inputmode="decimal" step="0.25" min="0"></div>
+      <div><label class="f" for="pwD" data-t="pwD"></label><input id="pwD" type="number" inputmode="numeric" min="1" max="31" value="30"></div>
+    </div>
+    <label class="f" for="pwPrice" data-t="pwPrice"></label>
+    <input id="pwPrice" type="number" inputmode="decimal" step="0.001" min="0">
+    <p class="small" id="pwNote"></p>
+    <button class="big-btn" onclick="calcPower()" data-t="calc"></button>
+    <div id="pwResult"></div>
+  </div>
+  <div class="card" id="pwListCard" hidden>
+    <h3 class="h3" data-t="pwList"></h3>
+    <div id="pwList"></div>
+    <button class="btn" onclick="pwClear()">🗑️ <span data-t="clearList"></span></button>
+  </div>
+</section>
+
+<section id="p-house-repair" class="page">
+  <div class="card">
+    <h2 class="h">🛠️ <span data-t="hRepair"></span></h2>
+    <label class="f" for="rpType" data-t="rpType"></label><select id="rpType"></select>
+    <div class="row">
+      <div><label class="f" for="rpAge" data-t="rpAge"></label><input id="rpAge" type="number" inputmode="decimal" step="0.5" min="0"></div>
+      <div><label class="f" for="rpCost" data-t="rpCost"></label><input id="rpCost" type="number" inputmode="decimal" min="0"></div>
+      <div><label class="f" for="rpNew" data-t="rpNew"></label><input id="rpNew" type="number" inputmode="decimal" min="0"></div>
+    </div>
+    <button class="big-btn" onclick="calcRepair()" data-t="check"></button>
+    <div id="rpResult"></div>
+  </div>
+</section>
+
+<div class="foot"><span data-t="version"></span> 7-10-2026 12:40</div>
+</main>
+
+<aside>
+  <h3 data-t="myProjects"></h3>
+  <div class="plinks" id="plinks"></div>
+</aside>
+</div>
+
+<div class="overlay" id="ov" onclick="closePhoto()"><img id="ovImg" alt=""><button data-t="close"></button></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================================
+   ΚΕΙΜΕΝΑ / TEXTS
+   ===================================================================== */
+const T = {
+ el:{
+  appName:"Καλή Μέρα μου", myProjects:"Τα άλλα μου έργα", back:"Πίσω", home:"Αρχική", next:"Συνέχεια →", skip:"Παράλειψη",
+  again:"Ξανά από την αρχή", version:"Έκδοση", close:"Κλείσιμο ✕", save:"Αποθήκευση", cancel:"Ακύρωση",
+  add:"Προσθήκη", check:"Έλεγχος", calc:"Υπολογισμός", clearList:"Καθαρισμός λίστας", open:"Άνοιγμα",
+  tMinute:"Το Λεπτό μου", tMinuteD:"Σκέψη, ανάσα, παιχνίδι",
+  tMoney:"Τα Λεφτά μου", tMoneyD:"Συνδρομές, λογαριασμοί, προθεσμίες, εγγυήσεις",
+  tRights:"Τα Δικαιώματά μου", tRightsD:"Πτήσεις, εγγυήσεις, φόρος, επιδόματα",
+  tHouse:"Το Σπίτι μου", tHouseD:"Ψυγείο, μαγείρεμα, ρεύμα, επισκευές",
+  step1:"Η σκέψη της ημέρας", step2:"Μια ανάσα ηρεμίας", step3:"Βρες τα ζευγάρια",
+  inhale:"Εισπνοή", exhale:"Εκπνοή", breathN:"Ανάσα {n} από 3",
+  moves:"Κινήσεις: {n}", won:"Μπράβο! Τα βρήκες σε {n} κινήσεις 🎉",
+  doneT:"Καλή συνέχεια!", doneD:"Χάρισες στον εαυτό σου ένα λεπτό που αξίζει.",
+  g:["Καληνύχτα","Καλημέρα","Καλό απόγευμα","Καλησπέρα"],
+  // money
+  perMonth:"τον μήνα", perYear:"τον χρόνο", next30:"λήγουν σε 30 μέρες", addNew:"Νέα καταχώριση",
+  backupT:"Αντίγραφο ασφαλείας", backupD:"Όλα φυλάγονται μόνο σε αυτή τη συσκευή. Κρατάτε ένα αντίγραφο σε αρχείο, για να μη χαθούν αν αλλάξετε κινητό.",
+  backupSave:"Αποθήκευση αντιγράφου", backupLoad:"Επαναφορά από αρχείο",
+  types:{sub:"🔁 Συνδρομή",bill:"🧾 Λογαριασμός",deadline:"📅 Προθεσμία",warranty:"🛡️ Εγγύηση"},
+  fType:"Τι είναι;", fName:"Όνομα (π.χ. Netflix, ΑΗΚ, Ασφάλεια αυτοκινήτου)", fAmount:"Ποσό (€)", fFreq:"Κάθε πότε;",
+  freq:{m:"Κάθε μήνα",q:"Κάθε 3 μήνες",y:"Κάθε χρόνο",o:"Μία φορά"},
+  fDateNext:"Επόμενη πληρωμή", fDateDead:"Ημερομηνία λήξης", fDateBuy:"Ημερομηνία αγοράς",
+  fMonths:"Διάρκεια εγγύησης (μήνες)", fStore:"Κατάστημα", fNotes:"Σημειώσεις", fPhoto:"Φωτογραφία (π.χ. απόδειξη)",
+  fPhotoBtn:"Φωτογραφία", fPhotoDel:"Αφαίρεση", newItem:"Νέα καταχώριση", editItem:"Αλλαγή καταχώρισης",
+  needName:"Γράψτε ένα όνομα", needDate:"Βάλτε ημερομηνία", saved:"Αποθηκεύτηκε ✓", deleted:"Διαγράφηκε",
+  confirmDel:"Να διαγραφεί «{n}»;", emptyMoney:"Δεν υπάρχει ακόμη τίποτα. Πατήστε «Νέα καταχώριση».",
+  toCal:"📅 Στο ημερολόγιο", edit:"✏️ Αλλαγή", del:"🗑️", expires:"λήγει", due:"πληρωμή", in:"σε {n} μέρες", today:"σήμερα",
+  expired:"έληξε", ago:"πριν {n} μέρες", warrantyTill:"εγγύηση έως",
+  calHint:"Ανοίξτε το αρχείο για να μπει στο ημερολόγιο, με υπενθύμιση 7 μέρες και 1 μέρα πριν.",
+  restored:"Επαναφέρθηκαν {n} καταχωρίσεις ✓", badFile:"Το αρχείο δεν είναι σωστό αντίγραφο",
+  soonTag:"{n} λήγουν σύντομα",
+  // rights
+  rightsIntro:"Χρήματα που δικαιούστε και συχνά χάνονται, επειδή κανείς δεν τα ζητά.",
+  rFlight:"Αποζημίωση πτήσης", rFlightD:"Έως €600 για καθυστέρηση ή ακύρωση",
+  rWar:"Χαλασμένο προϊόν", rWarD:"Η δωρεάν εγγύηση των 2 ετών",
+  rTax:"Εκπτώσεις φόρου 2026", rTaxD:"Κύπρος: παιδιά, ενοίκιο, φωτοβολταϊκά",
+  rLinks:"Επίσημες σελίδες", rLinksD:"Επιδόματα, χορηγίες, καταναλωτές",
+  checked:"Τα στοιχεία ελέγχθηκαν από επίσημες πηγές στις {n}.",
+  flIntro:"Απαντήστε σε λίγες ερωτήσεις. Η εφαρμογή υπολογίζει τι δικαιούστε και σας γράφει την επιστολή.",
+  flFrom:"Από πού πετάξατε;", flTo:"Προς τα πού;", flKm:"Απόσταση σε χιλιόμετρα (αν τη γνωρίζετε)",
+  flWhat:"Τι έγινε;", what:{delay:"Καθυστέρηση",cancel:"Ακύρωση",denied:"Δεν με άφησαν να επιβιβαστώ"},
+  flHours:"Πόσες ώρες αργότερα φτάσατε στον τελικό προορισμό;",
+  flNotice:"Πότε σας ειδοποίησαν για την ακύρωση;", notice:{late:"Λιγότερο από 14 μέρες πριν",early:"14 μέρες ή περισσότερο πριν"},
+  flWhy:"Ποιος ήταν ο λόγος;", why:{air:"Τεχνική βλάβη / λόγος της εταιρείας",unk:"Δεν ξέρω",ext:"Κακοκαιρία, απεργία ελεγκτών, θέμα ασφάλειας"},
+  flEuAir:"Η αεροπορική εταιρεία είναι ευρωπαϊκή;", yesno:{y:"Ναι",n:"Όχι"},
+  other:"Άλλο αεροδρόμιο (γράψτε χιλιόμετρα)", grpEU:"Ευρωπαϊκή Ένωση & Ελβετία, Νορβηγία, Ισλανδία", grpUK:"Ηνωμένο Βασίλειο", grpX:"Εκτός Ευρώπης",
+  flYes:"Πιθανότατα δικαιούστε", flNo:"Μάλλον δεν δικαιούστε αποζημίωση",
+  flPerPerson:"ανά επιβάτη, σε μετρητά (όχι μόνο κουπόνι)",
+  flHalf:"Επειδή φτάσατε 3 έως 4 ώρες αργότερα σε πτήση άνω των 3.500 χλμ, το ποσό μπορεί να μειωθεί στο μισό.",
+  flCancelReroute:"Αν σας πρόσφεραν άλλη πτήση με πολύ μικρή διαφορά ώρας, το ποσό μπορεί να μειωθεί ή να μη δικαιούστε.",
+  flExt:"Για έκτακτες περιστάσεις (καιρός, απεργία ελεγκτών εναέριας κυκλοφορίας, θέματα ασφάλειας) η εταιρεία δεν πληρώνει αποζημίωση. Δικαιούστε όμως φαγητό, ποτό, ξενοδοχείο αν χρειαστεί και επιστροφή χρημάτων ή άλλη πτήση.",
+  flUnk:"Αν δεν ξέρετε τον λόγο, ζητήστε τον γραπτώς. Οι τεχνικές βλάβες συνήθως δεν θεωρούνται έκτακτη περίσταση.",
+  flShort:"Χρειάζεται καθυστέρηση άφιξης τουλάχιστον 3 ωρών.",
+  flEarly:"Αφού σας ειδοποίησαν 14 μέρες ή περισσότερο πριν, δεν δικαιούστε αποζημίωση. Δικαιούστε όμως επιστροφή χρημάτων ή άλλη πτήση.",
+  flNotCovered:"Η πτήση δεν καλύπτεται από τους ευρωπαϊκούς κανόνες (αναχώρηση εκτός ΕΕ με μη ευρωπαϊκή εταιρεία). Ελέγξτε τους κανόνες της χώρας αναχώρησης.",
+  flUK:"Πτήση από το Ηνωμένο Βασίλειο: ισχύουν οι βρετανικοί κανόνες (UK261) με ποσά σε λίρες.",
+  flSame:"Επιλέξτε δύο διαφορετικά αεροδρόμια ή γράψτε χιλιόμετρα.",
+  flDist:"Απόσταση περίπου {n} χλμ.",
+  flNext:"Τι να κάνετε: στείλτε την επιστολή στην αεροπορική (συνήθως μέσα από τη φόρμα αποζημιώσεων στην ιστοσελίδα της). Αν αρνηθεί ή δεν απαντήσει σε 6 εβδομάδες, απευθυνθείτε στην αρμόδια εθνική αρχή ή στο Ευρωπαϊκό Κέντρο Καταναλωτή. Δεν χρειάζεται να πληρώσετε μεσάζοντα.",
+  letterT:"Η επιστολή σας", lName:"Ονοματεπώνυμο", lAir:"Αεροπορική εταιρεία", lFlight:"Αριθμός πτήσης", lDate:"Ημερομηνία πτήσης",
+  lRef:"Κωδικός κράτησης", makeLetter:"Γράψε την επιστολή", copy:"📋 Αντιγραφή", email:"✉️ Email", download:"⬇️ Αρχείο",
+  copied:"Αντιγράφηκε ✓",
+  warIntroT:"Κάθε καινούργιο προϊόν που αγοράζετε στην ΕΕ έχει δωρεάν νόμιμη εγγύηση {m} μηνών από τον πωλητή. Ισχύει ακόμη κι αν σας πουν ότι «η εγγύηση του κατασκευαστή έληξε».",
+  wProd:"Προϊόν (π.χ. Πλυντήριο Bosch)", wBuy:"Ημερομηνία αγοράς", wSeen:"Πότε εμφανίστηκε το πρόβλημα;", wProb:"Ποιο είναι το πρόβλημα;",
+  wIn:"Είστε μέσα στη νόμιμη εγγύηση", wOut:"Η νόμιμη εγγύηση των {m} μηνών έχει λήξει",
+  wLeft:"Απομένουν {n} μέρες εγγύησης.",
+  wPres:"Το πρόβλημα εμφανίστηκε τον πρώτο χρόνο: θεωρείται ότι υπήρχε από την αρχή και δεν χρειάζεται να το αποδείξετε εσείς.",
+  wAfter:"Το πρόβλημα εμφανίστηκε μετά τον πρώτο χρόνο: ο πωλητής μπορεί να ζητήσει να δείξετε ότι πρόκειται για ελάττωμα και όχι για κακή χρήση.",
+  wNotify:"Ενημερώστε τον πωλητή μέσα σε {m} μήνες από τη στιγμή που το προσέξατε, γραπτώς.",
+  wLate:"Προσοχή: έχουν περάσει πάνω από {m} μήνες από τότε που το προσέξατε. Ενημερώστε τον πωλητή αμέσως.",
+  wRem:"Δικαιούστε δωρεάν επισκευή ή αντικατάσταση σε εύλογο χρόνο (το πολύ {d} μέρες). Αν δεν γίνει, δικαιούστε μείωση τιμής ή επιστροφή χρημάτων.",
+  wOutAdvice:"Ελέγξτε αν υπάρχει εμπορική εγγύηση του κατασκευαστή με μεγαλύτερη διάρκεια. Δείτε και το «Επισκευή ή καινούργιο;» στο Σπίτι μου.",
+  wNeed:"Βάλτε την ημερομηνία αγοράς",
+  taxIntro:"Υπολογισμός για φορολογικούς κατοίκους Κύπρου, με τους κανόνες του 2026. Είναι εκτίμηση· η τελική εφαρμογή γίνεται από το Τμήμα Φορολογίας.",
+  tInc:"Το δικό σας ετήσιο εισόδημα (€)", tFam:"Ετήσιο εισόδημα όλης της οικογένειας (€)", tKids:"Εξαρτώμενα παιδιά",
+  tSingle:"Μονογονεϊκή οικογένεια;", tRent:"Ενοίκιο ή τόκοι στεγαστικού κύριας κατοικίας που πληρώσατε φέτος (€)",
+  tGreen:"Δαπάνη για θερμομόνωση, φωτοβολταϊκά ή ηλεκτρικό αυτοκίνητο (€)", tIns:"Ασφάλιστρο κατοικίας για φυσικές καταστροφές (€)",
+  tKidsL:"Παιδιά", tRentL:"Ενοίκιο / τόκοι στεγαστικού", tGreenL:"Ενεργειακή αναβάθμιση", tInsL:"Ασφάλιση κατοικίας",
+  tTotal:"Σύνολο εκπτώσεων", tSave:"Υπολογιζόμενη μείωση φόρου", tOverLimit:"Το οικογενειακό εισόδημα ξεπερνά το όριο των €{n}, οπότε δεν ισχύουν οι εκπτώσεις για παιδιά, ενοίκιο/τόκους και ενεργειακή αναβάθμιση.",
+  tUnderFree:"Το εισόδημά σας είναι κάτω από το αφορολόγητο των €{n}, οπότε δεν πληρώνετε φόρο εισοδήματος και οι εκπτώσεις δεν αλλάζουν κάτι.",
+  tGreenCarry:"Το υπόλοιπο της δαπάνης πάνω από €1.000 μεταφέρεται στα επόμενα χρόνια (έως 4 έτη, €1.000 τον χρόνο).",
+  tShare:"Οι εκπτώσεις για τα παιδιά μοιράζονται ανάμεσα στους γονείς. Χρειάζεται και συγκατάθεση των συζύγων για ανταλλαγή φορολογικών πληροφοριών.",
+  linksIntro:"Οι επίσημες σελίδες για επιδόματα, χορηγίες και δικαιώματα. Εκεί βρίσκετε πάντα τους τρέχοντες κανόνες και τις αιτήσεις.",
+  // house
+  hFridge:"Το ψυγείο μου", hFridgeD:"Τι λήγει και πότε",
+  hCook:"Τι μαγειρεύω;", hCookD:"Συνταγές με ό,τι έχετε",
+  hPower:"Πόσο κοστίζει το ρεύμα;", hPowerD:"Κάθε συσκευή σε ευρώ",
+  hRepair:"Επισκευή ή καινούργιο;", hRepairD:"Απλός οδηγός απόφασης",
+  frName:"Τρόφιμο", frDate:"Λήγει στις", emptyFridge:"Το ψυγείο είναι άδειο. Προσθέστε ό,τι έχετε, με την ημερομηνία λήξης.",
+  ate:"✓ Το φάγαμε",
+  cookIntro:"Πατήστε ό,τι έχετε στο σπίτι. Λάδι, αλάτι και πιπέρι τα θεωρούμε δεδομένα. Ό,τι υπάρχει στο ψυγείο σας είναι ήδη επιλεγμένο.",
+  have:"Τα έχετε όλα! 🎉", missing:"Λείπουν: {n}", noRecipe:"Επιλέξτε μερικά υλικά για να δείτε συνταγές.", steps:"Πώς γίνεται", mins:"{n} λεπτά",
+  pwApp:"Συσκευή", pwW:"Ισχύς (Watt)", pwH:"Ώρες τη μέρα", pwD:"Μέρες τον μήνα", pwPrice:"Τιμή ρεύματος (€ ανά kWh)",
+  pwHour:"την ώρα", pwDay:"τη μέρα", pwMonth:"τον μήνα", pwYear:"τον χρόνο", pwAdd:"＋ Στη λίστα μου", pwList:"Η λίστα μου",
+  pwTotal:"Σύνολο τον μήνα", pwCustom:"Άλλη συσκευή (γράψτε Watt)",
+  pwTip:"Συμβουλή: {n}",
+  rpType:"Τι χάλασε;", rpAge:"Ηλικία συσκευής (χρόνια)", rpCost:"Κόστος επισκευής (€)", rpNew:"Τιμή καινούργιας (€)",
+  rpFree:"Η συσκευή είναι κάτω από 2 ετών: ζητήστε ΔΩΡΕΑΝ επισκευή από τον πωλητή (νόμιμη εγγύηση).", rpFreeBtn:"Γράψε την επιστολή εγγύησης",
+  rpRepair:"Αξίζει η επισκευή 🔧", rpReplace:"Μάλλον αξίζει καινούργια 🆕", rpThink:"Οριακό: σκεφτείτε το 🤔",
+  rpWhy1:"Η επισκευή κοστίζει {p}% της τιμής μιας καινούργιας.", rpWhy2:"Η συσκευή έχει ζήσει περίπου {p}% της συνηθισμένης ζωής της ({y} χρόνια).",
+  rpRule:"Κανόνας: αν η επισκευή κοστίζει πάνω από το μισό μιας καινούργιας, συνήθως συμφέρει η αντικατάσταση. Σε παλιά ψυγεία και κλιματιστικά, μια καινούργια, πιο οικονομική συσκευή μειώνει και τον λογαριασμό ρεύματος.",
+  rpNeed:"Συμπληρώστε κόστος επισκευής και τιμή καινούργιας",
+  letterSubjFlight:"Αίτημα αποζημίωσης – Κανονισμός (ΕΚ) 261/2004 – Πτήση {f}",
+  letterSubjWar:"Ελαττωματικό προϊόν – αίτημα δωρεάν επισκευής ή αντικατάστασης"
+ },
+ en:{
+  appName:"My Good Day", myProjects:"My other projects", back:"Back", home:"Home", next:"Continue →", skip:"Skip",
+  again:"Start again", version:"Version", close:"Close ✕", save:"Save", cancel:"Cancel",
+  add:"Add", check:"Check", calc:"Calculate", clearList:"Clear list", open:"Open",
+  tMinute:"My Minute", tMinuteD:"A thought, a breath, a game",
+  tMoney:"My Money", tMoneyD:"Subscriptions, bills, deadlines, warranties",
+  tRights:"My Rights", tRightsD:"Flights, warranties, tax, benefits",
+  tHouse:"My Home", tHouseD:"Fridge, cooking, electricity, repairs",
+  step1:"Thought of the day", step2:"A calming breath", step3:"Find the pairs",
+  inhale:"Breathe in", exhale:"Breathe out", breathN:"Breath {n} of 3",
+  moves:"Moves: {n}", won:"Well done! You found them in {n} moves 🎉",
+  doneT:"Have a good day!", doneD:"You gave yourself a minute worth having.",
+  g:["Good night","Good morning","Good afternoon","Good evening"],
+  perMonth:"per month", perYear:"per year", next30:"due in 30 days", addNew:"New entry",
+  backupT:"Backup", backupD:"Everything is kept only on this device. Keep a backup file so nothing is lost if you change phone.",
+  backupSave:"Save backup", backupLoad:"Restore from file",
+  types:{sub:"🔁 Subscription",bill:"🧾 Bill",deadline:"📅 Deadline",warranty:"🛡️ Warranty"},
+  fType:"What is it?", fName:"Name (e.g. Netflix, electricity, car insurance)", fAmount:"Amount (€)", fFreq:"How often?",
+  freq:{m:"Every month",q:"Every 3 months",y:"Every year",o:"Once"},
+  fDateNext:"Next payment", fDateDead:"Expiry date", fDateBuy:"Purchase date",
+  fMonths:"Warranty length (months)", fStore:"Shop", fNotes:"Notes", fPhoto:"Photo (e.g. receipt)",
+  fPhotoBtn:"Photo", fPhotoDel:"Remove", newItem:"New entry", editItem:"Edit entry",
+  needName:"Please write a name", needDate:"Please enter a date", saved:"Saved ✓", deleted:"Deleted",
+  confirmDel:"Delete “{n}”?", emptyMoney:"Nothing here yet. Tap “New entry”.",
+  toCal:"📅 To calendar", edit:"✏️ Edit", del:"🗑️", expires:"expires", due:"due", in:"in {n} days", today:"today",
+  expired:"expired", ago:"{n} days ago", warrantyTill:"warranty until",
+  calHint:"Open the file to add it to your calendar, with reminders 7 days and 1 day before.",
+  restored:"Restored {n} entries ✓", badFile:"This file is not a valid backup",
+  soonTag:"{n} due soon",
+  rightsIntro:"Money you are entitled to and often lose, because nobody asks for it.",
+  rFlight:"Flight compensation", rFlightD:"Up to €600 for delays or cancellations",
+  rWar:"Faulty product", rWarD:"The free 2-year legal guarantee",
+  rTax:"Tax deductions 2026", rTaxD:"Cyprus: children, rent, solar panels",
+  rLinks:"Official pages", rLinksD:"Benefits, grants, consumers",
+  checked:"Information checked against official sources on {n}.",
+  flIntro:"Answer a few questions. The app works out what you are owed and writes the letter for you.",
+  flFrom:"Where did you fly from?", flTo:"Where to?", flKm:"Distance in kilometres (if you know it)",
+  flWhat:"What happened?", what:{delay:"Delay",cancel:"Cancellation",denied:"I was denied boarding"},
+  flHours:"How many hours late did you reach your final destination?",
+  flNotice:"When were you told about the cancellation?", notice:{late:"Less than 14 days before",early:"14 days or more before"},
+  flWhy:"What was the reason?", why:{air:"Technical fault / airline reason",unk:"I don't know",ext:"Bad weather, air traffic control strike, security"},
+  flEuAir:"Is the airline European?", yesno:{y:"Yes",n:"No"},
+  other:"Other airport (enter kilometres)", grpEU:"European Union & Switzerland, Norway, Iceland", grpUK:"United Kingdom", grpX:"Outside Europe",
+  flYes:"You are probably entitled", flNo:"Probably no compensation",
+  flPerPerson:"per passenger, in cash (not only a voucher)",
+  flHalf:"Because you arrived 3 to 4 hours late on a flight over 3,500 km, the amount may be halved.",
+  flCancelReroute:"If you were offered another flight at almost the same time, the amount may be reduced or not due.",
+  flExt:"For extraordinary circumstances (weather, air traffic control strikes, security issues) the airline does not pay compensation. You are still entitled to food, drinks, a hotel if needed, and a refund or another flight.",
+  flUnk:"If you don't know the reason, ask for it in writing. Technical faults are usually not extraordinary circumstances.",
+  flShort:"The arrival delay must be at least 3 hours.",
+  flEarly:"Since you were told 14 days or more before, no compensation is due. You are still entitled to a refund or another flight.",
+  flNotCovered:"This flight is not covered by the European rules (departure outside the EU with a non-European airline). Check the rules of the departure country.",
+  flUK:"Flight from the United Kingdom: the British rules (UK261) apply, with amounts in pounds.",
+  flSame:"Choose two different airports or enter kilometres.",
+  flDist:"Distance about {n} km.",
+  flNext:"What to do: send the letter to the airline (usually through the claims form on its website). If it refuses or does not reply within 6 weeks, contact the national enforcement body or the European Consumer Centre. You don't need to pay a claims company.",
+  letterT:"Your letter", lName:"Full name", lAir:"Airline", lFlight:"Flight number", lDate:"Flight date",
+  lRef:"Booking reference", makeLetter:"Write the letter", copy:"📋 Copy", email:"✉️ Email", download:"⬇️ File",
+  copied:"Copied ✓",
+  warIntroT:"Every new product you buy in the EU has a free legal guarantee of {m} months from the seller. It applies even if you are told that “the manufacturer's warranty has expired”.",
+  wProd:"Product (e.g. Bosch washing machine)", wBuy:"Purchase date", wSeen:"When did the problem appear?", wProb:"What is the problem?",
+  wIn:"You are within the legal guarantee", wOut:"The {m}-month legal guarantee has expired",
+  wLeft:"{n} days of guarantee left.",
+  wPres:"The problem appeared in the first year: it is presumed to have existed from the start, so you don't have to prove it.",
+  wAfter:"The problem appeared after the first year: the seller may ask you to show it is a defect and not misuse.",
+  wNotify:"Inform the seller in writing within {m} months of noticing it.",
+  wLate:"Note: more than {m} months have passed since you noticed it. Inform the seller immediately.",
+  wRem:"You are entitled to free repair or replacement within a reasonable time (at most {d} days). If that fails, you are entitled to a price reduction or a refund.",
+  wOutAdvice:"Check whether the manufacturer offers a longer commercial warranty. See also “Repair or replace?” in My Home.",
+  wNeed:"Enter the purchase date",
+  taxIntro:"Calculation for Cyprus tax residents, using the 2026 rules. It is an estimate; the final assessment is made by the Tax Department.",
+  tInc:"Your own annual income (€)", tFam:"Annual income of the whole family (€)", tKids:"Dependent children",
+  tSingle:"Single-parent family?", tRent:"Rent or mortgage interest on your main home paid this year (€)",
+  tGreen:"Spending on insulation, solar panels or an electric car (€)", tIns:"Home insurance premium for natural disasters (€)",
+  tKidsL:"Children", tRentL:"Rent / mortgage interest", tGreenL:"Energy upgrade", tInsL:"Home insurance",
+  tTotal:"Total deductions", tSave:"Estimated tax reduction", tOverLimit:"Family income is above the €{n} limit, so the deductions for children, rent/interest and energy upgrades do not apply.",
+  tUnderFree:"Your income is below the €{n} tax-free amount, so you pay no income tax and the deductions change nothing.",
+  tGreenCarry:"Spending above €1,000 carries forward to the following years (up to 4 years, €1,000 per year).",
+  tShare:"Child deductions are shared between parents. Spouses must also consent to sharing tax information.",
+  linksIntro:"The official pages for benefits, grants and rights. They always have the current rules and the application forms.",
+  hFridge:"My fridge", hFridgeD:"What expires and when",
+  hCook:"What can I cook?", hCookD:"Recipes with what you have",
+  hPower:"What does electricity cost?", hPowerD:"Each appliance in euros",
+  hRepair:"Repair or replace?", hRepairD:"A simple decision guide",
+  frName:"Food", frDate:"Expires on", emptyFridge:"The fridge is empty. Add what you have, with its expiry date.",
+  ate:"✓ Eaten",
+  cookIntro:"Tap what you have at home. Oil, salt and pepper are assumed. Whatever is in your fridge is already selected.",
+  have:"You have everything! 🎉", missing:"Missing: {n}", noRecipe:"Select a few ingredients to see recipes.", steps:"How to make it", mins:"{n} minutes",
+  pwApp:"Appliance", pwW:"Power (Watts)", pwH:"Hours per day", pwD:"Days per month", pwPrice:"Electricity price (€ per kWh)",
+  pwHour:"per hour", pwDay:"per day", pwMonth:"per month", pwYear:"per year", pwAdd:"＋ Add to my list", pwList:"My list",
+  pwTotal:"Total per month", pwCustom:"Other appliance (enter Watts)",
+  pwTip:"Tip: {n}",
+  rpType:"What broke?", rpAge:"Appliance age (years)", rpCost:"Repair cost (€)", rpNew:"Price of a new one (€)",
+  rpFree:"The appliance is under 2 years old: ask the seller for a FREE repair (legal guarantee).", rpFreeBtn:"Write the guarantee letter",
+  rpRepair:"Repair is worth it 🔧", rpReplace:"A new one is probably better 🆕", rpThink:"Borderline: think it over 🤔",
+  rpWhy1:"The repair costs {p}% of the price of a new one.", rpWhy2:"The appliance has lived about {p}% of its usual life ({y} years).",
+  rpRule:"Rule of thumb: if a repair costs more than half the price of a new one, replacing usually pays off. For old fridges and air conditioners, a new efficient model also lowers the electricity bill.",
+  rpNeed:"Enter the repair cost and the price of a new one",
+  letterSubjFlight:"Compensation claim – Regulation (EC) 261/2004 – Flight {f}",
+  letterSubjWar:"Faulty product – request for free repair or replacement"
+ }
+};
+
+/* =====================================================================
+   ΣΤΟΙΧΕΙΑ ΑΠΟ ΕΠΙΣΗΜΕΣ ΠΗΓΕΣ (ενημερώνονται από το data.json)
+   DATA FROM OFFICIAL SOURCES (updated from data.json)
+   ===================================================================== */
+let DATA = {"version": "7-10-2026", "checked": "2026-10-07", "electricity": {"pricePerKwh": 0.3, "noteEl": "Στο οικιακό τιμολόγιο 01 της ΑΗΚ (από 1 Μαΐου 2026) η ενέργεια και το δίκτυο κοστίζουν 21,82 σεντ/kWh. Μαζί με την αναπροσαρμογή καυσίμων, τα άλλα τέλη και τον ΦΠΑ, το σύνολο φτάνει περίπου 28–32 σεντ. Για ακρίβεια, βάλτε την τιμή από τον δικό σας λογαριασμό.", "noteEn": "On EAC household tariff 01 (from 1 May 2026) energy plus network cost 21.82 cents/kWh. With the fuel adjustment, other charges and VAT, the total is about 28–32 cents. For accuracy, enter the price from your own bill.", "source": "https://www.eac.com.cy"}, "flight": {"amounts": {"short": 250, "medium": 400, "long": 600}, "ukAmounts": {"short": 220, "medium": 350, "long": 520}, "delayHours": 3, "cancelNoticeDays": 14, "reformEl": "Τον Ιούνιο 2026 η ΕΕ συμφώνησε σε αναθεώρηση των κανόνων. Δεν ισχύει ακόμη: μετά την επίσημη έγκριση και δημοσίευση υπάρχει μεταβατική περίοδος 12 μηνών. Μέχρι τότε ισχύουν οι σημερινοί κανόνες (EC 261/2004).", "reformEn": "In June 2026 the EU agreed a revision of the rules. It is not in force yet: after formal approval and publication there is a 12-month transition. Until then the current rules (EC 261/2004) apply.", "source": "https://europa.eu/youreurope/citizens/travel/passenger-rights/air/index_el.htm"}, "warranty": {"months": 24, "presumptionMonths": 12, "notifyMonths": 2, "repairMaxDays": 25, "lawEl": "Νόμος 154(Ι)/2021 για ορισμένες πτυχές των συμβάσεων πώλησης αγαθών (Οδηγία ΕΕ 2019/771)", "lawEn": "Cyprus Law 154(I)/2021 on certain aspects of contracts for the sale of goods (EU Directive 2019/771)", "source": "https://europa.eu/youreurope/citizens/consumers/shopping/guarantees-returns/index_el.htm"}, "tax2026": {"taxFree": 22000, "bands": [[22000, 0], [32000, 0.2], [42000, 0.25], [72000, 0.3], [999999999, 0.35]], "child": [1000, 1250, 1500], "incomeLimits": {"upTo2": 100000, "upTo4": 150000, "more": 200000}, "rentOrMortgageMax": 2000, "greenMax": 1000, "homeInsuranceMax": 500, "source": "https://www.businessincyprus.gov.cy"}, "guide": [{"e": "🤝", "el": "Επιδόματα & συντάξεις", "en": "Benefits & pensions", "items": [{"e": "🏠", "el": "Ελάχιστο Εγγυημένο Εισόδημα", "en": "Guaranteed Minimum Income", "dEl": "Μηνιαία στήριξη για νοικοκυριά με χαμηλό εισόδημα, μαζί με βοήθεια για ενοίκιο ή δάνειο κατοικίας. Αίτηση στο Υφυπουργείο Κοινωνικής Πρόνοιας.", "dEn": "Monthly support for low-income households, plus help with rent or a housing loan. Apply to the Deputy Ministry of Social Welfare.", "url": "https://www.dmsw.gov.cy"}, {"e": "🧓", "el": "Επίδομα χαμηλοσυνταξιούχων", "en": "Low-income pensioners' allowance", "dEl": "Για συνταξιούχους με χαμηλό συνολικό εισόδημα νοικοκυριού. Αν το δικαιούστε, δικαιούστε συνήθως και το φθηνότερο ειδικό τιμολόγιο ρεύματος της ΑΗΚ.", "dEn": "For pensioners with low total household income. If you receive it, you usually also qualify for EAC's cheaper special electricity tariff.", "url": "https://www.dmsw.gov.cy"}, {"e": "👨‍👩‍👧", "el": "Επίδομα τέκνου & μονογονεϊκής οικογένειας", "en": "Child benefit & single-parent benefit", "dEl": "Για οικογένειες με εξαρτώμενα παιδιά, ανάλογα με το εισόδημα. Οι πολύτεκνοι και οι μονογονεϊκές οικογένειες έχουν επιπλέον στήριξη.", "dEn": "For families with dependent children, depending on income. Large families and single parents receive extra support.", "url": "https://www.dmsw.gov.cy"}, {"e": "📜", "el": "Συντάξεις & κοινωνική σύνταξη", "en": "Pensions & social pension", "dEl": "Οι Υπηρεσίες Κοινωνικών Ασφαλίσεων πληρώνουν τις συντάξεις. Όποιος έχει συμπληρώσει τα 65 και δεν δικαιούται σύνταξη ή παίρνει πολύ μικρή, μπορεί να ζητήσει κοινωνική σύνταξη.", "dEn": "Social Insurance Services pay pensions. Anyone aged 65+ who is not entitled to a pension, or receives a very small one, can apply for a social pension.", "url": "https://www.mlsi.gov.cy/mlsi/sid/sidv2.nsf"}]}, {"e": "⚡", "el": "Ρεύμα & σπίτι", "en": "Electricity & home", "items": [{"e": "💡", "el": "Ειδικό φθηνότερο τιμολόγιο ΑΗΚ (κωδικός 08)", "en": "EAC cheaper special tariff (code 08)", "dEl": "Για ευάλωτους πελάτες: δικαιούχους δημοσίου βοηθήματος ή Ελάχιστου Εγγυημένου Εισοδήματος, πολύτεκνους, χαμηλοσυνταξιούχους, μονογονεϊκές οικογένειες, άτομα με σοβαρή κινητική αναπηρία, αιμοκαθαιρόμενους, θύματα πολέμου και ορισμένες σοβαρές παθήσεις. Ζητήστε το από την ΑΗΚ.", "dEn": "For vulnerable customers: recipients of public assistance or Guaranteed Minimum Income, large families, low-income pensioners, single parents, people with severe mobility disability, dialysis patients, war victims and certain serious illnesses. Ask EAC for it.", "url": "https://www.eac.com.cy"}, {"e": "☀️", "el": "Χορηγίες για φωτοβολταϊκά & θερμομόνωση", "en": "Grants for solar panels & insulation", "dEl": "Το Ταμείο ΑΠΕ προκηρύσσει σχέδια χορηγιών για φωτοβολταϊκά και θερμομόνωση οροφής, με μεγαλύτερη χορηγία για ευάλωτα νοικοκυριά. Δείτε ποιο σχέδιο είναι ανοιχτό τώρα.", "dEn": "The RES Fund runs grant schemes for solar panels and roof insulation, with larger grants for vulnerable households. Check which scheme is open now.", "url": "https://resecfund.org.cy"}, {"e": "💶", "el": "Έκπτωση φόρου €1.000 για πράσινες αναβαθμίσεις", "en": "€1,000 tax deduction for green upgrades", "dEl": "Από το 2026, για θερμομόνωση, φωτοβολταϊκά, μπαταρίες ή ηλεκτρικό αυτοκίνητο. Υπολογίστε τι κερδίζετε.", "dEn": "From 2026, for insulation, solar panels, batteries or an electric car. Calculate what you gain.", "route": "rights/tax"}]}, {"e": "🧾", "el": "Αγορές & καταναλωτής", "en": "Shopping & consumer", "items": [{"e": "🛒", "el": "e-kalathi: σύγκριση τιμών σούπερ μάρκετ", "en": "e-kalathi: supermarket price comparison", "dEl": "Η επίσημη πλατφόρμα: φτιάχνετε το καλάθι σας και βλέπετε ποια αλυσίδα είναι φθηνότερη.", "dEn": "The official platform: build your basket and see which chain is cheapest.", "url": "https://www.e-kalathi.gov.cy"}, {"e": "🛡️", "el": "Εγγυήσεις & επιστροφές στην ΕΕ", "en": "Guarantees & returns in the EU", "dEl": "Η νόμιμη εγγύηση 2 ετών, το δικαίωμα επιστροφής 14 ημερών στις αγορές από το ίντερνετ, και τι κάνετε όταν ο πωλητής αρνείται.", "dEn": "The 2-year legal guarantee, the 14-day right to return online purchases, and what to do when the seller refuses.", "url": "https://europa.eu/youreurope/citizens/consumers/shopping/guarantees-returns/index_el.htm"}, {"e": "🤝", "el": "Κυπριακός Σύνδεσμος Καταναλωτών", "en": "Cyprus Consumers Association", "dEl": "Συμβουλές, νομοθεσία και βοήθεια σε παράπονα καταναλωτών.", "dEn": "Advice, legislation and help with consumer complaints.", "url": "https://katanalotis.org.cy"}]}, {"e": "✈️", "el": "Ταξίδια & υγεία", "en": "Travel & health", "items": [{"e": "✈️", "el": "Δικαιώματα επιβατών αεροπλάνου", "en": "Air passenger rights", "dEl": "Αποζημίωση, φαγητό, ξενοδοχείο και επιστροφή χρημάτων σε καθυστερήσεις, ακυρώσεις και χαμένες αποσκευές.", "dEn": "Compensation, meals, hotel and refunds for delays, cancellations and lost luggage.", "url": "https://europa.eu/youreurope/citizens/travel/passenger-rights/air/index_el.htm"}, {"e": "🏥", "el": "ΓεΣΥ – Γενικό Σύστημα Υγείας", "en": "GESY – General Healthcare System", "dEl": "Προσωπικός γιατρός, ειδικοί, εξετάσεις και φάρμακα με μικρή συμμετοχή.", "dEn": "Personal doctor, specialists, tests and medicines with a small co-payment.", "url": "https://www.gesy.org.cy"}, {"e": "💳", "el": "Ευρωπαϊκή Κάρτα Ασφάλισης Υγείας", "en": "European Health Insurance Card", "dEl": "Δωρεάν κάρτα για ιατρική περίθαλψη όταν ταξιδεύετε σε άλλη χώρα της ΕΕ, με τους ίδιους όρους με τους κατοίκους της.", "dEn": "A free card for medical care when travelling in another EU country, on the same terms as residents.", "url": "https://europa.eu/youreurope/citizens/health/unplanned-healthcare/temporary-stays/index_el.htm"}]}, {"e": "🏛️", "el": "Κράτος & φόροι", "en": "Government & tax", "items": [{"e": "💶", "el": "Τμήμα Φορολογίας", "en": "Tax Department", "dEl": "Δήλωση εισοδήματος, επιστροφές φόρου και οι νέες εκπτώσεις του 2026.", "dEn": "Income tax returns, tax refunds and the new 2026 deductions.", "url": "https://www.mof.gov.cy/mof/tax/taxdep.nsf"}, {"e": "🏛️", "el": "gov.cy – όλες οι κρατικές υπηρεσίες", "en": "gov.cy – all government services", "dEl": "Αιτήσεις, πιστοποιητικά και τα Κέντρα Εξυπηρέτησης του Πολίτη.", "dEn": "Applications, certificates and the Citizen Service Centres.", "url": "https://www.gov.cy"}]}]};
+async function loadData(){
+  try{
+    const r = await fetch("data.json",{cache:"no-cache"});
+    if(r.ok){ const d = await r.json(); if(d && d.flight && d.tax2026) DATA = Object.assign({},DATA,d); }
+  }catch(e){}
+  renderCurrent();
+}
+
+/* =====================================================================
+   ΕΡΓΑ ΜΟΥ / MY PROJECTS
+   ===================================================================== */
+const PROJECTS = [
+ {e:"🕯️", c:"#c97a12", url:"https://innerlife1111.pages.dev/", n:["InnerLife","InnerLife"], d:["Εσωτερική αναζήτηση","Inner journey"]},
+ {e:"🎸", c:"#1f6fd1", url:"https://chords-4all.pages.dev/", n:["Συγχορδίες","Chords"], d:["Οι συγχορδίες κάθε τραγουδιού","Chords of any song"]},
+ {e:"🧠", c:"#2f9a46", url:"https://mnimi-sofia.pages.dev/", n:["Μνήμη & Σοφία","Memory & Wisdom"], d:["Παιχνίδια μνήμης","Memory games"]},
+ {e:"🛡️", c:"#7a4fd6", url:"https://fylakas.pages.dev/", n:["Φύλακας","Guardian"], d:["Προστασία από απάτες","Protection from scams"]},
+ {e:"🎼", c:"#8a5a2b", url:"https://byzantini-mousiki.pages.dev/", n:["Οκτώηχος","Oktoechos"], d:["Βυζαντινή μουσική","Byzantine music"]}
+];
+function fillProjects(){
+  const i = L()?0:1;
+  $("plinks").innerHTML = PROJECTS.map(p=>
+   `<a class="plink" style="--c:${p.c}" href="${p.url}" target="_blank" rel="noopener">
+      <span class="pe">${p.e}</span><span><b>${p.n[i]}</b><small>${p.d[i]}</small></span><span class="go">➜</span></a>`).join("");
+}
+
+/* =====================================================================
+   ΒΟΗΘΗΤΙΚΑ / HELPERS
+   ===================================================================== */
+const $ = id => document.getElementById(id);
+let LANG = "el";
+try{ const s=localStorage.getItem("km-lang"); if(s==="el"||s==="en") LANG=s;
+     else if(!(navigator.language||"").toLowerCase().startsWith("el")) LANG="en"; }catch(e){}
+const L = () => LANG==="el";
+function tr(k,n){ let v=T[LANG][k]; if(v===undefined) v=T.el[k]; if(typeof v==="string" && n!==undefined) v=v.split("{n}").join(n); return v; }
+function trf(k,o){ let v=tr(k); for(const x in o) v=v.split("{"+x+"}").join(o[x]); return v; }
+const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const eur = n => new Intl.NumberFormat(L()?"el-GR":"en-GB",{style:"currency",currency:"EUR",maximumFractionDigits:n%1?2:0}).format(n||0);
+const eur2 = n => new Intl.NumberFormat(L()?"el-GR":"en-GB",{style:"currency",currency:"EUR",minimumFractionDigits:2,maximumFractionDigits:2}).format(n||0);
+const num = id => { const v=parseFloat(String($(id).value).replace(",",".")); return isNaN(v)?0:v; };
+function todayISO(){ const d=new Date(); return iso(d); }
+function iso(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function parseISO(s){ if(!s) return null; const [y,m,d]=s.split("-").map(Number); return new Date(y,m-1,d); }
+function addMonths(d,m){ const r=new Date(d.getFullYear(),d.getMonth()+m,d.getDate()); if(r.getDate()!==d.getDate()) r.setDate(0); return r; }
+function addDays(d,n){ return new Date(d.getFullYear(),d.getMonth(),d.getDate()+n); }
+function daysUntil(d){ const t=new Date(); const a=new Date(t.getFullYear(),t.getMonth(),t.getDate()); return Math.round((d-a)/864e5); }
+function fmtDate(d){ return d.toLocaleDateString(L()?"el-GR":"en-GB",{day:"numeric",month:"long",year:"numeric"}); }
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("on"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("on"),2600); }
+function chips(id, opts, val, onPick){
+  const box=$(id); box.innerHTML="";
+  Object.entries(opts).forEach(([k,label])=>{
+    const b=document.createElement("button"); b.className="chip"+(k===val?" on":""); b.textContent=label; b.dataset.k=k;
+    b.onclick=()=>{ box.querySelectorAll(".chip").forEach(c=>c.classList.toggle("on",c===b)); box.dataset.v=k; if(onPick) onPick(k); };
+    box.appendChild(b);
+  });
+  box.dataset.v=val;
+}
+function downloadFile(name, text, type){
+  const blob=new Blob([text],{type:type||"text/plain;charset=utf-8"}); const url=URL.createObjectURL(blob);
+  const a=document.createElement("a"); a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),4000);
+}
+function stamp(){ const d=new Date(); return d.getDate()+"-"+(d.getMonth()+1)+"-"+d.getFullYear()+"_"+String(d.getHours()).padStart(2,"0")+"-"+String(d.getMinutes()).padStart(2,"0"); }
+
+/* =====================================================================
+   ΑΠΟΘΗΚΗ ΣΤΗ ΣΥΣΚΕΥΗ / ON-DEVICE STORAGE (IndexedDB)
+   ===================================================================== */
+const Store = {
+  db:null, mem:{money:{},fridge:{}},
+  open(){
+    if(this.db) return Promise.resolve(this.db);
+    return new Promise(res=>{
+      try{
+        const r=indexedDB.open("kalimera",1);
+        r.onupgradeneeded=()=>{ const d=r.result; ["money","fridge"].forEach(s=>{ if(!d.objectStoreNames.contains(s)) d.createObjectStore(s,{keyPath:"id"}); }); };
+        r.onsuccess=()=>{ this.db=r.result; res(this.db); };
+        r.onerror=()=>res(null);
+      }catch(e){ res(null); }
+    });
+  },
+  async all(s){ const d=await this.open(); if(!d) return Object.values(this.mem[s]);
+    return new Promise(res=>{ const q=d.transaction(s).objectStore(s).getAll(); q.onsuccess=()=>res(q.result||[]); q.onerror=()=>res([]); }); },
+  async put(s,o){ const d=await this.open(); if(!d){ this.mem[s][o.id]=o; return; }
+    return new Promise(res=>{ const tx=d.transaction(s,"readwrite"); tx.objectStore(s).put(o); tx.oncomplete=()=>res(); tx.onerror=()=>res(); }); },
+  async del(s,id){ const d=await this.open(); if(!d){ delete this.mem[s][id]; return; }
+    return new Promise(res=>{ const tx=d.transaction(s,"readwrite"); tx.objectStore(s).delete(id); tx.oncomplete=()=>res(); tx.onerror=()=>res(); }); }
+};
+try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist(); }catch(e){}
+const newId = () => Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+
+/* =====================================================================
+   ΓΛΩΣΣΑ / LANGUAGE
+   ===================================================================== */
+function setLang(l){
+  LANG=l; try{localStorage.setItem("km-lang",l)}catch(e){}
+  document.documentElement.lang=l;
+  $("l-el").classList.toggle("on",l==="el"); $("l-en").classList.toggle("on",l==="en");
+  document.querySelectorAll("[data-t]").forEach(e=>{ const v=tr(e.dataset.t); if(typeof v==="string") e.textContent=v; });
+  document.title = L() ? "Καλή Μέρα μου" : "My Good Day";
+  fillProjects(); paintSound(); drawScene(); showThought(); updateMoves();
+  renderCurrent();
+}
+
+/* =====================================================================
+   ΠΛΟΗΓΗΣΗ / NAVIGATION
+   ===================================================================== */
+let ROUTE="home", ROUTE_ARG=null;
+function go(p){ location.hash = (p==="home") ? "" : p; }
+function goBack(){
+  const parts = ROUTE.split("/");
+  if(ROUTE==="money/add" && ROUTE_ARG) { go("money"); return; }
+  if(parts.length>1) go(parts.slice(0,-1).join("/")); else go("home");
+}
+function route(){
+  let h=(location.hash||"").slice(1) || "home";
+  let arg=null;
+  const m=h.match(/^money\/edit\/(.+)$/); if(m){ h="money/add"; arg=m[1]; }
+  const id="p-"+h.replace(/\//g,"-");
+  if(!$(id)) h="home";
+  ROUTE=h; ROUTE_ARG=arg;
+  document.querySelectorAll(".page").forEach(s=>s.classList.toggle("on", s.id==="p-"+h.replace(/\//g,"-")));
+  document.body.classList.toggle("r-home", h==="home");
+  window.scrollTo(0,0);
+  if(h!=="minute") stopBreath();
+  if(h==="minute") startMinute(false);
+  renderCurrent();
+}
+window.addEventListener("hashchange",route);
+function renderCurrent(){
+  const r=ROUTE;
+  if(r==="home") homeTags();
+  if(r==="money") renderMoney();
+  if(r==="money/add") openForm(ROUTE_ARG);
+  if(r==="rights") $("checkedRights").textContent = tr("checked", fmtDate(parseISO(DATA.checked)));
+  if(r==="rights/flight") initFlight();
+  if(r==="rights/warranty") initWarranty();
+  if(r==="rights/tax") initTax();
+  if(r==="rights/links") renderLinks();
+  if(r==="house/fridge") renderFridge();
+  if(r==="house/cook") initCook();
+  if(r==="house/power") initPower();
+  if(r==="house/repair") initRepair();
+}
+
+/* =====================================================================
+   Η ΕΙΚΟΝΑ ΤΗΣ ΗΜΕΡΑΣ / THE SCENE
+   ===================================================================== */
+function drawScene(){
+  const now=new Date(), h=now.getHours()+now.getMinutes()/60;
+  let phase;
+  if(h>=5 && h<8) phase="dawn"; else if(h>=8 && h<17.5) phase="day";
+  else if(h>=17.5 && h<20.5) phase="dusk"; else phase="night";
+  const P={
+    dawn:{s1:"#2c3e7a",s2:"#f3a76b",s3:"#ffd9a0",sea1:"#3f6f9e",sea2:"#2a4f7a",sun:"#ffcf6b"},
+    day: {s1:"#3d8fe0",s2:"#8cc8f5",s3:"#d9f0ff",sea1:"#2c9bd0",sea2:"#1b6fa8",sun:"#fff2a8"},
+    dusk:{s1:"#3b2a6b",s2:"#e0566b",s3:"#ffb35c",sea1:"#5a4a8a",sea2:"#2f2a5a",sun:"#ff8a3d"},
+    night:{s1:"#060b1f",s2:"#14234a",s3:"#28407a",sea1:"#14284f",sea2:"#0a1733",sun:"#f5f3e0"}
+  }[phase];
+  let t;
+  if(phase==="night"){ const hh = h<5 ? h+24 : h; t=(hh-20.5)/8.5; } else t=(h-5)/15.5;
+  t=Math.max(0,Math.min(1,t));
+  const sx=40+t*320, sy=phase==="night" ? 40+Math.abs(t-.5)*60 : 132-Math.sin(t*Math.PI)*100;
+  let stars="";
+  if(phase==="night"||phase==="dawn"){
+    for(let i=0;i<40;i++){ const x=(i*97)%400, y=(i*53)%110, r=(i%3)?0.9:1.6, d=(i%7)*0.4;
+      stars+=`<circle class="star" cx="${x}" cy="${y}" r="${r}" fill="#fff" style="animation-delay:${d}s;opacity:${phase==="dawn"?.4:1}"/>`; }
+  }
+  const birds = (phase==="day"||phase==="dawn") ?
+    `<g class="bird"><path d="M0 60 q6 -6 12 0 q6 -6 12 0" stroke="#2b3a4a" stroke-width="2" fill="none"/></g>
+     <g class="bird b2"><path d="M0 85 q5 -5 10 0 q5 -5 10 0" stroke="#2b3a4a" stroke-width="1.8" fill="none"/></g>` : "";
+  const sunOrMoon = phase==="night" ?
+    `<circle cx="${sx}" cy="${sy}" r="16" fill="${P.sun}"/><circle cx="${sx+7}" cy="${sy-5}" r="14" fill="${P.s2}"/>` :
+    `<circle class="glow" cx="${sx}" cy="${sy}" r="46" fill="url(#gg)"/><circle cx="${sx}" cy="${sy}" r="20" fill="${P.sun}"/>`;
+  $("sky").innerHTML = `
+   <defs>
+    <linearGradient id="gs" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${P.s1}"/><stop offset=".65" stop-color="${P.s2}"/><stop offset="1" stop-color="${P.s3}"/></linearGradient>
+    <linearGradient id="gw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${P.sea1}"/><stop offset="1" stop-color="${P.sea2}"/></linearGradient>
+    <radialGradient id="gg"><stop offset="0" stop-color="#fffbe6" stop-opacity=".95"/><stop offset=".45" stop-color="${P.sun}" stop-opacity=".55"/><stop offset="1" stop-color="${P.sun}" stop-opacity="0"/></radialGradient>
+   </defs>
+   <rect width="400" height="220" fill="url(#gs)"/>
+   ${stars}${sunOrMoon}${birds}
+   <path d="M-20 150 Q60 120 140 140 T300 135 T440 145 V220 H-20Z" fill="${P.sea2}" opacity=".55"/>
+   <rect y="150" width="400" height="70" fill="url(#gw)"/>
+   <ellipse cx="${sx}" cy="160" rx="34" ry="3" fill="${P.sun}" opacity=".45"/>
+   <path class="wave1" d="M-40 165 q20 -6 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0" stroke="#fff" stroke-opacity=".35" stroke-width="2" fill="none"/>
+   <path class="wave2" d="M-40 185 q25 -7 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0" stroke="#fff" stroke-opacity=".25" stroke-width="2" fill="none"/>`;
+  const g=T[LANG].g;
+  $("greet").textContent=(h>=5&&h<12)?g[1]:(h>=12&&h<18)?g[2]:(h>=18&&h<23)?g[3]:g[0];
+  $("today").textContent=now.toLocaleDateString(L()?"el-GR":"en-GB",{weekday:"long",day:"numeric",month:"long"});
+}
+
+/* =====================================================================
+   ΤΟ ΛΕΠΤΟ ΜΟΥ / MY MINUTE
+   ===================================================================== */
+const THOUGHTS = [
+ ["Τα πάντα ρει.","Everything flows.","Ηράκλειτος","Heraclitus"],
+ ["Γνώθι σαυτόν.","Know yourself.","Δελφικό ρητό","Delphic maxim"],
+ ["Μέτρον άριστον.","Moderation is best.","Κλεόβουλος","Cleobulus"],
+ ["Δεν μας ταράζουν τα πράγματα, αλλά οι γνώμες μας για τα πράγματα.","It is not things that trouble us, but our opinions about them.","Επίκτητος","Epictetus"],
+ ["Γηράσκω αεί πολλά διδασκόμενος.","I grow old always learning many things.","Σόλων","Solon"],
+ ["Ο χρόνος είναι το πιο πολύτιμο που ξοδεύει κανείς.","Time is the most valuable thing a person can spend.","Θεόφραστος","Theophrastus"],
+ ["Αρχή ήμισυ παντός.","The beginning is half of everything.","Αρχαία παροιμία","Ancient proverb"],
+ ["Ένα χαμόγελο σήμερα είναι δώρο και για σένα και για τον άλλον.","A smile today is a gift to you and to the other person.","",""],
+ ["Ό,τι φροντίζεις, μεγαλώνει.","Whatever you take care of, grows.","",""],
+ ["Η ευγνωμοσύνη κάνει το λίγο, αρκετό.","Gratitude turns a little into enough.","",""],
+ ["Μια μικρή καλή πράξη αξίζει περισσότερο από μια μεγάλη πρόθεση.","A small kind act is worth more than a great intention.","",""],
+ ["Η υπομονή είναι πικρή, αλλά ο καρπός της γλυκός.","Patience is bitter, but its fruit is sweet.","Παροιμία","Proverb"],
+ ["Σήμερα είναι η μόνη μέρα που μπορείς να αλλάξεις κάτι.","Today is the only day you can change something.","",""],
+ ["Όποιος ακούει με προσοχή, μαθαίνει διπλά.","Whoever listens carefully learns twice.","",""],
+ ["Η γαλήνη δεν έρχεται απ' έξω· την καλλιεργείς μέσα σου.","Peace does not come from outside; you grow it within.","",""],
+ ["Να είσαι ευγενικός· ο καθένας δίνει μια μάχη που δεν βλέπεις.","Be kind; everyone fights a battle you cannot see.","",""],
+ ["Ευδαιμονία είναι να ζεις σύμφωνα με την αρετή.","Happiness is living in harmony with virtue.","Αριστοτέλης","Aristotle"],
+ ["Ο ανεξέταστος βίος δεν αξίζει να βιώνεται.","The unexamined life is not worth living.","Σωκράτης","Socrates"],
+ ["Πλούσιος είναι όποιος αρκείται σε όσα έχει.","Rich is the one who is content with what he has.","Επίκουρος","Epicurus"],
+ ["Το νερό, όταν περιμένει, καθαρίζει μόνο του.","Water that waits becomes clear on its own.","",""],
+ ["Κάθε μέρα μάθε κάτι, δώσε κάτι, χάρισε κάτι.","Every day, learn something, give something, share something.","",""],
+ ["Οι δυσκολίες δείχνουν τι αξίζει ο άνθρωπος.","Difficulties show what a person is worth.","Επίκτητος","Epictetus"],
+ ["Ο ήλιος δεν ρωτά αν τον αξίζουμε· απλώς λάμπει.","The sun does not ask if we deserve it; it simply shines.","",""],
+ ["Η χαρά που μοιράζεσαι διπλασιάζεται.","Joy that is shared is doubled.","Παροιμία","Proverb"],
+ ["Πριν μιλήσεις, πάρε μια ανάσα.","Before you speak, take a breath.","",""],
+ ["Σπουδαίο δεν είναι να ζεις, αλλά να ζεις καλά.","What matters is not living, but living well.","Σωκράτης","Socrates"],
+ ["Λίγα πράγματα, καλά φροντισμένα, φέρνουν μεγάλη ησυχία.","A few things, well cared for, bring great peace.","",""],
+ ["Ένα δέντρο που φυτεύεις σήμερα, θα δώσει σκιά σε άλλους.","A tree you plant today will give shade to others.","Παροιμία","Proverb"],
+ ["Η καλοσύνη είναι μια γλώσσα που την καταλαβαίνουν όλοι.","Kindness is a language everyone understands.","",""],
+ ["Ό,τι δεν αλλάζει, το δέχομαι· ό,τι αλλάζει, το τολμώ.","What I cannot change, I accept; what I can, I dare.","",""],
+ ["Κάθε πρωί είναι μια καινούργια αρχή.","Every morning is a new beginning.","",""]
+];
+const SYMBOLS = ["🌻","🐦","🐬","🦋","🍋","🌙","🐢","🌈","🍇"];
+let thoughtIndex=null;
+function dayIndex(){ const d=new Date(); const s=new Date(d.getFullYear(),0,0); return Math.floor((d-s)/864e5); }
+function showThought(){
+  if(thoughtIndex===null) thoughtIndex=dayIndex()%THOUGHTS.length;
+  const q=THOUGHTS[thoughtIndex];
+  $("thought").textContent="« "+(L()?q[0]:q[1])+" »";
+  const who=L()?q[2]:q[3]; $("who").textContent=who?"— "+who:"";
+}
+function setSteps(n){ ["s1","s2","s3"].forEach((id,i)=>$(id).classList.toggle("on",i<n)); }
+function showM(id){ ["m-thought","m-breath","m-game","m-done"].forEach(x=>$(x).hidden=x!==id); }
+function startMinute(again){ if(again) thoughtIndex=Math.floor(Math.random()*THOUGHTS.length); showThought(); minuteStep(1); }
+function minuteStep(n){
+  stopBreath(); window.scrollTo(0,0);
+  if(n===1){ showM("m-thought"); setSteps(1); }
+  if(n===2){ showM("m-breath"); setSteps(2); startBreath(); }
+  if(n===3){ showM("m-game"); setSteps(3); newGame(); }
+  if(n===4){ showM("m-done"); setSteps(3); }
+}
+let bTimers=[];
+function stopBreath(){ bTimers.forEach(clearTimeout); bTimers=[]; const b=$("ball"); if(b) b.className="ball"; }
+function startBreath(){
+  stopBreath(); const ball=$("ball"), w=$("bword"), c=$("bcount");
+  for(let i=0;i<3;i++){ const t0=i*10000+300;
+    bTimers.push(setTimeout(()=>{ ball.className="ball in"; w.textContent=tr("inhale"); c.textContent=tr("breathN",i+1); },t0));
+    bTimers.push(setTimeout(()=>{ ball.className="ball out"; w.textContent=tr("exhale"); },t0+4000)); }
+  bTimers.push(setTimeout(()=>{ if(ROUTE==="minute") minuteStep(3); },30500));
+}
+/* ήχοι / sounds */
+let SOUND=true, AC=null;
+try{ if(localStorage.getItem("km-sound")==="off") SOUND=false; }catch(e){}
+function ac(){ if(!AC){ try{ AC=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return null; } } if(AC.state==="suspended") AC.resume(); return AC; }
+function tone(freq,start,dur,type,vol){ const a=ac(); if(!a) return;
+  const o=a.createOscillator(), g=a.createGain(), t=a.currentTime+start;
+  o.type=type||"sine"; o.frequency.setValueAtTime(freq,t);
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol||0.25,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(g).connect(a.destination); o.start(t); o.stop(t+dur+0.05); }
+function sfx(k){ if(!SOUND) return;
+  if(k==="flip") tone(660,0,0.12,"triangle",0.15);
+  if(k==="match"){ tone(784,0,0.25,"sine",0.25); tone(1047,0.12,0.4,"sine",0.25); }
+  if(k==="miss"){ tone(330,0,0.18,"sine",0.15); tone(262,0.12,0.28,"sine",0.15); }
+  if(k==="win") [523,659,784,1047,1319].forEach((f,i)=>tone(f,i*0.13,0.5,"sine",0.22)); }
+function toggleSound(){ SOUND=!SOUND; try{localStorage.setItem("km-sound",SOUND?"on":"off")}catch(e){} paintSound(); if(SOUND) sfx("flip"); }
+function paintSound(){ const b=$("snd"); if(b) b.textContent=SOUND?"🔊":"🔇"; }
+/* παιχνίδι / game */
+let open=[], moves=0, found=0, lock=false; const pairs=6;
+function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function newGame(){
+  const syms=shuffle(SYMBOLS.slice()).slice(0,pairs), deck=shuffle(syms.concat(syms));
+  open=[]; moves=0; found=0; lock=false;
+  const g=$("grid");
+  g.innerHTML=deck.map((s,i)=>`<button class="mc" data-s="${s}" aria-label="card ${i+1}"><span class="in"><span class="f"></span><span class="b">${s}</span></span></button>`).join("");
+  g.querySelectorAll(".mc").forEach(c=>c.addEventListener("click",()=>flip(c)));
+  updateMoves();
+}
+function flip(c){
+  if(lock||c.classList.contains("flip")) return;
+  c.classList.add("flip"); open.push(c); sfx("flip");
+  if(open.length===2){ moves++; updateMoves(); const [a,b]=open;
+    if(a.dataset.s===b.dataset.s){ a.classList.add("done"); b.classList.add("done"); open=[]; found++;
+      if(found===pairs){ updateMoves(); setTimeout(()=>sfx("win"),350); setTimeout(()=>{ if(ROUTE==="minute") minuteStep(4); },2200); }
+      else setTimeout(()=>sfx("match"),250);
+    } else { lock=true; setTimeout(()=>sfx("miss"),350);
+      setTimeout(()=>{ a.classList.remove("flip"); b.classList.remove("flip"); open=[]; lock=false; },900); } }
+}
+function updateMoves(){ const m=$("moves"); if(!m) return; m.textContent=(found===pairs&&moves>0)?tr("won",moves):tr("moves",moves); }
+
+/* =====================================================================
+   ΤΑ ΛΕΦΤΑ ΜΟΥ / MY MONEY
+   ===================================================================== */
+const TYPE_E={sub:"🔁",bill:"🧾",deadline:"📅",warranty:"🛡️"};
+const FREQ_M={m:1,q:3,y:12,o:0};
+function itemDate(it){
+  const d=parseISO(it.date); if(!d) return null;
+  if(it.type==="warranty") return addMonths(d, it.months||24);
+  if((it.type==="sub"||it.type==="bill") && FREQ_M[it.freq]){
+    let n=d, guard=0; const t=addDays(new Date(),-1);
+    while(n<t && guard<600){ n=addMonths(n,FREQ_M[it.freq]); guard++; }
+    return n;
+  }
+  return d;
+}
+function monthly(it){ if(!(it.type==="sub"||it.type==="bill")) return 0; const m=FREQ_M[it.freq]; return m? (it.amount||0)/m : 0; }
+function pill(days, type){
+  if(days===null) return "";
+  let cls="g", txt;
+  if(days<0){ cls=type==="warranty"?"s":"r"; txt=tr("expired")+" · "+tr("ago",-days); }
+  else if(days===0){ cls="r"; txt=tr("today"); }
+  else { cls = days<=7?"r":days<=30?"o":"g"; txt=tr("in",days); }
+  return `<span class="pill ${cls}">${txt}</span>`;
+}
+async function renderMoney(){
+  const items=await Store.all("money");
+  let m=0, soon=0;
+  const rows=items.map(it=>{ const d=itemDate(it); const days=d?daysUntil(d):null; m+=monthly(it); if(days!==null&&days>=0&&days<=30) soon++; return {it,d,days}; })
+    .sort((a,b)=>(a.days??99999)-(b.days??99999));
+  $("sumM").textContent=eur(Math.round(m*100)/100); $("sumY").textContent=eur(Math.round(m*12));
+  $("sumSoon").textContent=soon;
+  if(!rows.length){ $("moneyList").innerHTML=`<div class="empty">${tr("emptyMoney")}</div>`; return; }
+  $("moneyList").innerHTML=rows.map(({it,d,days})=>{
+    const lbl = it.type==="warranty"?tr("warrantyTill"):(it.type==="deadline"?tr("expires"):tr("due"));
+    const amt = it.amount ? `${eur2(it.amount)}${FREQ_M[it.freq]?" · "+T[LANG].freq[it.freq]:""}` : "";
+    return `<div class="item">
+      ${it.photo?`<img class="thumb" src="${it.photo}" alt="" onclick="openPhoto('${it.id}')">`:`<span class="ie">${TYPE_E[it.type]}</span>`}
+      <div class="it"><b>${esc(it.name)}</b>
+        <div class="small">${T[LANG].types[it.type]}${amt?" · "+amt:""}${it.store?" · "+esc(it.store):""}</div>
+        ${d?`<div>${lbl} ${fmtDate(d)} ${pill(days,it.type)}</div>`:""}
+        ${it.notes?`<div class="small">${esc(it.notes)}</div>`:""}
+        <div class="acts">
+          ${d?`<button class="btn" onclick="toCalendar('${it.id}')">${tr("toCal")}</button>`:""}
+          <button class="btn" onclick="go('money/edit/${it.id}')">${tr("edit")}</button>
+          <button class="btn" onclick="delItem('${it.id}')" aria-label="delete">${tr("del")}</button>
+        </div></div></div>`;
+  }).join("");
+}
+let FORM={type:"sub",photo:null,id:null};
+async function openForm(id){
+  FORM={type:"sub",photo:null,id:null};
+  let it=null;
+  if(id){ it=(await Store.all("money")).find(x=>x.id===id); if(it) FORM={type:it.type,photo:it.photo||null,id:it.id}; }
+  $("formTitle").textContent = it?tr("editItem"):tr("newItem");
+  const sel=$("fFreq"); sel.innerHTML=Object.entries(T[LANG].freq).map(([k,v])=>`<option value="${k}">${v}</option>`).join("");
+  $("fName").value=it?it.name:""; $("fAmount").value=it&&it.amount?it.amount:""; sel.value=it?it.freq||"m":"m";
+  $("fDate").value=it?it.date:todayISO(); $("fMonths").value=it?it.months||24:DATA.warranty.months;
+  $("fStore").value=it?it.store||"":""; $("fNotes").value=it?it.notes||"":"";
+  chips("typeChips", T[LANG].types, FORM.type, k=>{ FORM.type=k; formVis(); });
+  setPhoto(FORM.photo); formVis();
+}
+function formVis(){
+  const t=FORM.type;
+  $("grpAmount").hidden = t==="warranty";
+  $("grpFreq").hidden = !(t==="sub"||t==="bill");
+  $("grpWarranty").hidden = t!=="warranty";
+  $("fDateLbl").textContent = t==="warranty"?tr("fDateBuy"):t==="deadline"?tr("fDateDead"):tr("fDateNext");
+}
+function setPhoto(src){ FORM.photo=src; $("fPhotoPrev").hidden=!src; if(src) $("fPhotoPrev").src=src; $("fPhotoDel").hidden=!src; }
+function pickPhoto(inp){
+  const f=inp.files&&inp.files[0]; if(!f) return;
+  const img=new Image(), url=URL.createObjectURL(f);
+  img.onload=()=>{ const max=1100, s=Math.min(1,max/Math.max(img.width,img.height));
+    const c=document.createElement("canvas"); c.width=Math.round(img.width*s); c.height=Math.round(img.height*s);
+    c.getContext("2d").drawImage(img,0,0,c.width,c.height); setPhoto(c.toDataURL("image/jpeg",0.72)); URL.revokeObjectURL(url); };
+  img.onerror=()=>URL.revokeObjectURL(url);
+  img.src=url; inp.value="";
+}
+async function saveItem(){
+  const name=$("fName").value.trim(); if(!name){ toast(tr("needName")); $("fName").focus(); return; }
+  if(!$("fDate").value){ toast(tr("needDate")); return; }
+  const it={ id:FORM.id||newId(), type:FORM.type, name, amount: FORM.type==="warranty"?0:num("fAmount"),
+    freq: (FORM.type==="sub"||FORM.type==="bill")?$("fFreq").value:"o", date:$("fDate").value,
+    months: FORM.type==="warranty"?Math.max(1,parseInt($("fMonths").value)||24):null,
+    store:$("fStore").value.trim(), notes:$("fNotes").value.trim(), photo:FORM.photo, updated:Date.now() };
+  await Store.put("money",it); toast(tr("saved")); go("money");
+}
+async function delItem(id){
+  const it=(await Store.all("money")).find(x=>x.id===id); if(!it) return;
+  if(!confirm(tr("confirmDel",it.name))) return;
+  await Store.del("money",id); toast(tr("deleted")); renderMoney();
+}
+async function openPhoto(id){ const it=(await Store.all("money")).find(x=>x.id===id); if(!it||!it.photo) return; $("ovImg").src=it.photo; $("ov").classList.add("on"); }
+function closePhoto(){ $("ov").classList.remove("on"); }
+function icsEsc(s){ return String(s||"").replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\n/g,"\\n"); }
+function ymd(d){ return d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0"); }
+async function toCalendar(id){
+  const it=(await Store.all("money")).find(x=>x.id===id); if(!it) return;
+  const d=itemDate(it); if(!d) return;
+  const title=(TYPE_E[it.type]+" "+it.name+(it.amount?" – "+eur2(it.amount):""));
+  const rr = (it.type==="sub"||it.type==="bill") && FREQ_M[it.freq] ?
+     "RRULE:FREQ="+(it.freq==="y"?"YEARLY":"MONTHLY")+(it.freq==="q"?";INTERVAL=3":"")+"\r\n" : "";
+  const desc=[T[LANG].types[it.type], it.store, it.notes].filter(Boolean).join(" – ");
+  const now=new Date().toISOString().replace(/[-:]/g,"").split(".")[0]+"Z";
+  const alarm=(trg)=>"BEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:"+icsEsc(title)+"\r\nTRIGGER:"+trg+"\r\nEND:VALARM\r\n";
+  const ics="BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Kali Mera//EL\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\n"+
+    "UID:"+it.id+"@kalimera\r\nDTSTAMP:"+now+"\r\nDTSTART;VALUE=DATE:"+ymd(d)+"\r\nDTEND;VALUE=DATE:"+ymd(addDays(d,1))+"\r\n"+
+    "SUMMARY:"+icsEsc(title)+"\r\nDESCRIPTION:"+icsEsc(desc)+"\r\n"+rr+alarm("-P7D")+alarm("-PT15H")+"END:VEVENT\r\nEND:VCALENDAR\r\n";
+  downloadFile(it.name.replace(/[^\p{L}\p{N}]+/gu,"_")+".ics", ics, "text/calendar;charset=utf-8");
+  toast(tr("calHint"));
+}
+async function exportBackup(){
+  const data={app:"kalimera", version:1, saved:new Date().toISOString(), money:await Store.all("money"), fridge:await Store.all("fridge")};
+  downloadFile("Kalimera_mou_backup_"+stamp()+".json", JSON.stringify(data), "application/json");
+}
+function importBackup(inp){
+  const f=inp.files&&inp.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=async()=>{ try{ const d=JSON.parse(r.result); if(d.app!=="kalimera") throw 0; let n=0;
+      for(const it of (d.money||[])){ if(it&&it.id){ await Store.put("money",it); n++; } }
+      for(const it of (d.fridge||[])){ if(it&&it.id){ await Store.put("fridge",it); n++; } }
+      toast(tr("restored",n)); renderMoney(); }catch(e){ toast(tr("badFile")); } };
+  r.readAsText(f); inp.value="";
+}
+async function homeTags(){
+  const items=await Store.all("money"); let soon=0;
+  items.forEach(it=>{ const d=itemDate(it); if(d){ const x=daysUntil(d); if(x>=0&&x<=7) soon++; } });
+  $("moneyTag").hidden=!soon; $("moneyTag").textContent=tr("soonTag",soon);
+  const fr=await Store.all("fridge"); let fs=0;
+  fr.forEach(it=>{ const x=daysUntil(parseISO(it.date)); if(x<=2) fs++; });
+  $("fridgeTag").hidden=!fs; $("fridgeTag").textContent="🥕 "+tr("soonTag",fs);
+}
+
+/* =====================================================================
+   ΑΠΟΖΗΜΙΩΣΗ ΠΤΗΣΗΣ / FLIGHT COMPENSATION  (EC 261/2004)
+   z: eu = ΕΕ/ΕΟΧ/Ελβετία, uk = Ην. Βασίλειο, x = εκτός Ευρώπης
+   ===================================================================== */
+const AIRPORTS = [
+ ["LCA","Λάρνακα","Larnaca",34.875,33.625,"eu"],["PFO","Πάφος","Paphos",34.718,32.486,"eu"],
+ ["ATH","Αθήνα","Athens",37.936,23.947,"eu"],["SKG","Θεσσαλονίκη","Thessaloniki",40.520,22.971,"eu"],
+ ["HER","Ηράκλειο","Heraklion",35.340,25.180,"eu"],["RHO","Ρόδος","Rhodes",36.405,28.086,"eu"],
+ ["CFU","Κέρκυρα","Corfu",39.602,19.912,"eu"],["CHQ","Χανιά","Chania",35.532,24.150,"eu"],
+ ["LHR","Λονδίνο Heathrow","London Heathrow",51.470,-0.454,"uk"],["LGW","Λονδίνο Gatwick","London Gatwick",51.153,-0.182,"uk"],
+ ["STN","Λονδίνο Stansted","London Stansted",51.885,0.235,"uk"],["LTN","Λονδίνο Luton","London Luton",51.875,-0.368,"uk"],
+ ["MAN","Μάντσεστερ","Manchester",53.354,-2.275,"uk"],["BHX","Μπέρμιγχαμ","Birmingham",52.454,-1.748,"uk"],
+ ["EDI","Εδιμβούργο","Edinburgh",55.950,-3.373,"uk"],
+ ["CDG","Παρίσι","Paris CDG",49.010,2.548,"eu"],["FRA","Φρανκφούρτη","Frankfurt",50.033,8.570,"eu"],
+ ["MUC","Μόναχο","Munich",48.354,11.786,"eu"],["BER","Βερολίνο","Berlin",52.366,13.503,"eu"],
+ ["DUS","Ντίσελντορφ","Düsseldorf",51.289,6.767,"eu"],["HAM","Αμβούργο","Hamburg",53.630,9.988,"eu"],
+ ["AMS","Άμστερνταμ","Amsterdam",52.310,4.768,"eu"],["BRU","Βρυξέλλες","Brussels",50.901,4.484,"eu"],
+ ["VIE","Βιέννη","Vienna",48.110,16.570,"eu"],["ZRH","Ζυρίχη","Zurich",47.464,8.549,"eu"],["GVA","Γενεύη","Geneva",46.238,6.109,"eu"],
+ ["FCO","Ρώμη","Rome",41.800,12.239,"eu"],["MXP","Μιλάνο","Milan",45.630,8.723,"eu"],
+ ["MAD","Μαδρίτη","Madrid",40.472,-3.561,"eu"],["BCN","Βαρκελώνη","Barcelona",41.297,2.078,"eu"],
+ ["LIS","Λισαβόνα","Lisbon",38.774,-9.134,"eu"],["DUB","Δουβλίνο","Dublin",53.421,-6.270,"eu"],
+ ["CPH","Κοπεγχάγη","Copenhagen",55.618,12.656,"eu"],["ARN","Στοκχόλμη","Stockholm",59.650,17.930,"eu"],
+ ["OSL","Όσλο","Oslo",60.194,11.100,"eu"],["HEL","Ελσίνκι","Helsinki",60.317,24.963,"eu"],
+ ["WAW","Βαρσοβία","Warsaw",52.166,20.967,"eu"],["PRG","Πράγα","Prague",50.101,14.260,"eu"],
+ ["BUD","Βουδαπέστη","Budapest",47.437,19.256,"eu"],["OTP","Βουκουρέστι","Bucharest",44.571,26.085,"eu"],
+ ["SOF","Σόφια","Sofia",42.695,23.406,"eu"],["MLA","Μάλτα","Malta",35.857,14.477,"eu"],
+ ["TLV","Τελ Αβίβ","Tel Aviv",32.011,34.887,"x"],["BEY","Βηρυτός","Beirut",33.821,35.488,"x"],
+ ["AMM","Αμμάν","Amman",31.723,35.993,"x"],["CAI","Κάιρο","Cairo",30.122,31.406,"x"],
+ ["DXB","Ντουμπάι","Dubai",25.253,55.366,"x"],["DOH","Ντόχα","Doha",25.273,51.608,"x"],
+ ["AUH","Άμπου Ντάμπι","Abu Dhabi",24.433,54.651,"x"],["IST","Κωνσταντινούπολη","Istanbul",41.262,28.742,"x"],
+ ["TBS","Τιφλίδα","Tbilisi",41.669,44.954,"x"],["EVN","Ερεβάν","Yerevan",40.147,44.396,"x"],
+ ["BEG","Βελιγράδι","Belgrade",44.818,20.309,"x"],["JFK","Νέα Υόρκη","New York JFK",40.641,-73.778,"x"],
+ ["YYZ","Τορόντο","Toronto",43.678,-79.625,"x"],["BKK","Μπανγκόκ","Bangkok",13.690,100.750,"x"],
+ ["MEL","Μελβούρνη","Melbourne",-37.669,144.841,"x"],["SYD","Σίδνεϊ","Sydney",-33.940,151.175,"x"]
+];
+function hav(a,b){ const R=6371, r=Math.PI/180; const dLa=(b[3]-a[3])*r, dLo=(b[4]-a[4])*r;
+  const x=Math.sin(dLa/2)**2+Math.cos(a[3]*r)*Math.cos(b[3]*r)*Math.sin(dLo/2)**2; return 2*R*Math.asin(Math.sqrt(x)); }
+let flInit=false;
+function initFlight(){
+  const opts = (sel)=>{
+    const grp=(z,lab)=>`<optgroup label="${lab}">`+AIRPORTS.filter(a=>a[5]===z).map(a=>`<option value="${a[0]}">${L()?a[1]:a[2]} (${a[0]})</option>`).join("")+`</optgroup>`;
+    const prev=sel.value;
+    sel.innerHTML=grp("eu",tr("grpEU"))+grp("uk",tr("grpUK"))+grp("x",tr("grpX"))+`<option value="OTHER">${tr("other")}</option>`;
+    if(prev) sel.value=prev;
+  };
+  opts($("flFrom")); opts($("flTo"));
+  if(!flInit){ $("flFrom").value="LCA"; $("flTo").value="ATH"; flInit=true;
+    $("flFrom").onchange=$("flTo").onchange=flVis; }
+  chips("flWhat", T[LANG].what, $("flWhat").dataset.v||"delay", flVis);
+  chips("flNotice", T[LANG].notice, $("flNotice").dataset.v||"late");
+  chips("flWhy", T[LANG].why, $("flWhy").dataset.v||"air");
+  chips("flEuAir", T[LANG].yesno, $("flEuAir").dataset.v||"y");
+  flVis();
+  $("flSrc").innerHTML = `${esc(L()?DATA.flight.reformEl:DATA.flight.reformEn)} <br>${tr("checked",fmtDate(parseISO(DATA.checked)))} <a href="${DATA.flight.source}" target="_blank" rel="noopener">Your Europe – EU ↗</a>`;
+}
+function ap(code){ return AIRPORTS.find(a=>a[0]===code); }
+function flVis(){
+  const w=$("flWhat").dataset.v;
+  $("grpDelay").hidden = w!=="delay";
+  $("grpNotice").hidden = w!=="cancel";
+  const f=$("flFrom").value, t=$("flTo").value;
+  $("grpKm").hidden = !(f==="OTHER"||t==="OTHER");
+  const A=ap(f), B=ap(t);
+  $("grpEuAir").hidden = !(A && A[5]==="x");
+}
+let FL=null;
+function calcFlight(){
+  const F=DATA.flight, f=$("flFrom").value, t=$("flTo").value, A=ap(f), B=ap(t);
+  const what=$("flWhat").dataset.v, why=$("flWhy").dataset.v;
+  let km = (A&&B) ? Math.round(hav(A,B)) : num("flKm");
+  const out=$("flResult"); $("flLetterCard").hidden=true; FL=null;
+  const res=(cls,title,body)=>{ out.innerHTML=`<div class="result ${cls}"><b>${title}</b>${body}</div>`; };
+  if(!km || (A&&B&&A===B)){ res("mid",tr("flSame"),""); return; }
+  const depZ = A?A[5]:"eu", arrZ = B?B[5]:"eu";
+  const euAir = $("flEuAir").dataset.v==="y";
+  const covered = depZ==="eu"||depZ==="uk"|| ((arrZ==="eu"||arrZ==="uk") && euAir);
+  const distTxt=`<p class="small">${tr("flDist",km.toLocaleString(L()?"el-GR":"en-GB"))}</p>`;
+  if(!covered){ res("no",tr("flNo"),`<p>${tr("flNotCovered")}</p>`+distTxt); return; }
+  const uk = depZ==="uk" || (depZ!=="eu" && arrZ==="uk");
+  const intraEU = depZ==="eu" && arrZ==="eu";
+  let band = km<=1500?"short": (km<=3500||intraEU)?"medium":"long";
+  let amount = (uk?F.ukAmounts:F.amounts)[band];
+  const cur = uk ? (v=>"£"+v) : eur;
+  let notes=[];
+  if(what==="delay"){
+    const h=num("flHours");
+    if(h<F.delayHours){ res("no",tr("flNo"),`<p>${tr("flShort")}</p>`+distTxt); return; }
+    if(band==="long" && !intraEU && h<4){ amount=amount/2; notes.push(tr("flHalf")); }
+  }
+  if(what==="cancel" && $("flNotice").dataset.v==="early"){ res("no",tr("flNo"),`<p>${tr("flEarly")}</p>`+distTxt); return; }
+  if(what==="cancel") notes.push(tr("flCancelReroute"));
+  if(why==="ext"){ res("no",tr("flNo"),`<p>${tr("flExt")}</p>`+distTxt); return; }
+  if(why==="unk") notes.push(tr("flUnk"));
+  if(uk) notes.push(tr("flUK"));
+  FL={amount, cur:uk?"GBP":"EUR", km, what, from:A?(L()?A[1]:A[2]):"", to:B?(L()?B[1]:B[2]):""};
+  res("ok",tr("flYes"),`<div class="amt">${cur(amount)}</div><div>${tr("flPerPerson")}</div>`+distTxt+
+     notes.map(n=>`<p>${n}</p>`).join("")+`<div class="note">${tr("flNext")}</div>`);
+  $("flLetterCard").hidden=false;
+}
+function letterBox(id, subject, body, fname){
+  const full=subject+"\n\n"+body;
+  $(id).innerHTML=`<label class="f">${esc(subject)}</label><textarea id="${id}-ta" rows="14">${esc(body)}</textarea>
+    <div class="row" style="margin-top:10px">
+      <button class="btn pri" onclick="copyText('${id}-ta')">${tr("copy")}</button>
+      <a class="btn" href="mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}">${tr("email")}</a>
+      <button class="btn" onclick="downloadFile('${fname}', document.getElementById('${id}-ta').value)">${tr("download")}</button>
+    </div>`;
+}
+function copyText(id){ const ta=$(id); const v=ta.value;
+  (navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).then(()=>toast(tr("copied"))).catch(()=>{ ta.select(); try{document.execCommand("copy"); toast(tr("copied"));}catch(e){} }); }
+function makeFlightLetter(){
+  if(!FL) return;
+  const n=$("lName").value.trim()||"…", air=$("lAir").value.trim()||"…", f=$("lFlight").value.trim()||"…",
+        dt=$("lDate").value?fmtDate(parseISO($("lDate").value)):"…", ref=$("lRef").value.trim()||"…";
+  const amt = FL.cur==="GBP" ? "£"+FL.amount : eur(FL.amount);
+  const whatEl={delay:"καθυστέρησε και έφτασα στον προορισμό μου με καθυστέρηση "+num("flHours")+" ωρών",cancel:"ακυρώθηκε",denied:"δεν μου επιτράπηκε η επιβίβαση"}[FL.what];
+  const whatEn={delay:"was delayed and I reached my destination "+num("flHours")+" hours late",cancel:"was cancelled",denied:"I was denied boarding"}[FL.what];
+  const subj=trf("letterSubjFlight",{f});
+  const body = L() ?
+`Προς: ${air} – Τμήμα Εξυπηρέτησης Πελατών
+
+Αξιότιμοι κύριοι/κυρίες,
+
+Ταξίδεψα με την πτήση ${f} στις ${dt}, από ${FL.from||"…"} προς ${FL.to||"…"} (κωδικός κράτησης: ${ref}). Η πτήση ${whatEl}.
+
+Σύμφωνα με τον Κανονισμό (ΕΚ) 261/2004 και τη νομολογία του Δικαστηρίου της Ευρωπαϊκής Ένωσης, δικαιούμαι αποζημίωση ύψους ${amt} ανά επιβάτη, καθώς η απόσταση της πτήσης είναι περίπου ${FL.km} χλμ.
+
+Παρακαλώ να μου καταβάλετε το ποσό αυτό σε μετρητά (με τραπεζικό έμβασμα) εντός 14 ημερών. Αν θεωρείτε ότι συντρέχουν έκτακτες περιστάσεις, παρακαλώ να μου τις αποδείξετε γραπτώς.
+
+Επισυνάπτω την κάρτα επιβίβασης και την επιβεβαίωση της κράτησης.
+
+Με εκτίμηση,
+${n}` :
+`To: ${air} – Customer Relations
+
+Dear Sir or Madam,
+
+I travelled on flight ${f} on ${dt}, from ${FL.from||"…"} to ${FL.to||"…"} (booking reference: ${ref}). The flight ${whatEn}.
+
+Under Regulation (EC) 261/2004 and the case law of the Court of Justice of the European Union, I am entitled to compensation of ${amt} per passenger, as the flight distance is about ${FL.km} km.
+
+Please pay this amount in cash (by bank transfer) within 14 days. If you consider that extraordinary circumstances apply, please provide written evidence.
+
+I attach my boarding pass and booking confirmation.
+
+Yours faithfully,
+${n}`;
+  letterBox("flLetterOut", subj, body, "flight_claim_"+stamp()+".txt");
+}
+
+/* =====================================================================
+   ΧΑΛΑΣΜΕΝΟ ΠΡΟΪΟΝ / FAULTY PRODUCT (legal guarantee)
+   ===================================================================== */
+function initWarranty(){
+  const W=DATA.warranty;
+  $("warIntro").textContent=trf("warIntroT",{m:W.months});
+  if(!$("wSeen").value) $("wSeen").value=todayISO();
+  $("wSrc").innerHTML=`${esc(L()?W.lawEl:W.lawEn)}. ${tr("checked",fmtDate(parseISO(DATA.checked)))} ${W.source?`<a href="${W.source}" target="_blank" rel="noopener">Your Europe ↗</a>`:""}`;
+}
+function calcWarranty(){
+  const W=DATA.warranty, buy=parseISO($("wBuy").value), seen=parseISO($("wSeen").value)||new Date();
+  const out=$("wResult"); $("wLetterOut").innerHTML="";
+  if(!buy){ toast(tr("wNeed")); return; }
+  const end=addMonths(buy,W.months), inG = seen<=end;
+  const left=daysUntil(end);
+  if(!inG){ out.innerHTML=`<div class="result no"><b>${trf("wOut",{m:W.months})}</b><p>${tr("wOutAdvice")}</p></div>`; return; }
+  const pres = seen <= addMonths(buy,W.presumptionMonths);
+  const late = addMonths(seen,W.notifyMonths) < new Date();
+  out.innerHTML=`<div class="result ok"><b>${tr("wIn")} ✓</b>
+    ${left>=0?`<p>${tr("wLeft",left)}</p>`:""}
+    <p>${pres?tr("wPres"):tr("wAfter")}</p>
+    <p>${trf("wRem",{d:W.repairMaxDays})}</p>
+    <p><b>${late?trf("wLate",{m:W.notifyMonths}):trf("wNotify",{m:W.notifyMonths})}</b></p></div>`;
+  const p=$("wProd").value.trim()||"…", st=$("wStore").value.trim()||"…", pr=$("wProb").value.trim()||"…";
+  const subj=tr("letterSubjWar");
+  const body = L() ?
+`Προς: ${st}
+
+Αξιότιμοι κύριοι/κυρίες,
+
+Στις ${fmtDate(buy)} αγόρασα από το κατάστημά σας το προϊόν «${p}». Στις ${fmtDate(seen)} παρουσίασε το εξής πρόβλημα: ${pr}.
+
+Το προϊόν βρίσκεται εντός της νόμιμης εγγύησης των ${W.months} μηνών, σύμφωνα με τον Νόμο 154(Ι)/2021 (Οδηγία ΕΕ 2019/771). Ως πωλητής είστε υπεύθυνοι για την έλλειψη συμμόρφωσης.
+
+Ζητώ τη δωρεάν επισκευή ή αντικατάστασή του σε εύλογο χρόνο (το αργότερο σε ${W.repairMaxDays} ημέρες). Διαφορετικά, ζητώ μείωση της τιμής ή επιστροφή των χρημάτων μου.
+
+Επισυνάπτω την απόδειξη αγοράς.
+
+Με εκτίμηση,
+…………………` :
+`To: ${st}
+
+Dear Sir or Madam,
+
+On ${fmtDate(buy)} I bought the product “${p}” from your shop. On ${fmtDate(seen)} it developed the following problem: ${pr}.
+
+The product is within the ${W.months}-month legal guarantee under EU Directive 2019/771 (in Cyprus, Law 154(I)/2021). As the seller, you are responsible for the lack of conformity.
+
+I request free repair or replacement within a reasonable time (at most ${W.repairMaxDays} days). Otherwise, I request a price reduction or a refund.
+
+I attach the proof of purchase.
+
+Yours faithfully,
+…………………`;
+  letterBox("wLetterOut", subj, body, "guarantee_letter_"+stamp()+".txt");
+}
+
+/* =====================================================================
+   ΕΚΠΤΩΣΕΙΣ ΦΟΡΟΥ 2026 (ΚΥΠΡΟΣ) / TAX DEDUCTIONS 2026 (CYPRUS)
+   ===================================================================== */
+function initTax(){
+  chips("tSingle", T[LANG].yesno, $("tSingle").dataset.v||"n");
+  $("tSrc").innerHTML=`${tr("checked",fmtDate(parseISO(DATA.checked)))} <a href="${DATA.tax2026.source}" target="_blank" rel="noopener">businessincyprus.gov.cy ↗</a>`;
+}
+function taxOn(inc){ const B=DATA.tax2026.bands; let tax=0, prev=0;
+  for(const [top,rate] of B){ if(inc>prev){ tax+=(Math.min(inc,top)-prev)*rate; } prev=top; } return tax; }
+function calcTax(){
+  const X=DATA.tax2026, inc=num("tInc"), fam=num("tFam")||inc, kids=Math.max(0,Math.floor(num("tKids"))),
+        single=$("tSingle").dataset.v==="y";
+  const limit = kids<=2?X.incomeLimits.upTo2: kids<=4?X.incomeLimits.upTo4: X.incomeLimits.more;
+  const okInc = fam<=limit;
+  let kidAmt=0; for(let i=0;i<kids;i++) kidAmt+=X.child[Math.min(i,2)]; if(single) kidAmt*=2;
+  const rows=[
+    [tr("tKidsL"), okInc?kidAmt:0],
+    [tr("tRentL"), okInc?Math.min(num("tRent"),X.rentOrMortgageMax):0],
+    [tr("tGreenL"), okInc?Math.min(num("tGreen"),X.greenMax):0],
+    [tr("tInsL"), Math.min(num("tIns"),X.homeInsuranceMax)]
+  ];
+  const total=rows.reduce((s,r)=>s+r[1],0);
+  const save=Math.max(0, taxOn(inc)-taxOn(Math.max(0,inc-total)));
+  let html=`<div class="result ${save>0?"ok":"mid"}">`+
+    rows.map(r=>`<div class="row" style="justify-content:space-between"><span>${r[0]}</span><b style="flex:0">${eur(r[1])}</b></div>`).join("")+
+    `<hr style="border:0;border-top:1px solid var(--line)"><div class="row" style="justify-content:space-between"><span>${tr("tTotal")}</span><b style="flex:0">${eur(total)}</b></div>
+     <p style="margin:10px 0 0">${tr("tSave")}:</p><div class="amt">${eur(Math.round(save))}</div>`;
+  if(!okInc) html+=`<p>${tr("tOverLimit",limit.toLocaleString(L()?"el-GR":"en-GB"))}</p>`;
+  if(inc<=X.taxFree) html+=`<p>${tr("tUnderFree",X.taxFree.toLocaleString(L()?"el-GR":"en-GB"))}</p>`;
+  if(num("tGreen")>X.greenMax && okInc) html+=`<p>${tr("tGreenCarry")}</p>`;
+  if(kids) html+=`<p class="small">${tr("tShare")}</p>`;
+  $("tResult").innerHTML=html+"</div>";
+}
+function renderLinks(){
+  const g=DATA.guide||[];
+  $("olinks").innerHTML=g.map(c=>`<h3 class="h3" style="margin:18px 0 10px">${c.e} ${esc(L()?c.el:c.en)}</h3>`+
+    c.items.map(it=>`<div class="gi"><div class="gt"><span class="ge">${it.e}</span><b>${esc(L()?it.el:it.en)}</b></div>
+      <p>${esc(L()?it.dEl:it.dEn)}</p>
+      ${it.route?`<button class="btn pri" onclick="go('${it.route}')">${L()?"Υπολογισμός ➜":"Calculate ➜"}</button>`
+               :`<a class="btn pri" href="${it.url}" target="_blank" rel="noopener">${L()?"Άνοιγμα σελίδας ↗":"Open page ↗"}</a>`}
+    </div>`).join("")).join("")+`<p class="src">${tr("checked",fmtDate(parseISO(DATA.checked)))}</p>`;
+}
+
+/* =====================================================================
+   ΤΟ ΨΥΓΕΙΟ ΜΟΥ / MY FRIDGE
+   ===================================================================== */
+async function renderFridge(){
+  if(!$("frDate").value) $("frDate").value=iso(addDays(new Date(),3));
+  const items=(await Store.all("fridge")).map(it=>({it,days:daysUntil(parseISO(it.date))})).sort((a,b)=>a.days-b.days);
+  $("fridgeList").innerHTML = items.length ? items.map(({it,days})=>`<div class="item">
+     <span class="ie">🥫</span><div class="it"><b>${esc(it.name)}</b>
+     <div>${fmtDate(parseISO(it.date))} ${pill(days)}</div>
+     <div class="acts"><button class="btn" onclick="delFridge('${it.id}')">${tr("ate")}</button></div></div></div>`).join("")
+     : `<div class="empty">${tr("emptyFridge")}</div>`;
+}
+async function addFridge(){
+  const n=$("frName").value.trim(); if(!n){ toast(tr("needName")); $("frName").focus(); return; }
+  await Store.put("fridge",{id:newId(),name:n,date:$("frDate").value||iso(addDays(new Date(),3))});
+  $("frName").value=""; $("frName").focus(); renderFridge();
+}
+async function delFridge(id){ await Store.del("fridge",id); renderFridge(); }
+
+/* =====================================================================
+   ΤΙ ΜΑΓΕΙΡΕΥΩ / WHAT CAN I COOK
+   ===================================================================== */
+const ING = {
+ eggs:["🥚","Αυγά","Eggs"], tomato:["🍅","Ντομάτες","Tomatoes"], potato:["🥔","Πατάτες","Potatoes"], onion:["🧅","Κρεμμύδι","Onion"],
+ garlic:["🧄","Σκόρδο","Garlic"], feta:["🧀","Φέτα / τυρί","Feta / cheese"], halloumi:["🧀","Χαλλούμι","Halloumi"],
+ chicken:["🍗","Κοτόπουλο","Chicken"], mince:["🥩","Κιμάς","Minced meat"], fish:["🐟","Ψάρι","Fish"],
+ rice:["🍚","Ρύζι","Rice"], pasta:["🍝","Μακαρόνια","Pasta"], lentils:["🫘","Φακές","Lentils"], beans:["🫘","Φασόλια","Beans"],
+ greenbeans:["🫛","Φασολάκια","Green beans"], zucchini:["🥒","Κολοκυθάκια","Courgettes"], eggplant:["🍆","Μελιτζάνες","Aubergines"],
+ pepper:["🫑","Πιπεριές","Peppers"], cucumber:["🥒","Αγγούρι","Cucumber"], carrot:["🥕","Καρότα","Carrots"],
+ spinach:["🥬","Σπανάκι","Spinach"], lemon:["🍋","Λεμόνι","Lemon"], milk:["🥛","Γάλα","Milk"], yogurt:["🥣","Γιαούρτι","Yoghurt"],
+ bread:["🍞","Ψωμί","Bread"], flour:["🌾","Αλεύρι","Flour"]
+};
+const RECIPES = [
+ {n:["Ομελέτα με ντομάτα και φέτα","Tomato and feta omelette"], i:["eggs","tomato","feta"], t:15,
+  s:[["Χτυπήστε τα αυγά με λίγο αλάτι.","Τσιγαρίστε τη ντομάτα κομμένη σε κύβους 3 λεπτά.","Ρίξτε τα αυγά, θρυμματίστε τη φέτα και ψήστε σε χαμηλή φωτιά."],
+     ["Beat the eggs with a little salt.","Fry the diced tomato for 3 minutes.","Pour in the eggs, crumble the feta and cook on low heat."]]},
+ {n:["Αυγά με πατάτες","Eggs with potatoes"], i:["potato","eggs"], t:25,
+  s:[["Κόψτε τις πατάτες σε κύβους και τηγανίστε τις μέχρι να ροδίσουν.","Ρίξτε τα αυγά χτυπημένα και ανακατέψτε μέχρι να ψηθούν."],
+     ["Dice the potatoes and fry until golden.","Add the beaten eggs and stir until cooked."]]},
+ {n:["Φακές σούπα","Lentil soup"], i:["lentils","onion","carrot","garlic","tomato"], t:45,
+  s:[["Βράστε τις φακές 5 λεπτά και πετάξτε το νερό.","Προσθέστε φρέσκο νερό, κρεμμύδι, καρότο, σκόρδο και ντομάτα.","Σιγοβράστε 35 λεπτά, ρίξτε λάδι και αλάτι στο τέλος."],
+     ["Boil the lentils for 5 minutes and drain.","Add fresh water, onion, carrot, garlic and tomato.","Simmer for 35 minutes; add oil and salt at the end."]]},
+ {n:["Φασολάδα","Bean soup"], i:["beans","carrot","onion","tomato"], t:90,
+  s:[["Μουλιάστε τα φασόλια από το βράδυ.","Βράστε τα με κρεμμύδι, καρότο και ντομάτα μέχρι να μαλακώσουν.","Ρίξτε λάδι και αλάτι στο τέλος."],
+     ["Soak the beans overnight.","Boil with onion, carrot and tomato until soft.","Add oil and salt at the end."]]},
+ {n:["Φασολάκια λαδερά","Green beans in tomato sauce"], i:["greenbeans","potato","tomato","onion"], t:50,
+  s:[["Τσιγαρίστε το κρεμμύδι σε λάδι.","Προσθέστε φασολάκια, πατάτες, ντομάτα και λίγο νερό.","Σιγοβράστε 40 λεπτά μέχρι να μείνουν με το λάδι τους."],
+     ["Sauté the onion in oil.","Add green beans, potatoes, tomato and a little water.","Simmer for 40 minutes until the sauce thickens."]]},
+ {n:["Μπριάμ","Briam (roasted vegetables)"], i:["zucchini","eggplant","potato","tomato","onion","pepper"], t:70,
+  s:[["Κόψτε όλα τα λαχανικά σε κομμάτια.","Ανακατέψτε τα σε ταψί με λάδι, αλάτι και τριμμένη ντομάτα.","Ψήστε στους 190°C για περίπου 1 ώρα."],
+     ["Cut all the vegetables into pieces.","Mix in a baking tray with oil, salt and grated tomato.","Bake at 190°C for about 1 hour."]]},
+ {n:["Χωριάτικη σαλάτα","Greek village salad"], i:["tomato","cucumber","onion","feta","pepper"], t:10,
+  s:[["Κόψτε ντομάτα, αγγούρι, κρεμμύδι και πιπεριά.","Βάλτε τη φέτα από πάνω, λάδι και ρίγανη."],
+     ["Cut tomato, cucumber, onion and pepper.","Top with feta, olive oil and oregano."]]},
+ {n:["Μακαρόνια με σάλτσα ντομάτας","Pasta with tomato sauce"], i:["pasta","tomato","onion","garlic"], t:25,
+  s:[["Τσιγαρίστε κρεμμύδι και σκόρδο, προσθέστε τη ντομάτα και σιγοβράστε 15 λεπτά.","Βράστε τα μακαρόνια και σερβίρετε με τη σάλτσα."],
+     ["Sauté onion and garlic, add the tomato and simmer for 15 minutes.","Boil the pasta and serve with the sauce."]]},
+ {n:["Κοτόσουπα αυγολέμονο","Chicken soup with egg and lemon"], i:["chicken","rice","eggs","lemon","carrot"], t:75,
+  s:[["Βράστε το κοτόπουλο με το καρότο περίπου 1 ώρα.","Ρίξτε το ρύζι στον ζωμό για 15 λεπτά.","Χτυπήστε αυγά με λεμόνι, ρίξτε σιγά σιγά λίγο ζεστό ζωμό και μετά όλο στην κατσαρόλα, χωρίς να βράσει ξανά."],
+     ["Boil the chicken with the carrot for about 1 hour.","Add the rice to the broth for 15 minutes.","Beat eggs with lemon, temper with some hot broth, then stir into the pot without boiling again."]]},
+ {n:["Κοτόπουλο λεμονάτο με πατάτες","Lemon chicken with potatoes"], i:["chicken","potato","lemon","garlic"], t:75,
+  s:[["Βάλτε κοτόπουλο και πατάτες σε ταψί.","Ρίξτε λεμόνι, σκόρδο, λάδι, αλάτι, ρίγανη και ένα ποτήρι νερό.","Ψήστε στους 200°C για περίπου 1 ώρα."],
+     ["Put the chicken and potatoes in a tray.","Add lemon, garlic, oil, salt, oregano and a glass of water.","Bake at 200°C for about 1 hour."]]},
+ {n:["Κεφτέδες","Meatballs"], i:["mince","bread","onion","eggs"], t:40,
+  s:[["Μουσκέψτε το ψωμί και στύψτε το.","Ζυμώστε κιμά, ψωμί, τριμμένο κρεμμύδι, αυγό, αλάτι και δυόσμο.","Πλάστε μπαλάκια και τηγανίστε ή ψήστε στον φούρνο."],
+     ["Soak the bread and squeeze it.","Knead the mince with the bread, grated onion, egg, salt and mint.","Shape into balls and fry or bake."]]},
+ {n:["Μακαρόνια με κιμά","Pasta with mince sauce"], i:["pasta","mince","tomato","onion"], t:45,
+  s:[["Τσιγαρίστε κρεμμύδι και κιμά.","Ρίξτε ντομάτα και σιγοβράστε 30 λεπτά.","Σερβίρετε με βρασμένα μακαρόνια."],
+     ["Brown the onion and mince.","Add tomato and simmer for 30 minutes.","Serve with boiled pasta."]]},
+ {n:["Χαλλούμι σχάρας με ντομάτα","Grilled halloumi with tomato"], i:["halloumi","tomato","bread"], t:10,
+  s:[["Ψήστε φέτες χαλλούμι σε αντικολλητικό τηγάνι 2 λεπτά από κάθε πλευρά.","Σερβίρετε με ντομάτα και ψωμί."],
+     ["Grill halloumi slices in a non-stick pan for 2 minutes per side.","Serve with tomato and bread."]]},
+ {n:["Σπανακόρυζο","Spinach rice"], i:["spinach","rice","onion","lemon"], t:30,
+  s:[["Τσιγαρίστε το κρεμμύδι και το σπανάκι.","Ρίξτε το ρύζι και διπλάσιο νερό, βράστε 18 λεπτά.","Σερβίρετε με λεμόνι."],
+     ["Sauté the onion and spinach.","Add the rice and twice as much water; cook for 18 minutes.","Serve with lemon."]]},
+ {n:["Ρυζόγαλο","Rice pudding"], i:["rice","milk"], t:40,
+  s:[["Βράστε το ρύζι σε λίγο νερό 10 λεπτά.","Ρίξτε το γάλα και ζάχαρη και ανακατεύετε σε χαμηλή φωτιά μέχρι να πήξει.","Πασπαλίστε κανέλα."],
+     ["Boil the rice in a little water for 10 minutes.","Add the milk and sugar and stir on low heat until thick.","Sprinkle with cinnamon."]]},
+ {n:["Τηγανίτες","Pancakes"], i:["flour","milk","eggs"], t:20,
+  s:[["Χτυπήστε αλεύρι, γάλα, αυγό και λίγο αλάτι.","Ψήστε κουταλιές σε λαδωμένο τηγάνι από τις δύο πλευρές.","Σερβίρετε με μέλι ή μαρμελάδα."],
+     ["Whisk flour, milk, egg and a pinch of salt.","Cook spoonfuls in an oiled pan on both sides.","Serve with honey or jam."]]},
+ {n:["Ψάρι στον φούρνο με λεμόνι","Baked fish with lemon"], i:["fish","lemon","potato","garlic"], t:45,
+  s:[["Βάλτε πατάτες σε φέτες στο ταψί και το ψάρι από πάνω.","Ρίξτε λεμόνι, σκόρδο, λάδι και αλάτι.","Ψήστε στους 200°C για 30–35 λεπτά."],
+     ["Put sliced potatoes in a tray with the fish on top.","Add lemon, garlic, oil and salt.","Bake at 200°C for 30–35 minutes."]]},
+ {n:["Γεμιστά","Stuffed vegetables"], i:["tomato","pepper","rice","onion","zucchini"], t:90,
+  s:[["Αδειάστε ντομάτες, πιπεριές και κολοκυθάκια.","Ανακατέψτε ρύζι, κρεμμύδι, την ψίχα της ντομάτας, λάδι και αλάτι.","Γεμίστε τα και ψήστε στους 190°C για περίπου 1 ώρα και 15 λεπτά."],
+     ["Hollow out tomatoes, peppers and courgettes.","Mix rice, onion, the tomato pulp, oil and salt.","Stuff and bake at 190°C for about 1 hour 15 minutes."]]},
+ {n:["Τζατζίκι","Tzatziki"], i:["yogurt","cucumber","garlic"], t:10,
+  s:[["Τρίψτε το αγγούρι και στύψτε το νερό του.","Ανακατέψτε με γιαούρτι, σκόρδο, λάδι και λίγο ξίδι."],
+     ["Grate the cucumber and squeeze out the water.","Mix with yoghurt, garlic, oil and a little vinegar."]]},
+ {n:["Αυγά μάτια με ψωμί","Fried eggs with bread"], i:["eggs","bread"], t:8,
+  s:[["Τηγανίστε τα αυγά σε λίγο λάδι.","Σερβίρετε με φρυγανισμένο ψωμί."],["Fry the eggs in a little oil.","Serve with toasted bread."]]},
+ {n:["Σούπα λαχανικών","Vegetable soup"], i:["carrot","potato","onion","zucchini"], t:40,
+  s:[["Κόψτε όλα τα λαχανικά σε κύβους.","Βράστε τα σε νερό με αλάτι 30 λεπτά.","Ρίξτε λάδι και λίγο λεμόνι στο τέλος."],
+     ["Dice all the vegetables.","Boil in salted water for 30 minutes.","Add oil and a little lemon at the end."]]},
+ {n:["Κολοκυθάκια με αυγά","Courgettes with eggs"], i:["zucchini","eggs","onion"], t:20,
+  s:[["Τσιγαρίστε κρεμμύδι και κολοκυθάκια σε κύβους μέχρι να μαλακώσουν.","Ρίξτε τα αυγά χτυπημένα και ανακατέψτε μέχρι να ψηθούν."],
+     ["Sauté onion and diced courgettes until soft.","Add the beaten eggs and stir until cooked."]]}
+];
+let HAVE=new Set(), cookAuto=false;
+async function initCook(){
+  if(!cookAuto){
+    const fr=await Store.all("fridge");
+    fr.forEach(f=>{ const n=f.name.toLowerCase();
+      for(const k in ING){ const a=ING[k][1].toLowerCase().split(/[ /]+/)[0].slice(0,5), b=ING[k][2].toLowerCase().split(/[ /]+/)[0].slice(0,5);
+        if(n.includes(a)||n.includes(b)) HAVE.add(k); } });
+    cookAuto=true;
+  }
+  $("ingChips").innerHTML=Object.entries(ING).map(([k,v])=>`<button class="chip${HAVE.has(k)?" on":""}" onclick="toggleIng('${k}')">${v[0]} ${L()?v[1]:v[2]}</button>`).join("");
+  renderRecipes();
+}
+function toggleIng(k){ HAVE.has(k)?HAVE.delete(k):HAVE.add(k); initCook(); }
+function renderRecipes(){
+  if(!HAVE.size){ $("recipes").innerHTML=`<div class="empty">${tr("noRecipe")}</div>`; return; }
+  const li=L()?0:1;
+  const list=RECIPES.map(r=>({r,miss:r.i.filter(x=>!HAVE.has(x)), hit:r.i.filter(x=>HAVE.has(x)).length}))
+    .filter(x=>x.hit>0).sort((a,b)=>a.miss.length-b.miss.length||b.hit-a.hit).slice(0,12);
+  $("recipes").innerHTML=list.map(({r,miss})=>`<div class="recipe"><b>${r.i.map(x=>ING[x][0]).join("")} ${r.n[li]}</b>
+    <div class="small">⏱ ${tr("mins",r.t)}</div>
+    <div class="${miss.length?"miss":""}">${miss.length?tr("missing",miss.map(x=>ING[x][li+1]).join(", ")):tr("have")}</div>
+    <details><summary>${tr("steps")}</summary><ol>${r.s[li].map(s=>`<li>${s}</li>`).join("")}</ol></details></div>`).join("");
+}
+
+/* =====================================================================
+   ΚΟΣΤΟΣ ΡΕΥΜΑΤΟΣ / ELECTRICITY COST
+   [εικονίδιο, ελληνικά, αγγλικά, watt, ώρες/μέρα, συμβουλή el, συμβουλή en]
+   ===================================================================== */
+const APPS = [
+ ["❄️","Κλιματιστικό 12.000 BTU","Air conditioner 12,000 BTU",1100,6,"Ρυθμίστε στους 26°C το καλοκαίρι και καθαρίζετε τα φίλτρα κάθε μήνα.","Set it to 26°C in summer and clean the filters monthly."],
+ ["🚿","Θερμοσίφωνας","Electric water heater",3000,1,"Ανάβετε τον μόνο όσο χρειάζεται· με ήλιο συχνά δεν χρειάζεται καθόλου.","Switch it on only as needed; with sun you often need none."],
+ ["🌀","Στεγνωτήριο ρούχων","Tumble dryer",2500,1,"Στον ήλιο τα ρούχα στεγνώνουν δωρεάν.","Sunshine dries clothes for free."],
+ ["👕","Πλυντήριο ρούχων","Washing machine",2000,1,"Πλύσιμο στους 30–40°C κοστίζει πολύ λιγότερο από τους 60°C.","Washing at 30–40°C costs far less than 60°C."],
+ ["🍽️","Πλυντήριο πιάτων","Dishwasher",1800,1,"Βάζετε το πρόγραμμα eco και μόνο όταν είναι γεμάτο.","Use the eco programme, only when full."],
+ ["🧊","Ψυγείο (μέσος όρος)","Fridge (average)",60,24,"Μην το βάζετε δίπλα στην κουζίνα ή στον ήλιο.","Keep it away from the cooker and the sun."],
+ ["🔥","Φούρνος","Oven",2400,1,"Μην ανοίγετε την πόρτα συχνά· κάθε άνοιγμα χάνει ζέστη.","Avoid opening the door; each opening loses heat."],
+ ["☕","Βραστήρας","Kettle",2000,0.25,"Βράζετε μόνο το νερό που χρειάζεστε.","Boil only the water you need."],
+ ["👔","Σίδερο","Iron",2200,0.5,"Σιδερώνετε πολλά μαζί, όχι λίγα κάθε μέρα.","Iron in one batch rather than a little every day."],
+ ["🔆","Ηλεκτρική σόμπα","Electric heater",2000,4,"Ένα κλιματιστικό inverter ζεσταίνει με περίπου το 1/3 του ρεύματος.","An inverter air conditioner heats with about 1/3 of the electricity."],
+ ["📺","Τηλεόραση","TV",100,4,"Κλείνετέ την από τον διακόπτη, όχι μόνο από το τηλεχειριστήριο.","Switch it off at the plug, not just the remote."],
+ ["💻","Υπολογιστής","Computer",150,4,"Ο φορητός καταναλώνει πολύ λιγότερο από τον σταθερό.","A laptop uses much less than a desktop."],
+ ["💡","Λάμπα LED","LED bulb",10,6,"Μια LED καταναλώνει περίπου το 1/6 μιας παλιάς λάμπας.","An LED uses about 1/6 of an old bulb."],
+ ["💨","Σεσουάρ","Hair dryer",1800,0.25,"",""],
+ ["🔌","—","—",0,1,"",""]
+];
+let pwInit=false;
+function initPower(){
+  const sel=$("pwApp"), prev=sel.value;
+  sel.innerHTML=APPS.map((a,i)=>`<option value="${i}">${a[0]} ${i===APPS.length-1?tr("pwCustom"):(L()?a[1]:a[2])}</option>`).join("");
+  if(prev) sel.value=prev;
+  if(!pwInit){ sel.value="0"; pwPreset();
+    let saved=null; try{ saved=localStorage.getItem("km-price"); }catch(e){}
+    $("pwPrice").value = saved || DATA.electricity.pricePerKwh; pwInit=true; }
+  $("pwNote").innerHTML=`${esc(L()?DATA.electricity.noteEl:DATA.electricity.noteEn)} <a href="${DATA.electricity.source}" target="_blank" rel="noopener">EAC ↗</a>`;
+  renderPwList();
+}
+function pwPreset(){ const a=APPS[+$("pwApp").value]; $("pwW").value=a[3]||""; $("pwH").value=a[4]; $("pwResult").innerHTML=""; }
+function calcPower(){
+  const a=APPS[+$("pwApp").value], w=num("pwW"), h=num("pwH"), d=num("pwD")||30, p=num("pwPrice");
+  try{ localStorage.setItem("km-price", p); }catch(e){}
+  const perH=w/1000*p, perD=perH*h, perM=perD*d, perY=perM*12;
+  const tip=L()?a[5]:a[6];
+  $("pwResult").innerHTML=`<div class="result ok">
+    <div class="sum"><div><b>${eur2(perH)}</b><span>${tr("pwHour")}</span></div><div><b>${eur2(perD)}</b><span>${tr("pwDay")}</span></div><div><b>${eur2(perM)}</b><span>${tr("pwMonth")}</span></div></div>
+    <p style="text-align:center;margin:10px 0 0">${tr("pwYear")}: <b>${eur(Math.round(perY))}</b></p>
+    ${tip?`<div class="note">${tr("pwTip",tip)}</div>`:""}
+    <button class="big-btn alt" onclick="pwAdd()">${tr("pwAdd")}</button></div>`;
+  window._pwLast={name:(+$("pwApp").value===APPS.length-1)?(w+" W"):(a[0]+" "+(L()?a[1]:a[2])), perM};
+}
+function pwGet(){ try{ return JSON.parse(localStorage.getItem("km-pwlist")||"[]"); }catch(e){ return []; } }
+function pwAdd(){ if(!window._pwLast) return; const l=pwGet(); l.push(window._pwLast); try{localStorage.setItem("km-pwlist",JSON.stringify(l))}catch(e){} renderPwList(); toast(tr("saved")); }
+function pwClear(){ try{localStorage.removeItem("km-pwlist")}catch(e){} renderPwList(); }
+function renderPwList(){
+  const l=pwGet(); $("pwListCard").hidden=!l.length; if(!l.length) return;
+  const tot=l.reduce((s,x)=>s+x.perM,0);
+  $("pwList").innerHTML=l.map(x=>`<div class="row" style="justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line)"><span>${esc(x.name)}</span><b style="flex:0">${eur2(x.perM)}</b></div>`).join("")+
+    `<div class="row" style="justify-content:space-between;padding:10px 0"><b>${tr("pwTotal")}</b><b style="flex:0;font-size:1.4rem">${eur2(tot)}</b></div>`;
+}
+
+/* =====================================================================
+   ΕΠΙΣΚΕΥΗ Ή ΚΑΙΝΟΥΡΓΙΟ / REPAIR OR REPLACE
+   [εικονίδιο, ελληνικά, αγγλικά, συνηθισμένη ζωή σε χρόνια]
+   ===================================================================== */
+const LIFE = [
+ ["🧊","Ψυγείο","Fridge",14],["👕","Πλυντήριο ρούχων","Washing machine",11],["🍽️","Πλυντήριο πιάτων","Dishwasher",10],
+ ["🌀","Στεγνωτήριο","Tumble dryer",12],["❄️","Κλιματιστικό","Air conditioner",13],["🔥","Κουζίνα / φούρνος","Cooker / oven",15],
+ ["🚿","Θερμοσίφωνας","Water heater",12],["📺","Τηλεόραση","TV",8],["💻","Υπολογιστής","Computer",5],["📱","Κινητό","Mobile phone",4],
+ ["🧹","Ηλεκτρική σκούπα","Vacuum cleaner",8],["🍞","Μικροσυσκευή κουζίνας","Small kitchen appliance",6]
+];
+function initRepair(){ const sel=$("rpType"), prev=sel.value;
+  sel.innerHTML=LIFE.map((a,i)=>`<option value="${i}">${a[0]} ${L()?a[1]:a[2]}</option>`).join(""); if(prev) sel.value=prev; }
+function calcRepair(){
+  const a=LIFE[+$("rpType").value], age=num("rpAge"), cost=num("rpCost"), nw=num("rpNew");
+  const out=$("rpResult");
+  if(age<2 && age>=0 && $("rpAge").value!==""){
+    out.innerHTML=`<div class="result ok"><b>${tr("rpFree")}</b><button class="big-btn" onclick="go('rights/warranty')">${tr("rpFreeBtn")}</button></div>`; return; }
+  if(!cost||!nw){ toast(tr("rpNeed")); return; }
+  const ratio=cost/nw, lifeP=Math.min(150,Math.round(age/a[3]*100));
+  let cls, title;
+  if(ratio>0.5 || (lifeP>=80 && ratio>0.3)){ cls="no"; title=tr("rpReplace"); }
+  else if(ratio>0.35 || lifeP>=70){ cls="mid"; title=tr("rpThink"); }
+  else { cls="ok"; title=tr("rpRepair"); }
+  out.innerHTML=`<div class="result ${cls}"><b style="font-size:1.4rem">${title}</b>
+    <p>${trf("rpWhy1",{p:Math.round(ratio*100)})}</p>${age?`<p>${trf("rpWhy2",{p:lifeP,y:a[3]})}</p>`:""}
+    <div class="note">${tr("rpRule")}</div></div>`;
+}
+
+/* =====================================================================
+   ΕΚΚΙΝΗΣΗ / START
+   ===================================================================== */
+setLang(LANG);
+route();
+loadData();
+setInterval(drawScene, 5*60*1000);
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") closePhoto(); });
+if("serviceWorker" in navigator){ window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{})); }
+</script>
+</body>
+</html>
