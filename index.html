@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-title" content="Καλή Μέρα μου">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
-/* Έκδοση / Version: 7-10-2026 12:40 */
+/* Έκδοση / Version: 8-10-2026 18:30 */
 :root{
   --bg:#f4f1ea; --card:#ffffff; --ink:#1d2433; --soft:#5b6475; --line:rgba(127,127,127,.22);
   --blue:#1f6fd1; --teal:#0f9e8e; --gold:#e8a317; --rose:#e0566b; --violet:#7a4fd6; --green:#2f9a46;
@@ -100,6 +100,28 @@ aside h3{font-size:1.3rem;margin:6px 0 12px}
   box-shadow:var(--shadow), inset 0 2px 0 rgba(255,255,255,.35), inset 0 -4px 0 rgba(0,0,0,.15);
   transition:transform .15s}
 .tile:active{transform:scale(.97)}
+.tile{padding-right:70px}
+.tile::after{content:"›";position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.28);
+  display:grid;place-items:center;font-size:2.1rem;font-weight:700;line-height:1;padding-bottom:4px}
+.plink .go{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.25);display:grid;place-items:center}
+details summary{list-style:none}
+details summary::-webkit-details-marker{display:none}
+.recipe details summary{display:inline-flex;align-items:center;gap:6px;background:var(--bg);border:2px solid var(--line);
+  border-radius:999px;padding:8px 16px;margin-top:8px;color:var(--blue)}
+.recipe details[open] summary{background:var(--blue);color:#fff;border-color:transparent}
+.ingbox{margin-top:16px;background:var(--bg);border-radius:16px;padding:12px 14px}
+.ingbox summary{cursor:pointer;font-weight:800;font-size:1.1rem;display:flex;justify-content:space-between;align-items:center}
+.ingbox summary::after{content:"›";font-size:1.8rem;transform:rotate(90deg);transition:transform .2s}
+.ingbox[open] summary::after{transform:rotate(-90deg)}
+.chip.cat{font-size:1.05rem}
+.chip small{opacity:.75;font-weight:600}
+.chip.qa{background:var(--card);font-size:.95rem;padding:8px 12px}
+#frQuick .chips{gap:8px}
+.rh{display:flex;align-items:center;gap:10px}
+.rc{font-size:1.5rem;width:44px;height:44px;border-radius:12px;background:var(--bg);display:grid;place-items:center;flex:none}
+.cath{margin:22px 0 4px;padding:8px 12px;border-radius:12px;background:var(--bg)}
+.okk{color:var(--green);font-weight:700}
 .tile .ic{font-size:2.4rem;width:62px;height:62px;flex:none;display:grid;place-items:center;
   background:rgba(255,255,255,.22);border-radius:18px}
 .tile h2{margin:0;font-size:1.4rem;line-height:1.2}
@@ -490,28 +512,45 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:6px}
 <section id="p-house-fridge" class="page">
   <div class="card">
     <h2 class="h">🥕 <span data-t="hFridge"></span></h2>
+    <p class="sub" data-t="frQuick"></p>
+    <div id="frQuick"></div>
+    <h3 class="h3" style="margin:18px 0 6px" data-t="frManual"></h3>
     <div class="row">
       <div><label class="f" for="frName" data-t="frName"></label><input id="frName" maxlength="60"></div>
       <div><label class="f" for="frDate" data-t="frDate"></label><input id="frDate" type="date"></div>
     </div>
     <button class="big-btn green" onclick="addFridge()">＋ <span data-t="add"></span></button>
   </div>
-  <div class="card"><div id="fridgeList"></div>
-    <button class="big-btn" onclick="go('house/cook')">🍲 <span data-t="hCook"></span></button></div>
+  <div class="card"><h3 class="h3" data-t="frList"></h3><div id="fridgeList"></div>
+    <p class="small" id="eatenNote"></p>
+    <button class="big-btn" onclick="go('house/cook')">🍲 <span data-t="hCook"></span> ›</button></div>
 </section>
 
 <section id="p-house-cook" class="page">
   <div class="card">
     <h2 class="h">🍲 <span data-t="hCook"></span></h2>
     <p class="sub" data-t="cookIntro"></p>
-    <div class="chips" id="ingChips"></div>
+    <div class="chips" id="catChips"></div>
+    <details class="ingbox"><summary id="ingSum"></summary>
+      <p class="small" data-t="pantry"></p>
+      <div class="chips" id="ingChips"></div>
+      <button class="btn" style="margin-top:12px" onclick="clearIng()">✖ <span data-t="clearIng"></span></button>
+    </details>
   </div>
   <div class="card"><div id="recipes"></div></div>
 </section>
 
 <section id="p-house-power" class="page">
   <div class="card">
-    <h2 class="h">⚡ <span data-t="hPower"></span></h2>
+    <h2 class="h" data-t="billT"></h2>
+    <p class="sub" data-t="billD"></p>
+    <label class="f" for="billKwh" data-t="billKwh"></label>
+    <input id="billKwh" type="number" inputmode="numeric" min="0" placeholder="243">
+    <button class="big-btn" onclick="calcBill()" data-t="billBtn"></button>
+    <div id="billResult"></div>
+  </div>
+  <div class="card">
+    <h2 class="h">⚡ <span data-t="pwTitle2"></span></h2>
     <label class="f" for="pwApp" data-t="pwApp"></label><select id="pwApp" onchange="pwPreset()"></select>
     <div class="row">
       <div><label class="f" for="pwW" data-t="pwW"></label><input id="pwW" type="number" inputmode="numeric" min="0"></div>
@@ -519,7 +558,7 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:6px}
       <div><label class="f" for="pwD" data-t="pwD"></label><input id="pwD" type="number" inputmode="numeric" min="1" max="31" value="30"></div>
     </div>
     <label class="f" for="pwPrice" data-t="pwPrice"></label>
-    <input id="pwPrice" type="number" inputmode="decimal" step="0.001" min="0">
+    <input id="pwPrice" type="number" inputmode="decimal" step="0.0001" min="0">
     <p class="small" id="pwNote"></p>
     <button class="big-btn" onclick="calcPower()" data-t="calc"></button>
     <div id="pwResult"></div>
@@ -538,14 +577,14 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:6px}
     <div class="row">
       <div><label class="f" for="rpAge" data-t="rpAge"></label><input id="rpAge" type="number" inputmode="decimal" step="0.5" min="0"></div>
       <div><label class="f" for="rpCost" data-t="rpCost"></label><input id="rpCost" type="number" inputmode="decimal" min="0"></div>
-      <div><label class="f" for="rpNew" data-t="rpNew"></label><input id="rpNew" type="number" inputmode="decimal" min="0"></div>
+      <div><label class="f" for="rpNew" id="rpNewLbl" data-t="rpNew"></label><input id="rpNew" type="number" inputmode="decimal" min="0"></div>
     </div>
     <button class="big-btn" onclick="calcRepair()" data-t="check"></button>
     <div id="rpResult"></div>
   </div>
 </section>
 
-<div class="foot"><span data-t="version"></span> 7-10-2026 12:40</div>
+<div class="foot"><span data-t="version"></span> 8-10-2026 18:30</div>
 </main>
 
 <aside>
@@ -660,7 +699,7 @@ const T = {
   rpType:"Τι χάλασε;", rpAge:"Ηλικία συσκευής (χρόνια)", rpCost:"Κόστος επισκευής (€)", rpNew:"Τιμή καινούργιας (€)",
   rpFree:"Η συσκευή είναι κάτω από 2 ετών: ζητήστε ΔΩΡΕΑΝ επισκευή από τον πωλητή (νόμιμη εγγύηση).", rpFreeBtn:"Γράψε την επιστολή εγγύησης",
   rpRepair:"Αξίζει η επισκευή 🔧", rpReplace:"Μάλλον αξίζει καινούργια 🆕", rpThink:"Οριακό: σκεφτείτε το 🤔",
-  rpWhy1:"Η επισκευή κοστίζει {p}% της τιμής μιας καινούργιας.", rpWhy2:"Η συσκευή έχει ζήσει περίπου {p}% της συνηθισμένης ζωής της ({y} χρόνια).",
+  rpWhy1:"Η επισκευή κοστίζει το {p}% της τιμής (ή αξίας) που γράψατε.", rpWhy2:"Έχει ζήσει περίπου το {p}% της συνηθισμένης ζωής του ({y} χρόνια).",
   rpRule:"Κανόνας: αν η επισκευή κοστίζει πάνω από το μισό μιας καινούργιας, συνήθως συμφέρει η αντικατάσταση. Σε παλιά ψυγεία και κλιματιστικά, μια καινούργια, πιο οικονομική συσκευή μειώνει και τον λογαριασμό ρεύματος.",
   rpNeed:"Συμπληρώστε κόστος επισκευής και τιμή καινούργιας",
   letterSubjFlight:"Αίτημα αποζημίωσης – Κανονισμός (ΕΚ) 261/2004 – Πτήση {f}",
@@ -761,7 +800,7 @@ const T = {
   rpType:"What broke?", rpAge:"Appliance age (years)", rpCost:"Repair cost (€)", rpNew:"Price of a new one (€)",
   rpFree:"The appliance is under 2 years old: ask the seller for a FREE repair (legal guarantee).", rpFreeBtn:"Write the guarantee letter",
   rpRepair:"Repair is worth it 🔧", rpReplace:"A new one is probably better 🆕", rpThink:"Borderline: think it over 🤔",
-  rpWhy1:"The repair costs {p}% of the price of a new one.", rpWhy2:"The appliance has lived about {p}% of its usual life ({y} years).",
+  rpWhy1:"The repair costs {p}% of the price (or value) you entered.", rpWhy2:"It has lived about {p}% of its usual life ({y} years).",
   rpRule:"Rule of thumb: if a repair costs more than half the price of a new one, replacing usually pays off. For old fridges and air conditioners, a new efficient model also lowers the electricity bill.",
   rpNeed:"Enter the repair cost and the price of a new one",
   letterSubjFlight:"Compensation claim – Regulation (EC) 261/2004 – Flight {f}",
@@ -773,7 +812,7 @@ const T = {
    ΣΤΟΙΧΕΙΑ ΑΠΟ ΕΠΙΣΗΜΕΣ ΠΗΓΕΣ (ενημερώνονται από το data.json)
    DATA FROM OFFICIAL SOURCES (updated from data.json)
    ===================================================================== */
-let DATA = {"version": "7-10-2026", "checked": "2026-10-07", "electricity": {"pricePerKwh": 0.3, "noteEl": "Στο οικιακό τιμολόγιο 01 της ΑΗΚ (από 1 Μαΐου 2026) η ενέργεια και το δίκτυο κοστίζουν 21,82 σεντ/kWh. Μαζί με την αναπροσαρμογή καυσίμων, τα άλλα τέλη και τον ΦΠΑ, το σύνολο φτάνει περίπου 28–32 σεντ. Για ακρίβεια, βάλτε την τιμή από τον δικό σας λογαριασμό.", "noteEn": "On EAC household tariff 01 (from 1 May 2026) energy plus network cost 21.82 cents/kWh. With the fuel adjustment, other charges and VAT, the total is about 28–32 cents. For accuracy, enter the price from your own bill.", "source": "https://www.eac.com.cy"}, "flight": {"amounts": {"short": 250, "medium": 400, "long": 600}, "ukAmounts": {"short": 220, "medium": 350, "long": 520}, "delayHours": 3, "cancelNoticeDays": 14, "reformEl": "Τον Ιούνιο 2026 η ΕΕ συμφώνησε σε αναθεώρηση των κανόνων. Δεν ισχύει ακόμη: μετά την επίσημη έγκριση και δημοσίευση υπάρχει μεταβατική περίοδος 12 μηνών. Μέχρι τότε ισχύουν οι σημερινοί κανόνες (EC 261/2004).", "reformEn": "In June 2026 the EU agreed a revision of the rules. It is not in force yet: after formal approval and publication there is a 12-month transition. Until then the current rules (EC 261/2004) apply.", "source": "https://europa.eu/youreurope/citizens/travel/passenger-rights/air/index_el.htm"}, "warranty": {"months": 24, "presumptionMonths": 12, "notifyMonths": 2, "repairMaxDays": 25, "lawEl": "Νόμος 154(Ι)/2021 για ορισμένες πτυχές των συμβάσεων πώλησης αγαθών (Οδηγία ΕΕ 2019/771)", "lawEn": "Cyprus Law 154(I)/2021 on certain aspects of contracts for the sale of goods (EU Directive 2019/771)", "source": "https://europa.eu/youreurope/citizens/consumers/shopping/guarantees-returns/index_el.htm"}, "tax2026": {"taxFree": 22000, "bands": [[22000, 0], [32000, 0.2], [42000, 0.25], [72000, 0.3], [999999999, 0.35]], "child": [1000, 1250, 1500], "incomeLimits": {"upTo2": 100000, "upTo4": 150000, "more": 200000}, "rentOrMortgageMax": 2000, "greenMax": 1000, "homeInsuranceMax": 500, "source": "https://www.businessincyprus.gov.cy"}, "guide": [{"e": "🤝", "el": "Επιδόματα & συντάξεις", "en": "Benefits & pensions", "items": [{"e": "🏠", "el": "Ελάχιστο Εγγυημένο Εισόδημα", "en": "Guaranteed Minimum Income", "dEl": "Μηνιαία στήριξη για νοικοκυριά με χαμηλό εισόδημα, μαζί με βοήθεια για ενοίκιο ή δάνειο κατοικίας. Αίτηση στο Υφυπουργείο Κοινωνικής Πρόνοιας.", "dEn": "Monthly support for low-income households, plus help with rent or a housing loan. Apply to the Deputy Ministry of Social Welfare.", "url": "https://www.dmsw.gov.cy"}, {"e": "🧓", "el": "Επίδομα χαμηλοσυνταξιούχων", "en": "Low-income pensioners' allowance", "dEl": "Για συνταξιούχους με χαμηλό συνολικό εισόδημα νοικοκυριού. Αν το δικαιούστε, δικαιούστε συνήθως και το φθηνότερο ειδικό τιμολόγιο ρεύματος της ΑΗΚ.", "dEn": "For pensioners with low total household income. If you receive it, you usually also qualify for EAC's cheaper special electricity tariff.", "url": "https://www.dmsw.gov.cy"}, {"e": "👨‍👩‍👧", "el": "Επίδομα τέκνου & μονογονεϊκής οικογένειας", "en": "Child benefit & single-parent benefit", "dEl": "Για οικογένειες με εξαρτώμενα παιδιά, ανάλογα με το εισόδημα. Οι πολύτεκνοι και οι μονογονεϊκές οικογένειες έχουν επιπλέον στήριξη.", "dEn": "For families with dependent children, depending on income. Large families and single parents receive extra support.", "url": "https://www.dmsw.gov.cy"}, {"e": "📜", "el": "Συντάξεις & κοινωνική σύνταξη", "en": "Pensions & social pension", "dEl": "Οι Υπηρεσίες Κοινωνικών Ασφαλίσεων πληρώνουν τις συντάξεις. Όποιος έχει συμπληρώσει τα 65 και δεν δικαιούται σύνταξη ή παίρνει πολύ μικρή, μπορεί να ζητήσει κοινωνική σύνταξη.", "dEn": "Social Insurance Services pay pensions. Anyone aged 65+ who is not entitled to a pension, or receives a very small one, can apply for a social pension.", "url": "https://www.mlsi.gov.cy/mlsi/sid/sidv2.nsf"}]}, {"e": "⚡", "el": "Ρεύμα & σπίτι", "en": "Electricity & home", "items": [{"e": "💡", "el": "Ειδικό φθηνότερο τιμολόγιο ΑΗΚ (κωδικός 08)", "en": "EAC cheaper special tariff (code 08)", "dEl": "Για ευάλωτους πελάτες: δικαιούχους δημοσίου βοηθήματος ή Ελάχιστου Εγγυημένου Εισοδήματος, πολύτεκνους, χαμηλοσυνταξιούχους, μονογονεϊκές οικογένειες, άτομα με σοβαρή κινητική αναπηρία, αιμοκαθαιρόμενους, θύματα πολέμου και ορισμένες σοβαρές παθήσεις. Ζητήστε το από την ΑΗΚ.", "dEn": "For vulnerable customers: recipients of public assistance or Guaranteed Minimum Income, large families, low-income pensioners, single parents, people with severe mobility disability, dialysis patients, war victims and certain serious illnesses. Ask EAC for it.", "url": "https://www.eac.com.cy"}, {"e": "☀️", "el": "Χορηγίες για φωτοβολταϊκά & θερμομόνωση", "en": "Grants for solar panels & insulation", "dEl": "Το Ταμείο ΑΠΕ προκηρύσσει σχέδια χορηγιών για φωτοβολταϊκά και θερμομόνωση οροφής, με μεγαλύτερη χορηγία για ευάλωτα νοικοκυριά. Δείτε ποιο σχέδιο είναι ανοιχτό τώρα.", "dEn": "The RES Fund runs grant schemes for solar panels and roof insulation, with larger grants for vulnerable households. Check which scheme is open now.", "url": "https://resecfund.org.cy"}, {"e": "💶", "el": "Έκπτωση φόρου €1.000 για πράσινες αναβαθμίσεις", "en": "€1,000 tax deduction for green upgrades", "dEl": "Από το 2026, για θερμομόνωση, φωτοβολταϊκά, μπαταρίες ή ηλεκτρικό αυτοκίνητο. Υπολογίστε τι κερδίζετε.", "dEn": "From 2026, for insulation, solar panels, batteries or an electric car. Calculate what you gain.", "route": "rights/tax"}]}, {"e": "🧾", "el": "Αγορές & καταναλωτής", "en": "Shopping & consumer", "items": [{"e": "🛒", "el": "e-kalathi: σύγκριση τιμών σούπερ μάρκετ", "en": "e-kalathi: supermarket price comparison", "dEl": "Η επίσημη πλατφόρμα: φτιάχνετε το καλάθι σας και βλέπετε ποια αλυσίδα είναι φθηνότερη.", "dEn": "The official platform: build your basket and see which chain is cheapest.", "url": "https://www.e-kalathi.gov.cy"}, {"e": "🛡️", "el": "Εγγυήσεις & επιστροφές στην ΕΕ", "en": "Guarantees & returns in the EU", "dEl": "Η νόμιμη εγγύηση 2 ετών, το δικαίωμα επιστροφής 14 ημερών στις αγορές από το ίντερνετ, και τι κάνετε όταν ο πωλητής αρνείται.", "dEn": "The 2-year legal guarantee, the 14-day right to return online purchases, and what to do when the seller refuses.", "url": "https://europa.eu/youreurope/citizens/consumers/shopping/guarantees-returns/index_el.htm"}, {"e": "🤝", "el": "Κυπριακός Σύνδεσμος Καταναλωτών", "en": "Cyprus Consumers Association", "dEl": "Συμβουλές, νομοθεσία και βοήθεια σε παράπονα καταναλωτών.", "dEn": "Advice, legislation and help with consumer complaints.", "url": "https://katanalotis.org.cy"}]}, {"e": "✈️", "el": "Ταξίδια & υγεία", "en": "Travel & health", "items": [{"e": "✈️", "el": "Δικαιώματα επιβατών αεροπλάνου", "en": "Air passenger rights", "dEl": "Αποζημίωση, φαγητό, ξενοδοχείο και επιστροφή χρημάτων σε καθυστερήσεις, ακυρώσεις και χαμένες αποσκευές.", "dEn": "Compensation, meals, hotel and refunds for delays, cancellations and lost luggage.", "url": "https://europa.eu/youreurope/citizens/travel/passenger-rights/air/index_el.htm"}, {"e": "🏥", "el": "ΓεΣΥ – Γενικό Σύστημα Υγείας", "en": "GESY – General Healthcare System", "dEl": "Προσωπικός γιατρός, ειδικοί, εξετάσεις και φάρμακα με μικρή συμμετοχή.", "dEn": "Personal doctor, specialists, tests and medicines with a small co-payment.", "url": "https://www.gesy.org.cy"}, {"e": "💳", "el": "Ευρωπαϊκή Κάρτα Ασφάλισης Υγείας", "en": "European Health Insurance Card", "dEl": "Δωρεάν κάρτα για ιατρική περίθαλψη όταν ταξιδεύετε σε άλλη χώρα της ΕΕ, με τους ίδιους όρους με τους κατοίκους της.", "dEn": "A free card for medical care when travelling in another EU country, on the same terms as residents.", "url": "https://europa.eu/youreurope/citizens/health/unplanned-healthcare/temporary-stays/index_el.htm"}]}, {"e": "🏛️", "el": "Κράτος & φόροι", "en": "Government & tax", "items": [{"e": "💶", "el": "Τμήμα Φορολογίας", "en": "Tax Department", "dEl": "Δήλωση εισοδήματος, επιστροφές φόρου και οι νέες εκπτώσεις του 2026.", "dEn": "Income tax returns, tax refunds and the new 2026 deductions.", "url": "https://www.mof.gov.cy/mof/tax/taxdep.nsf"}, {"e": "🏛️", "el": "gov.cy – όλες οι κρατικές υπηρεσίες", "en": "gov.cy – all government services", "dEl": "Αιτήσεις, πιστοποιητικά και τα Κέντρα Εξυπηρέτησης του Πολίτη.", "dEn": "Applications, certificates and the Citizen Service Centres.", "url": "https://www.gov.cy"}]}]};
+let DATA = {"version": "8-10-2026", "checked": "2026-10-08", "electricity": {"pricePerKwh": 0.3188, "noteEl": "Οικιακό τιμολόγιο 01 ΑΗΚ: ενέργεια 17,89 σεντ, δίκτυο 3,93 σεντ, αναπροσαρμογή καυσίμων 8,0151 σεντ, ΥΔΥ 0,051 σεντ ανά kWh, συν ΦΠΑ 5%, Ταμείο ΑΠΕ 0,5 σεντ και πάγια €8,94 το δίμηνο.", "noteEn": "EAC household tariff 01: energy 17.89 c, network 3.93 c, fuel adjustment 8.0151 c, PSO 0.051 c per kWh, plus 5% VAT, RES Fund 0.5 c and fixed charges of €8.94 per two months.", "source": "https://www.eac.com.cy", "energy": 0.1789, "network": 0.0393, "fuel": 0.080151, "pso": 0.00051, "res": 0.005, "vat": 0.05, "meterFee": 0.94, "supplyFee": 8.0, "fuelPeriodEl": "€0,080151/kWh (λογαριασμός 3/8–5/10/2026)", "fuelPeriodEn": "€0.080151/kWh (bill 3 Aug–5 Oct 2026)"}, "flight": {"amounts": {"short": 250, "medium": 400, "long": 600}, "ukAmounts": {"short": 220, "medium": 350, "long": 520}, "delayHours": 3, "cancelNoticeDays": 14, "reformEl": "Τον Ιούνιο 2026 η ΕΕ συμφώνησε σε αναθεώρηση των κανόνων. Δεν ισχύει ακόμη: μετά την επίσημη έγκριση και δημοσίευση υπάρχει μεταβατική περίοδος 12 μηνών. Μέχρι τότε ισχύουν οι σημερινοί κανόνες (EC 261/2004).", "reformEn": "In June 2026 the EU agreed a revision of the rules. It is not in force yet: after formal approval and publication there is a 12-month transition. Until then the current rules (EC 261/2004) apply.", "source": "https://europa.eu/youreurope/citizens/travel/passenger-rights/air/index_el.htm"}, "warranty": {"months": 24, "presumptionMonths": 12, "notifyMonths": 2, "repairMaxDays": 25, "lawEl": "Νόμος 154(Ι)/2021 για ορισμένες πτυχές των συμβάσεων πώλησης αγαθών (Οδηγία ΕΕ 2019/771)", "lawEn": "Cyprus Law 154(I)/2021 on certain aspects of contracts for the sale of goods (EU Directive 2019/771)", "source": "https://europa.eu/youreurope/citizens/consumers/shopping/guarantees-returns/index_el.htm"}, "tax2026": {"taxFree": 22000, "bands": [[22000, 0], [32000, 0.2], [42000, 0.25], [72000, 0.3], [999999999, 0.35]], "child": [1000, 1250, 1500], "incomeLimits": {"upTo2": 100000, "upTo4": 150000, "more": 200000}, "rentOrMortgageMax": 2000, "greenMax": 1000, "homeInsuranceMax": 500, "source": "https://www.businessincyprus.gov.cy"}, "guide": [{"e": "🤝", "el": "Επιδόματα & συντάξεις", "en": "Benefits & pensions", "items": [{"e": "🏠", "el": "Ελάχιστο Εγγυημένο Εισόδημα", "en": "Guaranteed Minimum Income", "dEl": "Μηνιαία στήριξη για νοικοκυριά με χαμηλό εισόδημα, μαζί με βοήθεια για ενοίκιο ή δάνειο κατοικίας. Αίτηση στο Υφυπουργείο Κοινωνικής Πρόνοιας.", "dEn": "Monthly support for low-income households, plus help with rent or a housing loan. Apply to the Deputy Ministry of Social Welfare.", "url": "https://www.dmsw.gov.cy"}, {"e": "🧓", "el": "Επίδομα χαμηλοσυνταξιούχων", "en": "Low-income pensioners' allowance", "dEl": "Για συνταξιούχους με χαμηλό συνολικό εισόδημα νοικοκυριού. Αν το δικαιούστε, δικαιούστε συνήθως και το φθηνότερο ειδικό τιμολόγιο ρεύματος της ΑΗΚ.", "dEn": "For pensioners with low total household income. If you receive it, you usually also qualify for EAC's cheaper special electricity tariff.", "url": "https://www.dmsw.gov.cy"}, {"e": "👨‍👩‍👧", "el": "Επίδομα τέκνου & μονογονεϊκής οικογένειας", "en": "Child benefit & single-parent benefit", "dEl": "Για οικογένειες με εξαρτώμενα παιδιά, ανάλογα με το εισόδημα. Οι πολύτεκνοι και οι μονογονεϊκές οικογένειες έχουν επιπλέον στήριξη.", "dEn": "For families with dependent children, depending on income. Large families and single parents receive extra support.", "url": "https://www.dmsw.gov.cy"}, {"e": "📜", "el": "Συντάξεις & κοινωνική σύνταξη", "en": "Pensions & social pension", "dEl": "Οι Υπηρεσίες Κοινωνικών Ασφαλίσεων πληρώνουν τις συντάξεις. Όποιος έχει συμπληρώσει τα 65 και δεν δικαιούται σύνταξη ή παίρνει πολύ μικρή, μπορεί να ζητήσει κοινωνική σύνταξη.", "dEn": "Social Insurance Services pay pensions. Anyone aged 65+ who is not entitled to a pension, or receives a very small one, can apply for a social pension.", "url": "https://www.mlsi.gov.cy/mlsi/sid/sidv2.nsf"}]}, {"e": "⚡", "el": "Ρεύμα & σπίτι", "en": "Electricity & home", "items": [{"e": "💡", "el": "Ειδικό φθηνότερο τιμολόγιο ΑΗΚ (κωδικός 08)", "en": "EAC cheaper special tariff (code 08)", "dEl": "Για ευάλωτους πελάτες: δικαιούχους δημοσίου βοηθήματος ή Ελάχιστου Εγγυημένου Εισοδήματος, πολύτεκνους, χαμηλοσυνταξιούχους, μονογονεϊκές οικογένειες, άτομα με σοβαρή κινητική αναπηρία, αιμοκαθαιρόμενους, θύματα πολέμου και ορισμένες σοβαρές παθήσεις. Ζητήστε το από την ΑΗΚ.", "dEn": "For vulnerable customers: recipients of public assistance or Guaranteed Minimum Income, large families, low-income pensioners, single parents, people with severe mobility disability, dialysis patients, war victims and certain serious illnesses. Ask EAC for it.", "url": "https://www.eac.com.cy"}, {"e": "☀️", "el": "Χορηγίες για φωτοβολταϊκά & θερμομόνωση", "en": "Grants for solar panels & insulation", "dEl": "Το Ταμείο ΑΠΕ προκηρύσσει σχέδια χορηγιών για φωτοβολταϊκά και θερμομόνωση οροφής, με μεγαλύτερη χορηγία για ευάλωτα νοικοκυριά. Δείτε ποιο σχέδιο είναι ανοιχτό τώρα.", "dEn": "The RES Fund runs grant schemes for solar panels and roof insulation, with larger grants for vulnerable households. Check which scheme is open now.", "url": "https://resecfund.org.cy"}, {"e": "💶", "el": "Έκπτωση φόρου €1.000 για πράσινες αναβαθμίσεις", "en": "€1,000 tax deduction for green upgrades", "dEl": "Από το 2026, για θερμομόνωση, φωτοβολταϊκά, μπαταρίες ή ηλεκτρικό αυτοκίνητο. Υπολογίστε τι κερδίζετε.", "dEn": "From 2026, for insulation, solar panels, batteries or an electric car. Calculate what you gain.", "route": "rights/tax"}]}, {"e": "🧾", "el": "Αγορές & καταναλωτής", "en": "Shopping & consumer", "items": [{"e": "🛒", "el": "e-kalathi: σύγκριση τιμών σούπερ μάρκετ", "en": "e-kalathi: supermarket price comparison", "dEl": "Η επίσημη πλατφόρμα: φτιάχνετε το καλάθι σας και βλέπετε ποια αλυσίδα είναι φθηνότερη.", "dEn": "The official platform: build your basket and see which chain is cheapest.", "url": "https://www.e-kalathi.gov.cy"}, {"e": "🛡️", "el": "Εγγυήσεις & επιστροφές στην ΕΕ", "en": "Guarantees & returns in the EU", "dEl": "Η νόμιμη εγγύηση 2 ετών, το δικαίωμα επιστροφής 14 ημερών στις αγορές από το ίντερνετ, και τι κάνετε όταν ο πωλητής αρνείται.", "dEn": "The 2-year legal guarantee, the 14-day right to return online purchases, and what to do when the seller refuses.", "url": "https://europa.eu/youreurope/citizens/consumers/shopping/guarantees-returns/index_el.htm"}, {"e": "🤝", "el": "Κυπριακός Σύνδεσμος Καταναλωτών", "en": "Cyprus Consumers Association", "dEl": "Συμβουλές, νομοθεσία και βοήθεια σε παράπονα καταναλωτών.", "dEn": "Advice, legislation and help with consumer complaints.", "url": "https://katanalotis.org.cy"}]}, {"e": "✈️", "el": "Ταξίδια & υγεία", "en": "Travel & health", "items": [{"e": "✈️", "el": "Δικαιώματα επιβατών αεροπλάνου", "en": "Air passenger rights", "dEl": "Αποζημίωση, φαγητό, ξενοδοχείο και επιστροφή χρημάτων σε καθυστερήσεις, ακυρώσεις και χαμένες αποσκευές.", "dEn": "Compensation, meals, hotel and refunds for delays, cancellations and lost luggage.", "url": "https://europa.eu/youreurope/citizens/travel/passenger-rights/air/index_el.htm"}, {"e": "🏥", "el": "ΓεΣΥ – Γενικό Σύστημα Υγείας", "en": "GESY – General Healthcare System", "dEl": "Προσωπικός γιατρός, ειδικοί, εξετάσεις και φάρμακα με μικρή συμμετοχή.", "dEn": "Personal doctor, specialists, tests and medicines with a small co-payment.", "url": "https://www.gesy.org.cy"}, {"e": "💳", "el": "Ευρωπαϊκή Κάρτα Ασφάλισης Υγείας", "en": "European Health Insurance Card", "dEl": "Δωρεάν κάρτα για ιατρική περίθαλψη όταν ταξιδεύετε σε άλλη χώρα της ΕΕ, με τους ίδιους όρους με τους κατοίκους της.", "dEn": "A free card for medical care when travelling in another EU country, on the same terms as residents.", "url": "https://europa.eu/youreurope/citizens/health/unplanned-healthcare/temporary-stays/index_el.htm"}]}, {"e": "🏛️", "el": "Κράτος & φόροι", "en": "Government & tax", "items": [{"e": "💶", "el": "Τμήμα Φορολογίας", "en": "Tax Department", "dEl": "Δήλωση εισοδήματος, επιστροφές φόρου και οι νέες εκπτώσεις του 2026.", "dEn": "Income tax returns, tax refunds and the new 2026 deductions.", "url": "https://www.mof.gov.cy/mof/tax/taxdep.nsf"}, {"e": "🏛️", "el": "gov.cy – όλες οι κρατικές υπηρεσίες", "en": "gov.cy – all government services", "dEl": "Αιτήσεις, πιστοποιητικά και τα Κέντρα Εξυπηρέτησης του Πολίτη.", "dEn": "Applications, certificates and the Citizen Service Centres.", "url": "https://www.gov.cy"}]}]};
 async function loadData(){
   try{
     const r = await fetch("data.json",{cache:"no-cache"});
@@ -790,7 +829,8 @@ const PROJECTS = [
  {e:"🎸", c:"#1f6fd1", url:"https://chords-4all.pages.dev/", n:["Συγχορδίες","Chords"], d:["Οι συγχορδίες κάθε τραγουδιού","Chords of any song"]},
  {e:"🧠", c:"#2f9a46", url:"https://mnimi-sofia.pages.dev/", n:["Μνήμη & Σοφία","Memory & Wisdom"], d:["Παιχνίδια μνήμης","Memory games"]},
  {e:"🛡️", c:"#7a4fd6", url:"https://fylakas.pages.dev/", n:["Φύλακας","Guardian"], d:["Προστασία από απάτες","Protection from scams"]},
- {e:"🎼", c:"#8a5a2b", url:"https://byzantini-mousiki.pages.dev/", n:["Οκτώηχος","Oktoechos"], d:["Βυζαντινή μουσική","Byzantine music"]}
+ {e:"🎼", c:"#8a5a2b", url:"https://byzantini-mousiki.pages.dev/", n:["Οκτώηχος","Oktoechos"], d:["Βυζαντινή μουσική","Byzantine music"]},
+ {e:"📸", c:"#0f8f8a", url:"https://photo-cleanup-christos.pages.dev/", n:["Φωτογραφίες & Flip Album","Photos & Flip Album"], d:["Καθαρισμός φωτογραφιών, άλμπουμ","Photo cleanup, album"]}
 ];
 function fillProjects(){
   const i = L()?0:1;
@@ -1451,126 +1491,300 @@ function renderLinks(){
 }
 
 /* =====================================================================
-   ΤΟ ΨΥΓΕΙΟ ΜΟΥ / MY FRIDGE
+   ΤΟ ΣΠΙΤΙ ΜΟΥ – ΚΕΙΜΕΝΑ / MY HOME – TEXTS
    ===================================================================== */
+Object.assign(T.el,{
+  frName:"Άλλο τρόφιμο", frDate:"Λήγει στις", frQuick:"Πατήστε ό,τι βάλατε στο ψυγείο ή στο ντουλάπι. Η ημερομηνία μπαίνει μόνη της και μπορείτε να την αλλάξετε.",
+  frManual:"Κάτι άλλο;", frAdded:"Προστέθηκε: {n}", frDays:"{n} μ.", frList:"Τι έχω τώρα",
+  emptyFridge:"Το ψυγείο είναι άδειο. Πατήστε ό,τι έχετε από τα κουμπιά πάνω.",
+  ate:"✓ Το φάγαμε", threw:"🗑️ Πετάχτηκε", savedCount:"Φέτος φάγατε στην ώρα τους {n} τρόφιμα 👏",
+  cookIntro:"Διαλέξτε κατηγορία. Αν πατήσετε τι έχετε στο σπίτι, οι συνταγές που ταιριάζουν έρχονται πρώτες.",
+  myIng:"🧺 Τι έχω στο σπίτι", myIngN:"🧺 Τι έχω στο σπίτι ({n} επιλεγμένα)", clearIng:"Καθαρισμός επιλογών",
+  pantry:"Λάδι, αλάτι, πιπέρι, ρίγανη, μπαχαρικά, ξίδι και πελτέ ντομάτας τα θεωρούμε δεδομένα.",
+  have:"Τα έχετε όλα! 🎉", missing:"Λείπουν: {n}", noRecipe:"Δεν βρέθηκε συνταγή με αυτά τα υλικά σε αυτή την κατηγορία.",
+  steps:"Πώς γίνεται", mins:"{n} λεπτά", recN:"{n} συνταγές", ings:"Υλικά",
+  pwTitle2:"Πόσο κοστίζει κάθε συσκευή", billT:"🧾 Ο λογαριασμός ΑΗΚ", billD:"Γράψτε τις κιλοβατώρες (kWh) του διμήνου και δείτε πόσο θα πληρώσετε, με όλες τις χρεώσεις και τον ΦΠΑ, όπως στον λογαριασμό.",
+  billKwh:"Κιλοβατώρες (kWh) σε 2 μήνες", billBtn:"Υπολογισμός λογαριασμού",
+  bEnergy:"Παραγωγή ηλεκτρικής ενέργειας", bNetwork:"Χρήση δικτύου", bMeter:"Διαχείριση μετρητικών δεδομένων", bSupply:"Προμήθεια ηλεκτρικής ενέργειας",
+  bFuel:"Αναπροσαρμογή καυσίμων", bPso:"Υποχρεώσεις δημόσιας υπηρεσίας", bVat:"ΦΠΑ", bRes:"Ταμείο ΑΠΕ & ΕΞΕ", bTotal:"Σύνολο διμήνου",
+  bPerKwh:"Δηλαδή {n} για κάθε κιλοβατώρα, μαζί με τα πάγια.", bMonth:"Περίπου {n} τον μήνα.",
+  pwNoteT:"Τιμή για κάθε επιπλέον κιλοβατώρα: {p} (ενέργεια, δίκτυο, καύσιμα, ΦΠΑ, Ταμείο ΑΠΕ). Τα πάγια ({f} το δίμηνο) πληρώνονται ούτως ή άλλως.",
+  pwFrom:"Τιμές ΑΗΚ, οικιακό τιμολόγιο 01. Αναπροσαρμογή καυσίμων: {n}.",
+  rpType:"Τι χάλασε;", rpAge:"Ηλικία (χρόνια)", rpCost:"Κόστος επισκευής (€)", rpNew:"Τιμή καινούργιου (€)", rpNewV:"Αξία του σήμερα (€)",
+  rpFree:"Είναι κάτω από 2 ετών: αν το αγοράσατε καινούργιο από κατάστημα, ζητήστε ΔΩΡΕΑΝ επισκευή από τον πωλητή (νόμιμη εγγύηση).",
+  rpTip:"💡 Συμβουλή:", rpLife:"Συνηθισμένη ζωή: περίπου {n} χρόνια.",
+  rpRule:"Κανόνας: αν η επισκευή κοστίζει πάνω από το μισό ενός καινούργιου, συνήθως συμφέρει η αντικατάσταση. Ζητήστε πάντα 2 προσφορές επισκευής."
+});
+Object.assign(T.en,{
+  frName:"Other food", frDate:"Expires on", frQuick:"Tap whatever you put in the fridge or cupboard. The date is set automatically and you can change it.",
+  frManual:"Something else?", frAdded:"Added: {n}", frDays:"{n} d", frList:"What I have now",
+  emptyFridge:"The fridge is empty. Tap what you have from the buttons above.",
+  ate:"✓ Eaten", threw:"🗑️ Thrown away", savedCount:"This year you ate {n} foods in time 👏",
+  cookIntro:"Choose a category. If you tap what you have at home, matching recipes come first.",
+  myIng:"🧺 What I have at home", myIngN:"🧺 What I have at home ({n} selected)", clearIng:"Clear selection",
+  pantry:"Oil, salt, pepper, oregano, spices, vinegar and tomato paste are assumed.",
+  have:"You have everything! 🎉", missing:"Missing: {n}", noRecipe:"No recipe found with these ingredients in this category.",
+  steps:"How to make it", mins:"{n} minutes", recN:"{n} recipes", ings:"Ingredients",
+  pwTitle2:"What each appliance costs", billT:"🧾 My EAC bill", billD:"Enter the kilowatt-hours (kWh) for the two months and see what you will pay, with all charges and VAT, as on the bill.",
+  billKwh:"Kilowatt-hours (kWh) in 2 months", billBtn:"Calculate bill",
+  bEnergy:"Electricity generation", bNetwork:"Network use", bMeter:"Meter data management", bSupply:"Electricity supply",
+  bFuel:"Fuel adjustment", bPso:"Public service obligations", bVat:"VAT", bRes:"RES & EE Fund", bTotal:"Two-month total",
+  bPerKwh:"That is {n} per kilowatt-hour, including fixed charges.", bMonth:"About {n} per month.",
+  pwNoteT:"Price of each extra kilowatt-hour: {p} (energy, network, fuel, VAT, RES Fund). Fixed charges ({f} per two months) are paid anyway.",
+  pwFrom:"EAC prices, household tariff 01. Fuel adjustment: {n}.",
+  rpType:"What broke?", rpAge:"Age (years)", rpCost:"Repair cost (€)", rpNew:"Price of a new one (€)", rpNewV:"Value today (€)",
+  rpFree:"It is under 2 years old: if you bought it new from a shop, ask the seller for a FREE repair (legal guarantee).",
+  rpTip:"💡 Tip:", rpLife:"Usual life: about {n} years.",
+  rpRule:"Rule of thumb: if a repair costs more than half the price of a new one, replacing usually pays off. Always ask for 2 repair quotes."
+});
+
+/* =====================================================================
+   ΥΛΙΚΑ / INGREDIENTS   id: [εικονίδιο, ελληνικά, αγγλικά]
+   ===================================================================== */
+const ING = {
+ eggs:["🥚","Αυγά","Eggs"], milk:["🥛","Γάλα","Milk"], yogurt:["🥣","Γιαούρτι","Yoghurt"], butter:["🧈","Βούτυρο","Butter"],
+ cream:["🍶","Κρέμα γάλακτος","Cream"], feta:["🧀","Φέτα","Feta"], halloumi:["🧀","Χαλλούμι","Halloumi"], cheese:["🧀","Κίτρινο τυρί","Hard cheese"],
+ mince:["🥩","Κιμάς","Minced meat"], chicken:["🍗","Κοτόπουλο","Chicken"], pork:["🐖","Χοιρινό","Pork"], beef:["🐄","Μοσχάρι","Beef"],
+ lamb:["🐑","Αρνί","Lamb"], sausage:["🌭","Λουκάνικα","Sausages"], ham:["🥓","Ζαμπόν / λούντζα","Ham / lountza"],
+ fish:["🐟","Ψάρι","Fish"], cod:["🐠","Μπακαλιάρος","Salt cod"], shrimp:["🦐","Γαρίδες","Shrimps"], squid:["🦑","Καλαμάρια","Squid"], tuna:["🥫","Τόνος κονσέρβα","Tinned tuna"],
+ pasta:["🍝","Μακαρόνια","Pasta"], orzo:["🍜","Κριθαράκι","Orzo"], rice:["🍚","Ρύζι","Rice"], bulgur:["🌾","Πουργούρι","Bulgur"], trahanas:["🥣","Τραχανάς","Trahanas"],
+ flour:["🌾","Αλεύρι","Flour"], semolina:["🌾","Σιμιγδάλι","Semolina"], bread:["🍞","Ψωμί","Bread"], phyllo:["🥟","Φύλλο κρούστας","Filo pastry"],
+ lentils:["🫘","Φακές","Lentils"], beans:["🫘","Φασόλια","Beans"], blackeyed:["🫘","Λουβί","Black-eyed beans"], chickpeas:["🫘","Ρεβίθια","Chickpeas"], fava:["🟡","Φάβα","Split peas"],
+ potato:["🥔","Πατάτες","Potatoes"], tomato:["🍅","Ντομάτες","Tomatoes"], onion:["🧅","Κρεμμύδι","Onion"], garlic:["🧄","Σκόρδο","Garlic"],
+ pepper:["🫑","Πιπεριές","Peppers"], zucchini:["🥒","Κολοκυθάκια","Courgettes"], eggplant:["🍆","Μελιτζάνες","Aubergines"], cucumber:["🥒","Αγγούρι","Cucumber"],
+ carrot:["🥕","Καρότα","Carrots"], celery:["🌿","Σέλινο","Celery"], leek:["🧅","Πράσο","Leek"], spinach:["🥬","Σπανάκι / λάχανα","Spinach / greens"],
+ lettuce:["🥬","Μαρούλι","Lettuce"], cabbage:["🥬","Λάχανο","Cabbage"], cauliflower:["🥦","Κουνουπίδι","Cauliflower"], broccoli:["🥦","Μπρόκολο","Broccoli"],
+ mushrooms:["🍄","Μανιτάρια","Mushrooms"], greenbeans:["🫛","Φασολάκια","Green beans"], okra:["🌿","Μπάμιες","Okra"], artichoke:["🌿","Αγκινάρες","Artichokes"],
+ colocasia:["🥔","Κολοκάσι","Colocasia (taro)"], pumpkin:["🎃","Κολοκύθα","Pumpkin"], herbs:["🌿","Μαϊντανός / άνηθος / δυόσμος","Parsley / dill / mint"],
+ vineleaves:["🍃","Αμπελόφυλλα","Vine leaves"], olives:["🫒","Ελιές","Olives"], lemon:["🍋","Λεμόνι","Lemon"], orange:["🍊","Πορτοκάλια","Oranges"],
+ apple:["🍎","Μήλα","Apples"], banana:["🍌","Μπανάνες","Bananas"], honey:["🍯","Μέλι","Honey"], sugar:["🍬","Ζάχαρη","Sugar"], nuts:["🥜","Καρύδια / αμύγδαλα","Walnuts / almonds"],
+ wine:["🍷","Κρασί","Wine"]
+};
+
+/* =====================================================================
+   ΣΥΝΤΑΓΕΣ / RECIPES   R(κατηγορία, ελληνικά, αγγλικά, "υλικά", λεπτά, "βήματα|…", "steps|…")
+   ===================================================================== */
+const CATS = {
+ all:["🍽️","Όλες","All"], kima:["🥩","Με κιμά","With mince"], meat:["🍖","Κρεατικά","Meat"], chicken:["🍗","Κοτόπουλο","Chicken"],
+ pasta:["🍝","Ζυμαρικά & ρύζι","Pasta & rice"], fish:["🐟","Ψάρια & θαλασσινά","Fish & seafood"], legumes:["🫘","Όσπρια","Pulses"],
+ lathera:["🥗","Λαδερά & λαχανικά","Vegetable dishes"], soup:["🍲","Σούπες","Soups"], salad:["🥒","Σαλάτες & ορεκτικά","Salads & dips"],
+ eggs:["🍳","Αυγά & γρήγορα","Eggs & quick"], pies:["🥧","Πίτες & φούρνου","Pies & bakes"], cy:["🇨🇾","Κυπριακά","Cypriot"], sweet:["🍰","Γλυκά","Sweets"]
+};
+const RECIPES=[];
+function R(c,ne,nn,i,t,se,sn){ RECIPES.push({c,n:[ne,nn],i:i.split(" "),t,s:[se.split("|"),sn.split("|")]}); }
+
+/* --- Με κιμά --- */
+R("kima","Κεφτέδες","Meatballs","mince bread onion eggs herbs",40,"Μουσκέψτε το ψωμί και στύψτε το.|Ζυμώστε κιμά, ψωμί, τριμμένο κρεμμύδι, αυγό, δυόσμο, αλάτι και πιπέρι.|Πλάστε μπαλάκια, αλευρώστε και τηγανίστε ή ψήστε στους 200°C για 25 λεπτά.","Soak the bread and squeeze it.|Knead the mince with bread, grated onion, egg, mint, salt and pepper.|Shape into balls, flour them and fry, or bake at 200°C for 25 minutes.");
+R("kima","Μακαρόνια με κιμά","Spaghetti with mince sauce","pasta mince tomato onion",45,"Τσιγαρίστε κρεμμύδι και κιμά μέχρι να ροδίσει.|Ρίξτε ντομάτα, κανέλα, δάφνη και σιγοβράστε 30 λεπτά.|Σερβίρετε με βρασμένα μακαρόνια και τριμμένο τυρί.","Brown the onion and mince.|Add tomato, cinnamon and a bay leaf; simmer for 30 minutes.|Serve with boiled pasta and grated cheese.");
+R("kima","Παστίτσιο","Pastitsio","pasta mince tomato onion milk butter flour cheese",90,"Ετοιμάστε σάλτσα κιμά με ντομάτα και κρεμμύδι.|Βράστε χοντρά μακαρόνια, ανακατέψτε με λίγο τυρί και στρώστε τα μισά στο ταψί, μετά τον κιμά και τα υπόλοιπα μακαρόνια.|Κάντε μπεσαμέλ με βούτυρο, αλεύρι και γάλα, ρίξτε την από πάνω και ψήστε στους 180°C για 45 λεπτά.","Make a mince sauce with tomato and onion.|Boil thick pasta, mix with a little cheese; layer half in a tray, then the mince, then the rest of the pasta.|Make béchamel with butter, flour and milk, pour over and bake at 180°C for 45 minutes.");
+R("kima","Μουσακάς","Moussaka","eggplant potato mince tomato onion milk butter flour",120,"Κόψτε μελιτζάνες και πατάτες σε φέτες και ψήστε τες λαδωμένες στον φούρνο.|Ετοιμάστε σάλτσα κιμά με ντομάτα, κρεμμύδι και κανέλα.|Στρώστε πατάτες, μελιτζάνες, κιμά, ρίξτε μπεσαμέλ από πάνω και ψήστε στους 180°C για 45 λεπτά.","Slice aubergines and potatoes and roast them with oil.|Make a mince sauce with tomato, onion and cinnamon.|Layer potatoes, aubergines and mince, top with béchamel and bake at 180°C for 45 minutes.");
+R("kima","Γιουβαρλάκια αυγολέμονο","Meatball soup with egg-lemon","mince rice onion eggs lemon herbs",50,"Ζυμώστε κιμά, ρύζι, κρεμμύδι, άνηθο και αλάτι και πλάστε μπαλάκια.|Βράστε τα σε νερό 35 λεπτά.|Χτυπήστε αυγά με λεμόνι, ρίξτε σιγά σιγά ζωμό και μετά όλο στην κατσαρόλα, χωρίς να βράσει ξανά.","Mix mince, rice, onion, dill and salt and shape small balls.|Simmer in water for 35 minutes.|Beat eggs with lemon, temper with hot broth, then stir into the pot without boiling again.");
+R("kima","Σουτζουκάκια σμυρνέικα","Smyrna meat rolls","mince bread garlic eggs tomato",50,"Ζυμώστε κιμά, μουσκεμένο ψωμί, σκόρδο, κύμινο, αυγό και αλάτι.|Πλάστε μακρόστενα σουτζουκάκια και ψήστε τα 15 λεπτά.|Σιγοβράστε τα σε σάλτσα ντομάτας 20 λεπτά. Σερβίρετε με ρύζι ή πατάτες.","Knead mince, soaked bread, garlic, cumin, egg and salt.|Shape long rolls and bake for 15 minutes.|Simmer in tomato sauce for 20 minutes. Serve with rice or potatoes.");
+R("kima","Μπιφτέκια","Burgers (biftekia)","mince onion bread eggs",30,"Ζυμώστε κιμά, τριμμένο κρεμμύδι, ψωμί, αυγό, ρίγανη και αλάτι.|Πλάστε στρογγυλά μπιφτέκια.|Ψήστε στη σχάρα ή στο τηγάνι 5–6 λεπτά από κάθε πλευρά.","Knead mince, grated onion, bread, egg, oregano and salt.|Shape round patties.|Grill or pan-fry for 5–6 minutes per side.");
+R("kima","Κολοκυθάκια γεμιστά με κιμά","Courgettes stuffed with mince","zucchini mince rice onion tomato",70,"Αδειάστε τα κολοκυθάκια.|Ανακατέψτε κιμά, ρύζι, κρεμμύδι, την ψίχα, άνηθο και αλάτι και γεμίστε.|Βάλτε τα σε κατσαρόλα με ντομάτα και νερό και σιγοβράστε 45 λεπτά.","Hollow out the courgettes.|Mix mince, rice, onion, the pulp, dill and salt; stuff them.|Place in a pot with tomato and water and simmer for 45 minutes.");
+R("kima","Κιμάς με πατάτες στον φούρνο","Baked potatoes with mince","mince potato tomato onion",60,"Τσιγαρίστε κρεμμύδι και κιμά, ρίξτε ντομάτα.|Ανακατέψτε με πατάτες σε κύβους σε ταψί.|Ψήστε στους 200°C για 45 λεπτά.","Brown onion and mince, add tomato.|Mix with diced potatoes in a tray.|Bake at 200°C for 45 minutes.");
+
+/* --- Κρεατικά --- */
+R("meat","Χοιρινές μπριζόλες με λεμόνι","Pork chops with lemon","pork lemon garlic",25,"Αλατοπιπερώστε τις μπριζόλες.|Ψήστε τες σε καυτό τηγάνι 5 λεπτά από κάθε πλευρά.|Σβήστε με λεμόνι και λίγο σκόρδο.","Season the chops.|Cook in a hot pan for 5 minutes per side.|Finish with lemon and a little garlic.");
+R("meat","Χοιρινό με σέλινο αυγολέμονο","Pork with celery, egg-lemon","pork celery onion eggs lemon",90,"Σοτάρετε το χοιρινό με κρεμμύδι και προσθέστε νερό.|Σιγοβράστε 1 ώρα, ρίξτε το σέλινο για άλλα 20 λεπτά.|Δέστε με αυγολέμονο, χωρίς να βράσει ξανά.","Brown the pork with onion and add water.|Simmer for 1 hour; add the celery for 20 more minutes.|Finish with egg-lemon sauce without boiling again.");
+R("meat","Σουβλάκια χοιρινά","Pork souvlaki","pork lemon onion bread",30,"Κόψτε το χοιρινό σε κύβους και μαρινάρετε με λάδι, λεμόνι και ρίγανη.|Περάστε σε καλαμάκια.|Ψήστε στη σχάρα ή στο τηγάνι 12 λεπτά. Σερβίρετε με πίτα και κρεμμύδι.","Cube the pork and marinate with oil, lemon and oregano.|Thread onto skewers.|Grill or pan-fry for 12 minutes. Serve with pitta and onion.");
+R("meat","Μοσχάρι κοκκινιστό με μακαρόνια","Beef in tomato sauce with pasta","beef tomato onion pasta",120,"Σοτάρετε το μοσχάρι και το κρεμμύδι.|Ρίξτε ντομάτα, κανέλα, γαρίφαλο και νερό και σιγοβράστε 1,5 ώρα.|Σερβίρετε με μακαρόνια και τυρί.","Brown the beef and onion.|Add tomato, cinnamon, cloves and water; simmer for 1.5 hours.|Serve with pasta and cheese.");
+R("meat","Μοσχάρι στιφάδο","Beef stifado","beef onion tomato garlic wine",150,"Σοτάρετε το μοσχάρι και σβήστε με κρασί.|Προσθέστε πολλά μικρά κρεμμύδια, σκόρδο, ντομάτα, δάφνη και κανέλα.|Σιγοβράστε 2 ώρες μέχρι να μαλακώσει.","Brown the beef and deglaze with wine.|Add plenty of small onions, garlic, tomato, bay leaf and cinnamon.|Simmer for 2 hours until tender.");
+R("meat","Γιουβέτσι με μοσχάρι","Beef giouvetsi with orzo","beef orzo tomato onion",120,"Σιγοβράστε το μοσχάρι με κρεμμύδι και ντομάτα 1 ώρα.|Βάλτε το σε γάστρα με το κριθαράκι και ζεστό νερό.|Ψήστε στους 180°C για 40 λεπτά, ανακατεύοντας μία φορά.","Simmer the beef with onion and tomato for 1 hour.|Put it in a clay dish with the orzo and hot water.|Bake at 180°C for 40 minutes, stirring once.");
+R("meat","Αρνί στον φούρνο με πατάτες","Roast lamb with potatoes","lamb potato lemon garlic",150,"Βάλτε αρνί και πατάτες σε ταψί.|Ρίξτε λεμόνι, σκόρδο, ρίγανη, λάδι, αλάτι και ένα ποτήρι νερό.|Σκεπάστε και ψήστε στους 180°C για 2 ώρες· ξεσκεπάστε το τελευταίο μισάωρο.","Put the lamb and potatoes in a tray.|Add lemon, garlic, oregano, oil, salt and a glass of water.|Cover and roast at 180°C for 2 hours; uncover for the last half hour.");
+R("meat","Αρνί φρικασέ","Lamb fricassée","lamb lettuce onion herbs eggs lemon",90,"Σοτάρετε το αρνί, προσθέστε νερό και σιγοβράστε 1 ώρα.|Ρίξτε μαρούλι, φρέσκο κρεμμυδάκι και άνηθο για 15 λεπτά.|Δέστε με αυγολέμονο.","Brown the lamb, add water and simmer for 1 hour.|Add lettuce, spring onion and dill for 15 minutes.|Finish with egg-lemon sauce.");
+R("meat","Σπετζοφάι","Sausages with peppers","sausage pepper tomato onion",40,"Κόψτε τα λουκάνικα σε ροδέλες και τσιγαρίστε τα.|Προσθέστε πιπεριές και κρεμμύδι.|Ρίξτε ντομάτα και σιγοβράστε 20 λεπτά.","Slice the sausages and brown them.|Add peppers and onion.|Add tomato and simmer for 20 minutes.");
+
+/* --- Κοτόπουλο --- */
+R("chicken","Κοτόπουλο λεμονάτο με πατάτες","Lemon chicken with potatoes","chicken potato lemon garlic",75,"Βάλτε κοτόπουλο και πατάτες σε ταψί.|Ρίξτε λεμόνι, σκόρδο, λάδι, ρίγανη και ένα ποτήρι νερό.|Ψήστε στους 200°C για περίπου 1 ώρα.","Put the chicken and potatoes in a tray.|Add lemon, garlic, oil, oregano and a glass of water.|Bake at 200°C for about 1 hour.");
+R("chicken","Κοτόπουλο κοκκινιστό με μακαρόνια","Chicken in tomato sauce with pasta","chicken tomato onion pasta",60,"Σοτάρετε το κοτόπουλο με κρεμμύδι.|Ρίξτε ντομάτα, κανέλα και νερό και σιγοβράστε 40 λεπτά.|Σερβίρετε με μακαρόνια.","Brown the chicken with onion.|Add tomato, cinnamon and water; simmer for 40 minutes.|Serve with pasta.");
+R("chicken","Κοτόπουλο με μπάμιες","Chicken with okra","chicken okra tomato onion",70,"Ραντίστε τις μπάμιες με ξίδι και αφήστε τες 30 λεπτά.|Σοτάρετε κοτόπουλο και κρεμμύδι, ρίξτε ντομάτα.|Προσθέστε τις μπάμιες και σιγοβράστε 30 λεπτά χωρίς να ανακατεύετε.","Sprinkle the okra with vinegar and leave for 30 minutes.|Brown the chicken and onion, add tomato.|Add the okra and simmer for 30 minutes without stirring.");
+R("chicken","Κοτόπουλο πιλάφι","Chicken pilaf","chicken rice onion butter",60,"Βράστε το κοτόπουλο με κρεμμύδι 40 λεπτά.|Ρίξτε το ρύζι στον ζωμό (2 μέρη ζωμό, 1 ρύζι) για 18 λεπτά.|Ρίξτε βούτυρο και σερβίρετε.","Boil the chicken with onion for 40 minutes.|Cook the rice in the broth (2 parts broth, 1 rice) for 18 minutes.|Add butter and serve.");
+R("chicken","Γιουβέτσι με κοτόπουλο","Chicken giouvetsi with orzo","chicken orzo tomato onion",70,"Σοτάρετε το κοτόπουλο με κρεμμύδι και ντομάτα.|Βάλτε το σε ταψί με το κριθαράκι και ζεστό νερό.|Ψήστε στους 180°C για 40 λεπτά.","Brown the chicken with onion and tomato.|Put it in a tray with the orzo and hot water.|Bake at 180°C for 40 minutes.");
+R("chicken","Κοτομπουκιές στον φούρνο","Oven chicken nuggets","chicken eggs bread",35,"Κόψτε το στήθος σε κομμάτια.|Βουτήξτε σε αυγό και μετά σε τριμμένη φρυγανιά.|Ψήστε στους 200°C για 20 λεπτά.","Cut the breast into pieces.|Dip in egg, then in breadcrumbs.|Bake at 200°C for 20 minutes.");
+R("chicken","Κοτόπουλο με μανιτάρια και κρέμα","Chicken with mushrooms and cream","chicken mushrooms cream onion",35,"Σοτάρετε το κοτόπουλο σε κομμάτια.|Προσθέστε κρεμμύδι και μανιτάρια.|Ρίξτε κρέμα γάλακτος και σιγοβράστε 10 λεπτά.","Brown the chicken pieces.|Add onion and mushrooms.|Pour in the cream and simmer for 10 minutes.");
+
+/* --- Ζυμαρικά & ρύζι --- */
+R("pasta","Μακαρόνια με σάλτσα ντομάτας","Pasta with tomato sauce","pasta tomato onion garlic",25,"Τσιγαρίστε κρεμμύδι και σκόρδο, ρίξτε ντομάτα και σιγοβράστε 15 λεπτά.|Βράστε τα μακαρόνια.|Ανακατέψτε και σερβίρετε με τυρί.","Sauté onion and garlic, add tomato and simmer for 15 minutes.|Boil the pasta.|Mix and serve with cheese.");
+R("pasta","Καρμπονάρα","Carbonara","pasta eggs ham cheese",20,"Τσιγαρίστε το ζαμπόν σε κομματάκια.|Χτυπήστε αυγά με τριμμένο τυρί και πιπέρι.|Ανακατέψτε τα ζεστά μακαρόνια με το ζαμπόν και το αυγό, μακριά από τη φωτιά.","Fry the chopped ham.|Beat eggs with grated cheese and pepper.|Toss the hot pasta with the ham and egg, off the heat.");
+R("pasta","Μακαρόνια με μανιτάρια","Pasta with mushrooms","pasta mushrooms cream garlic",25,"Σοτάρετε μανιτάρια και σκόρδο.|Ρίξτε κρέμα γάλακτος για 5 λεπτά.|Ανακατέψτε με βρασμένα μακαρόνια.","Sauté mushrooms and garlic.|Add cream for 5 minutes.|Toss with boiled pasta.");
+R("pasta","Μακαρόνια με τόνο","Pasta with tuna","pasta tuna tomato garlic",20,"Τσιγαρίστε σκόρδο, ρίξτε ντομάτα για 10 λεπτά.|Προσθέστε τον τόνο.|Ανακατέψτε με βρασμένα μακαρόνια.","Sauté garlic, add tomato for 10 minutes.|Add the tuna.|Toss with boiled pasta.");
+R("pasta","Πιλάφι με ντομάτα","Tomato pilaf","rice tomato onion butter",30,"Τσιγαρίστε το κρεμμύδι σε βούτυρο.|Ρίξτε ρύζι, ντομάτα και διπλάσιο νερό.|Σιγοβράστε 18 λεπτά σκεπασμένο.","Sauté the onion in butter.|Add rice, tomato and twice as much water.|Simmer covered for 18 minutes.");
+R("pasta","Κριθαρότο με λαχανικά","Orzo with vegetables","orzo zucchini carrot onion cheese",30,"Σοτάρετε κρεμμύδι, καρότο και κολοκυθάκι.|Ρίξτε το κριθαράκι και ζεστό νερό σιγά σιγά, ανακατεύοντας.|Τελειώστε με τριμμένο τυρί.","Sauté onion, carrot and courgette.|Add the orzo and hot water little by little, stirring.|Finish with grated cheese.");
+R("pasta","Μακαρόνια με βούτυρο και τυρί","Pasta with butter and cheese","pasta butter cheese",15,"Βράστε τα μακαρόνια.|Κάψτε λίγο βούτυρο σε τηγάνι.|Ρίξτε το πάνω στα μακαρόνια με πολύ τριμμένο τυρί.","Boil the pasta.|Brown some butter in a pan.|Pour over the pasta with plenty of grated cheese.");
+
+/* --- Ψάρια & θαλασσινά --- */
+R("fish","Ψάρι στον φούρνο με λεμόνι","Baked fish with lemon","fish lemon potato garlic",45,"Βάλτε πατάτες σε φέτες στο ταψί και το ψάρι από πάνω.|Ρίξτε λεμόνι, σκόρδο, λάδι και αλάτι.|Ψήστε στους 200°C για 30–35 λεπτά.","Put sliced potatoes in a tray with the fish on top.|Add lemon, garlic, oil and salt.|Bake at 200°C for 30–35 minutes.");
+R("fish","Ψάρι πλακί","Fish plaki","fish tomato onion garlic potato",60,"Σοτάρετε κρεμμύδι και σκόρδο, ρίξτε ντομάτα και μαϊντανό.|Στρώστε πατάτες και ψάρι σε ταψί και ρίξτε τη σάλτσα.|Ψήστε στους 190°C για 40 λεπτά.","Sauté onion and garlic, add tomato and parsley.|Layer potatoes and fish in a tray and pour over the sauce.|Bake at 190°C for 40 minutes.");
+R("fish","Μπακαλιάρος σκορδαλιά","Salt cod with garlic dip","cod flour potato garlic",40,"Ξαρμυρίστε τον μπακαλιάρο σε νερό από την προηγούμενη μέρα.|Βουτήξτε τον σε κουρκούτι (αλεύρι και νερό) και τηγανίστε.|Για τη σκορδαλιά, λιώστε βρασμένες πατάτες με σκόρδο, λάδι και ξίδι.","Soak the salt cod in water from the day before.|Dip in batter (flour and water) and fry.|For the dip, mash boiled potatoes with garlic, oil and vinegar.");
+R("fish","Γαρίδες σαγανάκι","Shrimp saganaki","shrimp tomato feta garlic",25,"Σοτάρετε σκόρδο και ρίξτε ντομάτα για 10 λεπτά.|Προσθέστε τις γαρίδες για 4 λεπτά.|Θρυμματίστε φέτα από πάνω και σερβίρετε.","Sauté garlic and add tomato for 10 minutes.|Add the shrimps for 4 minutes.|Crumble feta on top and serve.");
+R("fish","Γαριδομακαρονάδα","Shrimp pasta","shrimp pasta tomato garlic",30,"Σοτάρετε σκόρδο και γαρίδες.|Ρίξτε ντομάτα και σιγοβράστε 10 λεπτά.|Ανακατέψτε με βρασμένα μακαρόνια.","Sauté garlic and shrimps.|Add tomato and simmer for 10 minutes.|Toss with boiled pasta.");
+R("fish","Καλαμαράκια τηγανητά","Fried squid","squid flour lemon",25,"Κόψτε τα καλαμάρια σε ροδέλες.|Αλευρώστε τα και τηγανίστε σε καυτό λάδι 2–3 λεπτά.|Σερβίρετε με λεμόνι.","Cut the squid into rings.|Flour them and fry in hot oil for 2–3 minutes.|Serve with lemon.");
+R("fish","Ψαρόσουπα","Fish soup","fish potato carrot onion celery lemon",60,"Βράστε πατάτες, καρότο, κρεμμύδι και σέλινο 25 λεπτά.|Προσθέστε το ψάρι για 15 λεπτά.|Ρίξτε λάδι και λεμόνι στο τέλος.","Boil potatoes, carrot, onion and celery for 25 minutes.|Add the fish for 15 minutes.|Add oil and lemon at the end.");
+
+/* --- Όσπρια --- */
+R("legumes","Φακές σούπα","Lentil soup","lentils onion carrot garlic tomato",45,"Βράστε τις φακές 5 λεπτά και πετάξτε το νερό.|Προσθέστε φρέσκο νερό, κρεμμύδι, καρότο, σκόρδο, ντομάτα και δάφνη.|Σιγοβράστε 35 λεπτά, ρίξτε λάδι και ξίδι στο τέλος.","Boil the lentils for 5 minutes and drain.|Add fresh water, onion, carrot, garlic, tomato and a bay leaf.|Simmer for 35 minutes; add oil and vinegar at the end.");
+R("legumes","Φασολάδα","Bean soup","beans carrot onion celery tomato",90,"Μουλιάστε τα φασόλια από το βράδυ.|Βράστε τα με κρεμμύδι, καρότο, σέλινο και ντομάτα μέχρι να μαλακώσουν.|Ρίξτε λάδι και αλάτι στο τέλος.","Soak the beans overnight.|Boil with onion, carrot, celery and tomato until soft.|Add oil and salt at the end.");
+R("legumes","Ρεβιθάδα","Chickpea stew","chickpeas onion lemon",120,"Μουλιάστε τα ρεβίθια από το βράδυ.|Βράστε τα με πολύ κρεμμύδι και λάδι μέχρι να λιώσουν (ή σε γάστρα στον φούρνο).|Σερβίρετε με λεμόνι.","Soak the chickpeas overnight.|Cook with plenty of onion and oil until very soft (or in a clay pot in the oven).|Serve with lemon.");
+R("legumes","Φάβα","Fava (split pea purée)","fava onion lemon",50,"Βράστε τη φάβα με κρεμμύδι, ξαφρίζοντας.|Σιγοβράστε μέχρι να λιώσει και χτυπήστε τη.|Σερβίρετε με λάδι, λεμόνι και ψιλοκομμένο κρεμμύδι.","Boil the split peas with onion, skimming the foam.|Simmer until mushy and whisk smooth.|Serve with oil, lemon and chopped onion.");
+R("legumes","Γίγαντες στον φούρνο","Baked giant beans","beans tomato onion herbs",120,"Μουλιάστε και βράστε τους γίγαντες μέχρι να μαλακώσουν.|Ανακατέψτε με σάλτσα ντομάτας, κρεμμύδι και μαϊντανό σε ταψί.|Ψήστε στους 180°C για 40 λεπτά.","Soak and boil the giant beans until soft.|Mix with tomato sauce, onion and parsley in a tray.|Bake at 180°C for 40 minutes.");
+
+/* --- Λαδερά & λαχανικά --- */
+R("lathera","Φασολάκια λαδερά","Green beans in tomato sauce","greenbeans potato tomato onion",50,"Τσιγαρίστε το κρεμμύδι σε λάδι.|Προσθέστε φασολάκια, πατάτες, ντομάτα και λίγο νερό.|Σιγοβράστε 40 λεπτά μέχρι να μείνουν με το λάδι τους.","Sauté the onion in oil.|Add green beans, potatoes, tomato and a little water.|Simmer for 40 minutes until the sauce thickens.");
+R("lathera","Μπριάμ","Briam (roasted vegetables)","zucchini eggplant potato tomato onion pepper",70,"Κόψτε όλα τα λαχανικά σε κομμάτια.|Ανακατέψτε τα σε ταψί με λάδι, αλάτι και τριμμένη ντομάτα.|Ψήστε στους 190°C για περίπου 1 ώρα.","Cut all the vegetables into pieces.|Mix in a tray with oil, salt and grated tomato.|Bake at 190°C for about 1 hour.");
+R("lathera","Γεμιστά","Stuffed vegetables","tomato pepper rice onion zucchini",90,"Αδειάστε ντομάτες, πιπεριές και κολοκυθάκια.|Ανακατέψτε ρύζι, κρεμμύδι, την ψίχα της ντομάτας, δυόσμο, λάδι και αλάτι.|Γεμίστε τα και ψήστε στους 190°C για περίπου 1 ώρα και 15 λεπτά.","Hollow out tomatoes, peppers and courgettes.|Mix rice, onion, the tomato pulp, mint, oil and salt.|Stuff and bake at 190°C for about 1 hour 15 minutes.");
+R("lathera","Μπάμιες λαδερές","Okra in tomato sauce","okra tomato onion",60,"Ραντίστε τις μπάμιες με ξίδι και αφήστε τες 30 λεπτά.|Τσιγαρίστε κρεμμύδι και ρίξτε ντομάτα.|Προσθέστε τις μπάμιες και σιγοβράστε 30 λεπτά χωρίς ανακάτεμα.","Sprinkle the okra with vinegar and leave for 30 minutes.|Sauté onion and add tomato.|Add the okra and simmer for 30 minutes without stirring.");
+R("lathera","Αγκινάρες α λα πολίτα","Artichokes à la polita","artichoke potato carrot onion lemon herbs",50,"Σοτάρετε κρεμμύδι, καρότα και πατάτες.|Προσθέστε τις αγκινάρες, λεμόνι, άνηθο και νερό.|Σιγοβράστε 30 λεπτά.","Sauté onion, carrots and potatoes.|Add the artichokes, lemon, dill and water.|Simmer for 30 minutes.");
+R("lathera","Ιμάμ μπαϊλντί","Imam bayildi (stuffed aubergines)","eggplant onion tomato garlic",70,"Τηγανίστε ή ψήστε τις μελιτζάνες ολόκληρες και ανοίξτε τες στη μέση.|Γεμίστε τες με κρεμμύδι, σκόρδο και ντομάτα σοταρισμένα.|Ψήστε στους 180°C για 40 λεπτά.","Fry or roast the whole aubergines and slit them open.|Fill with sautéed onion, garlic and tomato.|Bake at 180°C for 40 minutes.");
+R("lathera","Κουνουπίδι στιφάδο","Cauliflower stew","cauliflower onion tomato",50,"Τσιγαρίστε πολλά κρεμμύδια.|Ρίξτε ντομάτα και το κουνουπίδι σε φουντίτσες.|Σιγοβράστε 30 λεπτά.","Sauté plenty of onions.|Add tomato and the cauliflower florets.|Simmer for 30 minutes.");
+R("lathera","Κολοκυθοκεφτέδες","Courgette fritters","zucchini feta eggs flour herbs",40,"Τρίψτε τα κολοκυθάκια και στύψτε το νερό τους.|Ανακατέψτε με φέτα, αυγό, αλεύρι και δυόσμο.|Τηγανίστε κουταλιές ή ψήστε στον φούρνο.","Grate the courgettes and squeeze out the water.|Mix with feta, egg, flour and mint.|Fry spoonfuls or bake in the oven.");
+R("lathera","Πατάτες γιαχνί","Potatoes in tomato sauce","potato tomato onion",50,"Τσιγαρίστε το κρεμμύδι.|Ρίξτε πατάτες σε κομμάτια, ντομάτα και νερό.|Σιγοβράστε 35 λεπτά.","Sauté the onion.|Add potato chunks, tomato and water.|Simmer for 35 minutes.");
+R("lathera","Σπανακόρυζο","Spinach rice","spinach rice onion lemon herbs",30,"Τσιγαρίστε το κρεμμύδι και το σπανάκι.|Ρίξτε το ρύζι, άνηθο και διπλάσιο νερό, βράστε 18 λεπτά.|Σερβίρετε με λεμόνι.","Sauté the onion and spinach.|Add the rice, dill and twice as much water; cook for 18 minutes.|Serve with lemon.");
+R("lathera","Λαχανόρυζο","Cabbage rice","cabbage rice tomato onion",40,"Τσιγαρίστε κρεμμύδι και ψιλοκομμένο λάχανο.|Ρίξτε ρύζι, ντομάτα και νερό.|Σιγοβράστε 20 λεπτά.","Sauté onion and shredded cabbage.|Add rice, tomato and water.|Simmer for 20 minutes.");
+R("lathera","Πρασόρυζο","Leek rice","leek rice lemon",35,"Τσιγαρίστε τα πράσα σε ροδέλες.|Ρίξτε ρύζι και νερό και σιγοβράστε 20 λεπτά.|Σερβίρετε με λεμόνι.","Sauté the sliced leeks.|Add rice and water and simmer for 20 minutes.|Serve with lemon.");
+
+/* --- Σούπες --- */
+R("soup","Κοτόσουπα αυγολέμονο","Chicken soup with egg-lemon","chicken rice eggs lemon carrot",75,"Βράστε το κοτόπουλο με το καρότο περίπου 1 ώρα.|Ρίξτε το ρύζι στον ζωμό για 15 λεπτά.|Χτυπήστε αυγά με λεμόνι, ρίξτε σιγά σιγά ζεστό ζωμό και μετά όλο στην κατσαρόλα, χωρίς να βράσει ξανά.","Boil the chicken with the carrot for about 1 hour.|Add the rice to the broth for 15 minutes.|Beat eggs with lemon, temper with hot broth, then stir into the pot without boiling again.");
+R("soup","Σούπα λαχανικών","Vegetable soup","carrot potato onion zucchini celery",40,"Κόψτε όλα τα λαχανικά σε κύβους.|Βράστε τα σε νερό με αλάτι 30 λεπτά.|Ρίξτε λάδι και λίγο λεμόνι στο τέλος.","Dice all the vegetables.|Boil in salted water for 30 minutes.|Add oil and a little lemon at the end.");
+R("soup","Σούπα κολοκύθας","Pumpkin soup","pumpkin onion potato cream",40,"Σοτάρετε το κρεμμύδι.|Βράστε κολοκύθα και πατάτα σε νερό 25 λεπτά.|Χτυπήστε στο μπλέντερ και ρίξτε λίγη κρέμα.","Sauté the onion.|Boil pumpkin and potato in water for 25 minutes.|Blend and stir in a little cream.");
+R("soup","Μανιταρόσουπα","Mushroom soup","mushrooms onion cream potato",35,"Σοτάρετε κρεμμύδι και μανιτάρια.|Ρίξτε πατάτα και νερό και βράστε 20 λεπτά.|Χτυπήστε στο μπλέντερ και ρίξτε κρέμα.","Sauté onion and mushrooms.|Add potato and water and boil for 20 minutes.|Blend and add cream.");
+R("soup","Ντοματόσουπα με κριθαράκι","Tomato soup with orzo","tomato orzo onion",30,"Τσιγαρίστε το κρεμμύδι και ρίξτε τη ντομάτα.|Προσθέστε νερό και το κριθαράκι.|Βράστε 15 λεπτά και σερβίρετε με τυρί.","Sauté the onion and add the tomato.|Add water and the orzo.|Boil for 15 minutes and serve with cheese.");
+
+/* --- Σαλάτες & ορεκτικά --- */
+R("salad","Χωριάτικη σαλάτα","Greek village salad","tomato cucumber onion feta pepper olives",10,"Κόψτε ντομάτα, αγγούρι, κρεμμύδι και πιπεριά.|Βάλτε ελιές και φέτα από πάνω, λάδι και ρίγανη.","Cut tomato, cucumber, onion and pepper.|Top with olives and feta, olive oil and oregano.");
+R("salad","Τζατζίκι","Tzatziki","yogurt cucumber garlic",10,"Τρίψτε το αγγούρι και στύψτε το νερό του.|Ανακατέψτε με γιαούρτι, σκόρδο, λάδι και λίγο ξίδι.","Grate the cucumber and squeeze out the water.|Mix with yoghurt, garlic, oil and a little vinegar.");
+R("salad","Πατατοσαλάτα","Potato salad","potato onion herbs lemon",30,"Βράστε τις πατάτες και κόψτε τες σε κύβους.|Ανακατέψτε με κρεμμύδι, μαϊντανό, λάδι και λεμόνι.","Boil the potatoes and dice them.|Mix with onion, parsley, oil and lemon.");
+R("salad","Λαχανοσαλάτα με καρότο","Cabbage and carrot salad","cabbage carrot lemon",10,"Ψιλοκόψτε το λάχανο και τρίψτε το καρότο.|Ρίξτε λάδι, λεμόνι και αλάτι.","Shred the cabbage and grate the carrot.|Dress with oil, lemon and salt.");
+R("salad","Μαρουλοσαλάτα","Lettuce salad","lettuce onion herbs lemon",10,"Ψιλοκόψτε μαρούλι, φρέσκο κρεμμυδάκι και άνηθο.|Ρίξτε λάδι και λεμόνι.","Chop lettuce, spring onion and dill.|Dress with oil and lemon.");
+R("salad","Τονοσαλάτα","Tuna salad","tuna tomato cucumber onion olives",10,"Κόψτε ντομάτα, αγγούρι και κρεμμύδι.|Προσθέστε τόνο και ελιές.|Ρίξτε λάδι και λεμόνι.","Cut tomato, cucumber and onion.|Add tuna and olives.|Dress with oil and lemon.");
+R("salad","Μελιτζανοσαλάτα","Aubergine dip","eggplant garlic lemon herbs",50,"Ψήστε τις μελιτζάνες ολόκληρες μέχρι να μαλακώσουν.|Ξεφλουδίστε και λιώστε τες.|Ανακατέψτε με σκόρδο, λάδι, λεμόνι και μαϊντανό.","Roast the whole aubergines until soft.|Peel and mash them.|Mix with garlic, oil, lemon and parsley.");
+R("salad","Μπρόκολο λαδολέμονο","Broccoli with oil and lemon","broccoli lemon",15,"Βράστε το μπρόκολο 5 λεπτά.|Ρίξτε λάδι, λεμόνι και αλάτι.","Boil the broccoli for 5 minutes.|Dress with oil, lemon and salt.");
+
+/* --- Αυγά & γρήγορα --- */
+R("eggs","Στραπατσάδα","Strapatsada (eggs with tomato)","eggs tomato feta",15,"Τσιγαρίστε ντομάτα τριμμένη 5 λεπτά.|Ρίξτε τα αυγά και ανακατέψτε.|Θρυμματίστε φέτα από πάνω.","Cook grated tomato for 5 minutes.|Add the eggs and stir.|Crumble feta on top.");
+R("eggs","Ομελέτα με μανιτάρια και τυρί","Mushroom and cheese omelette","eggs mushrooms cheese",15,"Σοτάρετε τα μανιτάρια.|Ρίξτε τα χτυπημένα αυγά.|Βάλτε τυρί, διπλώστε και σερβίρετε.","Sauté the mushrooms.|Pour in the beaten eggs.|Add cheese, fold and serve.");
+R("eggs","Αυγά με πατάτες","Eggs with potatoes","potato eggs",25,"Κόψτε τις πατάτες σε κύβους και τηγανίστε τες.|Ρίξτε τα αυγά χτυπημένα και ανακατέψτε μέχρι να ψηθούν.","Dice the potatoes and fry until golden.|Add the beaten eggs and stir until cooked.");
+R("eggs","Κολοκυθάκια με αυγά","Courgettes with eggs","zucchini eggs onion",20,"Τσιγαρίστε κρεμμύδι και κολοκυθάκια σε κύβους.|Ρίξτε τα αυγά και ανακατέψτε μέχρι να ψηθούν.","Sauté onion and diced courgettes.|Add the eggs and stir until cooked.");
+R("eggs","Αυγά μάτια με ψωμί","Fried eggs with bread","eggs bread",8,"Τηγανίστε τα αυγά σε λίγο λάδι.|Σερβίρετε με φρυγανισμένο ψωμί.","Fry the eggs in a little oil.|Serve with toasted bread.");
+R("eggs","Αυγά με λουκάνικα","Eggs with sausages","eggs sausage",15,"Τσιγαρίστε τα λουκάνικα σε ροδέλες.|Ρίξτε τα αυγά από πάνω και ψήστε.","Fry the sliced sausages.|Pour the eggs over and cook.");
+R("eggs","Τοστ με χαλλούμι και ντομάτα","Halloumi and tomato toast","bread halloumi tomato",10,"Βάλτε χαλλούμι και ντομάτα ανάμεσα σε δύο φέτες ψωμί.|Ψήστε στην τοστιέρα 4 λεπτά.","Put halloumi and tomato between two slices of bread.|Toast for 4 minutes.");
+
+/* --- Πίτες & φούρνου --- */
+R("pies","Σπανακόπιτα","Spinach pie","spinach feta phyllo onion herbs eggs",70,"Μαράνετε το σπανάκι με κρεμμύδι και άνηθο.|Ανακατέψτε με φέτα και αυγά.|Στρώστε ανάμεσα σε λαδωμένα φύλλα και ψήστε στους 180°C για 45 λεπτά.","Wilt the spinach with onion and dill.|Mix with feta and eggs.|Layer between oiled filo sheets and bake at 180°C for 45 minutes.");
+R("pies","Τυρόπιτα","Cheese pie","feta eggs phyllo milk",50,"Ανακατέψτε φέτα, αυγά και λίγο γάλα.|Στρώστε ανάμεσα σε βουτυρωμένα φύλλα.|Ψήστε στους 180°C για 35 λεπτά.","Mix feta, eggs and a little milk.|Layer between buttered filo sheets.|Bake at 180°C for 35 minutes.");
+R("pies","Πρασόπιτα","Leek pie","leek feta phyllo eggs",70,"Μαράνετε τα πράσα.|Ανακατέψτε με φέτα και αυγά.|Στρώστε ανάμεσα σε φύλλα και ψήστε στους 180°C για 45 λεπτά.","Soften the leeks.|Mix with feta and eggs.|Layer between filo and bake at 180°C for 45 minutes.");
+R("pies","Κολοκυθόπιτα","Courgette pie","zucchini feta phyllo eggs herbs",70,"Τρίψτε και στύψτε τα κολοκυθάκια.|Ανακατέψτε με φέτα, αυγά και δυόσμο.|Στρώστε ανάμεσα σε φύλλα και ψήστε στους 180°C για 45 λεπτά.","Grate and squeeze the courgettes.|Mix with feta, eggs and mint.|Layer between filo and bake at 180°C for 45 minutes.");
+R("pies","Κοτόπιτα","Chicken pie","chicken phyllo onion cheese milk",80,"Βράστε και ξεψαχνίστε το κοτόπουλο.|Ανακατέψτε με σοταρισμένο κρεμμύδι, τυρί και λίγο γάλα.|Στρώστε ανάμεσα σε φύλλα και ψήστε στους 180°C για 40 λεπτά.","Boil and shred the chicken.|Mix with sautéed onion, cheese and a little milk.|Layer between filo and bake at 180°C for 40 minutes.");
+R("pies","Σπιτική πίτσα","Homemade pizza","flour tomato cheese ham pepper mushrooms",60,"Ζυμώστε αλεύρι, μαγιά, νερό και λάδι και αφήστε 30 λεπτά.|Ανοίξτε τη ζύμη, βάλτε ντομάτα, τυρί, ζαμπόν, πιπεριά και μανιτάρια.|Ψήστε στους 220°C για 15 λεπτά.","Knead flour, yeast, water and oil and rest for 30 minutes.|Roll out, top with tomato, cheese, ham, pepper and mushrooms.|Bake at 220°C for 15 minutes.");
+
+/* --- Κυπριακά --- */
+R("cy","Κουπέπια","Koupepia (stuffed vine leaves)","vineleaves mince rice onion tomato lemon herbs",90,"Ανακατέψτε κιμά, ρύζι, κρεμμύδι, ντομάτα, δυόσμο και μαϊντανό.|Τυλίξτε μικρά ρολάκια στα αμπελόφυλλα.|Βάλτε τα σφιχτά σε κατσαρόλα με νερό και λεμόνι και σιγοβράστε 1 ώρα.","Mix mince, rice, onion, tomato, mint and parsley.|Roll small parcels in the vine leaves.|Pack tightly in a pot with water and lemon and simmer for 1 hour.");
+R("cy","Αφέλια","Afelia (pork in wine)","pork wine potato",120,"Μαρινάρετε το χοιρινό σε κόκκινο κρασί και κόλιαντρο από το βράδυ.|Σοτάρετε το κρέας και ρίξτε τη μαρινάδα.|Σιγοβράστε 1 ώρα. Σερβίρετε με πατάτες «τσακιστές» ή πουργούρι.","Marinate the pork in red wine and coriander seeds overnight.|Brown the meat and add the marinade.|Simmer for 1 hour. Serve with crushed potatoes or bulgur.");
+R("cy","Κλέφτικο","Kleftiko","lamb potato onion lemon",240,"Βάλτε αρνί, πατάτες και κρεμμύδι σε πήλινο ή σε αλουμινόχαρτο.|Ρίξτε λεμόνι, ρίγανη, δάφνη, αλάτι και λίγο νερό.|Κλείστε καλά και ψήστε σιγά στους 160°C για 3–4 ώρες.","Put the lamb, potatoes and onion in a clay pot or foil.|Add lemon, oregano, bay leaf, salt and a little water.|Seal well and slow-cook at 160°C for 3–4 hours.");
+R("cy","Κολοκάσι με χοιρινό","Colocasia with pork","colocasia pork celery tomato onion",120,"Καθαρίστε το κολοκάσι χωρίς να το βρέξετε και «τσακίστε» το σε κομμάτια.|Σοτάρετε χοιρινό, κρεμμύδι και σέλινο, ρίξτε το κολοκάσι.|Προσθέστε ντομάτα και νερό και σιγοβράστε 1,5 ώρα.","Peel the colocasia without wetting it and snap it into pieces.|Brown pork, onion and celery, then add the colocasia.|Add tomato and water and simmer for 1.5 hours.");
+R("cy","Πουργούρι πιλάφι","Bulgur pilaf","bulgur onion butter orzo",30,"Τσιγαρίστε το κρεμμύδι και λίγο φιδέ ή κριθαράκι σε βούτυρο.|Ρίξτε το πουργούρι και διπλάσιο ζωμό ή νερό.|Σιγοβράστε 15 λεπτά και αφήστε σκεπασμένο 10 λεπτά.","Sauté onion and a little vermicelli or orzo in butter.|Add the bulgur and twice as much stock or water.|Simmer for 15 minutes, then rest covered for 10 minutes.");
+R("cy","Τραχανάς σούπα με χαλλούμι","Trahanas soup with halloumi","trahanas halloumi",30,"Μουσκέψτε τον τραχανά σε νερό ή ζωμό 1 ώρα.|Βράστε τον ανακατεύοντας μέχρι να γίνει κρεμώδης.|Ρίξτε χαλλούμι σε κυβάκια στο τέλος.","Soak the trahanas in water or stock for 1 hour.|Boil, stirring, until creamy.|Add diced halloumi at the end.");
+R("cy","Μουτζεντρά (φακές με ρύζι)","Moutzentra (lentils with rice)","lentils rice onion",45,"Βράστε τις φακές 15 λεπτά.|Ρίξτε το ρύζι και βράστε άλλα 18 λεπτά.|Από πάνω βάλτε πολύ κρεμμύδι τηγανισμένο σε λάδι μέχρι να καραμελώσει.","Boil the lentils for 15 minutes.|Add the rice and cook for 18 more minutes.|Top with plenty of onion fried in oil until caramelised.");
+R("cy","Λουβί με λάχανα","Black-eyed beans with greens","blackeyed spinach lemon",50,"Βράστε το λουβί 25 λεπτά.|Προσθέστε τα λάχανα (σέσκουλα ή σπανάκι) για 10 λεπτά.|Στραγγίξτε και σερβίρετε με λάδι και λεμόνι.","Boil the black-eyed beans for 25 minutes.|Add the greens (chard or spinach) for 10 minutes.|Drain and serve with oil and lemon.");
+R("cy","Μακαρόνια με χαλλούμι και δυόσμο","Pasta with halloumi and mint","pasta halloumi butter herbs",20,"Βράστε τα μακαρόνια σε ζωμό κότας ή νερό.|Ρίξτε κάψιμο βουτύρου.|Πασπαλίστε με πολύ τριμμένο χαλλούμι και ξερό δυόσμο.","Boil the pasta in chicken stock or water.|Pour over browned butter.|Sprinkle with plenty of grated halloumi and dried mint.");
+R("cy","Χαλλούμι σχάρας με ντομάτα","Grilled halloumi with tomato","halloumi tomato bread",10,"Ψήστε φέτες χαλλούμι σε αντικολλητικό τηγάνι 2 λεπτά από κάθε πλευρά.|Σερβίρετε με ντομάτα και ψωμί.","Grill halloumi slices in a non-stick pan for 2 minutes per side.|Serve with tomato and bread.");
+R("cy","Λούντζα με χαλλούμι","Lountza with halloumi","ham halloumi bread",10,"Ψήστε φέτες λούντζα και χαλλούμι στο τηγάνι.|Βάλτε τα σε ψωμί ή πίτα με ντομάτα.","Grill slices of lountza and halloumi in a pan.|Put them in bread or pitta with tomato.");
+R("cy","Κυπριακή σαλάτα","Cypriot salad","cabbage tomato cucumber herbs lemon",10,"Ψιλοκόψτε λάχανο, ντομάτα, αγγούρι και κόλιαντρο.|Ρίξτε λάδι, λεμόνι και αλάτι.","Finely chop cabbage, tomato, cucumber and fresh coriander.|Dress with oil, lemon and salt.");
+
+/* --- Γλυκά --- */
+R("sweet","Ρυζόγαλο","Rice pudding","rice milk sugar",40,"Βράστε το ρύζι σε λίγο νερό 10 λεπτά.|Ρίξτε το γάλα και τη ζάχαρη και ανακατεύετε σε χαμηλή φωτιά μέχρι να πήξει.|Πασπαλίστε κανέλα.","Boil the rice in a little water for 10 minutes.|Add the milk and sugar and stir on low heat until thick.|Sprinkle with cinnamon.");
+R("sweet","Τηγανίτες","Pancakes","flour milk eggs",20,"Χτυπήστε αλεύρι, γάλα, αυγό και λίγο αλάτι.|Ψήστε κουταλιές σε λαδωμένο τηγάνι από τις δύο πλευρές.|Σερβίρετε με μέλι ή μαρμελάδα.","Whisk flour, milk, egg and a pinch of salt.|Cook spoonfuls in an oiled pan on both sides.|Serve with honey or jam.");
+R("sweet","Μηλόπιτα","Apple pie","apple flour butter sugar eggs",60,"Κόψτε τα μήλα σε φέτες με ζάχαρη και κανέλα.|Χτυπήστε βούτυρο, ζάχαρη, αυγά και αλεύρι σε ζύμη.|Στρώστε ζύμη και μήλα σε ταψί και ψήστε στους 180°C για 40 λεπτά.","Slice the apples with sugar and cinnamon.|Beat butter, sugar, eggs and flour into a batter.|Layer batter and apples in a tin and bake at 180°C for 40 minutes.");
+R("sweet","Κέικ μπανάνας","Banana cake","banana flour eggs sugar butter",60,"Λιώστε τις ώριμες μπανάνες.|Ανακατέψτε με αυγά, ζάχαρη, λιωμένο βούτυρο, αλεύρι και μπέικιν.|Ψήστε στους 175°C για 45 λεπτά.","Mash the ripe bananas.|Mix with eggs, sugar, melted butter, flour and baking powder.|Bake at 175°C for 45 minutes.");
+R("sweet","Γιαούρτι με μέλι και καρύδια","Yoghurt with honey and walnuts","yogurt honey nuts",5,"Βάλτε γιαούρτι σε μπολ.|Ρίξτε μέλι και καρύδια από πάνω.","Put yoghurt in a bowl.|Top with honey and walnuts.");
+R("sweet","Πορτοκαλόπιτα","Orange cake with filo","orange phyllo yogurt eggs sugar",60,"Σκίστε και στεγνώστε τα φύλλα στον φούρνο.|Ανακατέψτε με αυγά, γιαούρτι, ζάχαρη και ξύσμα πορτοκαλιού.|Ψήστε στους 180°C για 40 λεπτά και σιροπιάστε με χυμό πορτοκαλιού και ζάχαρη.","Tear and dry the filo in the oven.|Mix with eggs, yoghurt, sugar and orange zest.|Bake at 180°C for 40 minutes and soak with orange-sugar syrup.");
+R("sweet","Χαλβάς σιμιγδαλένιος","Semolina halva","semolina sugar nuts",30,"Βράστε σιρόπι: 2 ποτήρια ζάχαρη, 3 νερό, κανέλα.|Καβουρδίστε 1 ποτήρι σιμιγδάλι με ½ ποτήρι λάδι και τα αμύγδαλα.|Ρίξτε προσεκτικά το σιρόπι, ανακατέψτε μέχρι να πήξει και βάλτε σε φόρμα.","Boil a syrup: 2 cups sugar, 3 water, cinnamon.|Toast 1 cup semolina with ½ cup oil and the almonds.|Carefully add the syrup, stir until thick and pour into a mould.");
+R("sweet","Ψητά μήλα με μέλι","Baked apples with honey","apple honey nuts",30,"Αδειάστε το κέντρο των μήλων.|Γεμίστε με καρύδια, μέλι και κανέλα.|Ψήστε στους 180°C για 25 λεπτά.","Core the apples.|Fill with walnuts, honey and cinnamon.|Bake at 180°C for 25 minutes.");
+R("sweet","Φρουτοσαλάτα","Fruit salad","apple banana orange honey",10,"Κόψτε μήλο, μπανάνα και πορτοκάλι.|Ρίξτε λίγο μέλι και χυμό πορτοκαλιού.","Cut apple, banana and orange.|Add a little honey and orange juice.");
+R("sweet","Κέικ βανίλιας","Vanilla cake","flour eggs milk sugar butter",60,"Χτυπήστε βούτυρο με ζάχαρη.|Προσθέστε αυγά, γάλα, βανίλια, αλεύρι και μπέικιν.|Ψήστε στους 175°C για 45 λεπτά.","Beat butter with sugar.|Add eggs, milk, vanilla, flour and baking powder.|Bake at 175°C for 45 minutes.");
+
+/* =====================================================================
+   ΤΟ ΨΥΓΕΙΟ ΜΟΥ / MY FRIDGE   [εικονίδιο, ελληνικά, αγγλικά, μέρες, υλικό]
+   ===================================================================== */
+const FQ = [
+ ["🥛","Γαλακτοκομικά & αυγά","Dairy & eggs",[["🥛","Γάλα","Milk",5,"milk"],["🥣","Γιαούρτι","Yoghurt",14,"yogurt"],["🧀","Φέτα","Feta",10,"feta"],["🧀","Χαλλούμι","Halloumi",30,"halloumi"],["🧀","Κίτρινο τυρί","Hard cheese",21,"cheese"],["🧈","Βούτυρο","Butter",30,"butter"],["🍶","Κρέμα γάλακτος","Cream",7,"cream"],["🥚","Αυγά","Eggs",21,"eggs"]]],
+ ["🥩","Κρέατα & ψάρια","Meat & fish",[["🥩","Κιμάς","Minced meat",2,"mince"],["🍗","Κοτόπουλο","Chicken",2,"chicken"],["🐖","Χοιρινό","Pork",3,"pork"],["🐄","Μοσχάρι","Beef",3,"beef"],["🐑","Αρνί","Lamb",3,"lamb"],["🌭","Λουκάνικα","Sausages",5,"sausage"],["🥓","Ζαμπόν / λούντζα","Ham / lountza",5,"ham"],["🐟","Φρέσκο ψάρι","Fresh fish",1,"fish"],["🦐","Γαρίδες","Shrimps",1,"shrimp"]]],
+ ["🥬","Λαχανικά","Vegetables",[["🍅","Ντομάτες","Tomatoes",7,"tomato"],["🥒","Αγγούρια","Cucumbers",7,"cucumber"],["🫑","Πιπεριές","Peppers",7,"pepper"],["🥒","Κολοκυθάκια","Courgettes",5,"zucchini"],["🍆","Μελιτζάνες","Aubergines",5,"eggplant"],["🥬","Μαρούλι","Lettuce",5,"lettuce"],["🥬","Λάχανο","Cabbage",14,"cabbage"],["🥬","Σπανάκι","Spinach",4,"spinach"],["🥕","Καρότα","Carrots",21,"carrot"],["🥦","Μπρόκολο","Broccoli",5,"broccoli"],["🥦","Κουνουπίδι","Cauliflower",7,"cauliflower"],["🍄","Μανιτάρια","Mushrooms",4,"mushrooms"],["🫛","Φασολάκια","Green beans",5,"greenbeans"],["🌿","Μαϊντανός / άνηθος","Parsley / dill",5,"herbs"],["🧅","Κρεμμύδια","Onions",30,"onion"],["🥔","Πατάτες","Potatoes",30,"potato"],["🧄","Σκόρδο","Garlic",30,"garlic"]]],
+ ["🍎","Φρούτα","Fruit",[["🍎","Μήλα","Apples",21,"apple"],["🍊","Πορτοκάλια","Oranges",14,"orange"],["🍋","Λεμόνια","Lemons",21,"lemon"],["🍌","Μπανάνες","Bananas",5,"banana"],["🍇","Σταφύλια","Grapes",5,""],["🍓","Φράουλες","Strawberries",3,""],["🍉","Καρπούζι κομμένο","Cut watermelon",3,""],["🍑","Ροδάκινα","Peaches",4,""]]],
+ ["🍲","Άλλα","Other",[["🍲","Μαγειρεμένο φαγητό","Cooked food",3,""],["🍞","Ψωμί","Bread",4,"bread"],["🥫","Ανοιχτή σάλτσα / κονσέρβα","Opened sauce / tin",5,""],["🧃","Ανοιχτός χυμός","Opened juice",5,""],["🥟","Φύλλο κρούστας","Filo pastry",30,"phyllo"],["🍰","Γλυκό","Cake / dessert",4,""]]]
+];
 async function renderFridge(){
+  const li=L()?1:2;
+  $("frQuick").innerHTML = FQ.map(g=>`<h3 class="h3" style="margin:16px 0 8px">${g[0]} ${L()?g[1]:g[2]}</h3><div class="chips">`+
+     g[3].map((x,j)=>`<button class="chip qa" onclick="quickFridge(${FQ.indexOf(g)},${j})">${x[0]} ${x[li]} <small>· ${tr("frDays",x[3])}</small></button>`).join("")+`</div>`).join("");
   if(!$("frDate").value) $("frDate").value=iso(addDays(new Date(),3));
   const items=(await Store.all("fridge")).map(it=>({it,days:daysUntil(parseISO(it.date))})).sort((a,b)=>a.days-b.days);
   $("fridgeList").innerHTML = items.length ? items.map(({it,days})=>`<div class="item">
-     <span class="ie">🥫</span><div class="it"><b>${esc(it.name)}</b>
-     <div>${fmtDate(parseISO(it.date))} ${pill(days)}</div>
-     <div class="acts"><button class="btn" onclick="delFridge('${it.id}')">${tr("ate")}</button></div></div></div>`).join("")
+     <span class="ie">${it.e||"🥫"}</span><div class="it"><b>${esc(it.name)}</b>
+     <div class="row" style="align-items:center;margin-top:4px"><input type="date" value="${it.date}" onchange="setFridgeDate('${it.id}',this.value)" style="flex:0 1 190px;min-height:46px;padding:8px">${pill(days)}</div>
+     <div class="acts"><button class="btn" onclick="delFridge('${it.id}',1)">${tr("ate")}</button><button class="btn" onclick="delFridge('${it.id}',0)">${tr("threw")}</button></div></div></div>`).join("")
      : `<div class="empty">${tr("emptyFridge")}</div>`;
+  let n=0; try{ n=+(localStorage.getItem("km-eaten-"+new Date().getFullYear())||0); }catch(e){}
+  $("eatenNote").textContent = n ? tr("savedCount",n) : "";
+}
+async function quickFridge(g,j){
+  const x=FQ[g][3][j];
+  await Store.put("fridge",{id:newId(),name:L()?x[1]:x[2],date:iso(addDays(new Date(),x[3])),e:x[0],ing:x[4]});
+  if(x[4]) HAVE.add(x[4]);
+  const dd=addDays(new Date(),x[3]); toast("✓ "+x[0]+" "+(L()?x[1]:x[2])+" → "+dd.getDate()+"/"+(dd.getMonth()+1));
+  renderFridge();
 }
 async function addFridge(){
   const n=$("frName").value.trim(); if(!n){ toast(tr("needName")); $("frName").focus(); return; }
-  await Store.put("fridge",{id:newId(),name:n,date:$("frDate").value||iso(addDays(new Date(),3))});
-  $("frName").value=""; $("frName").focus(); renderFridge();
+  await Store.put("fridge",{id:newId(),name:n,date:$("frDate").value||iso(addDays(new Date(),3)),e:"🥫",ing:""});
+  $("frName").value=""; renderFridge();
 }
-async function delFridge(id){ await Store.del("fridge",id); renderFridge(); }
+async function setFridgeDate(id,v){ const it=(await Store.all("fridge")).find(x=>x.id===id); if(it&&v){ it.date=v; await Store.put("fridge",it); renderFridge(); } }
+async function delFridge(id,eaten){
+  if(eaten){ try{ const k="km-eaten-"+new Date().getFullYear(); localStorage.setItem(k, +(localStorage.getItem(k)||0)+1); }catch(e){} }
+  await Store.del("fridge",id); renderFridge();
+}
 
 /* =====================================================================
    ΤΙ ΜΑΓΕΙΡΕΥΩ / WHAT CAN I COOK
    ===================================================================== */
-const ING = {
- eggs:["🥚","Αυγά","Eggs"], tomato:["🍅","Ντομάτες","Tomatoes"], potato:["🥔","Πατάτες","Potatoes"], onion:["🧅","Κρεμμύδι","Onion"],
- garlic:["🧄","Σκόρδο","Garlic"], feta:["🧀","Φέτα / τυρί","Feta / cheese"], halloumi:["🧀","Χαλλούμι","Halloumi"],
- chicken:["🍗","Κοτόπουλο","Chicken"], mince:["🥩","Κιμάς","Minced meat"], fish:["🐟","Ψάρι","Fish"],
- rice:["🍚","Ρύζι","Rice"], pasta:["🍝","Μακαρόνια","Pasta"], lentils:["🫘","Φακές","Lentils"], beans:["🫘","Φασόλια","Beans"],
- greenbeans:["🫛","Φασολάκια","Green beans"], zucchini:["🥒","Κολοκυθάκια","Courgettes"], eggplant:["🍆","Μελιτζάνες","Aubergines"],
- pepper:["🫑","Πιπεριές","Peppers"], cucumber:["🥒","Αγγούρι","Cucumber"], carrot:["🥕","Καρότα","Carrots"],
- spinach:["🥬","Σπανάκι","Spinach"], lemon:["🍋","Λεμόνι","Lemon"], milk:["🥛","Γάλα","Milk"], yogurt:["🥣","Γιαούρτι","Yoghurt"],
- bread:["🍞","Ψωμί","Bread"], flour:["🌾","Αλεύρι","Flour"]
-};
-const RECIPES = [
- {n:["Ομελέτα με ντομάτα και φέτα","Tomato and feta omelette"], i:["eggs","tomato","feta"], t:15,
-  s:[["Χτυπήστε τα αυγά με λίγο αλάτι.","Τσιγαρίστε τη ντομάτα κομμένη σε κύβους 3 λεπτά.","Ρίξτε τα αυγά, θρυμματίστε τη φέτα και ψήστε σε χαμηλή φωτιά."],
-     ["Beat the eggs with a little salt.","Fry the diced tomato for 3 minutes.","Pour in the eggs, crumble the feta and cook on low heat."]]},
- {n:["Αυγά με πατάτες","Eggs with potatoes"], i:["potato","eggs"], t:25,
-  s:[["Κόψτε τις πατάτες σε κύβους και τηγανίστε τις μέχρι να ροδίσουν.","Ρίξτε τα αυγά χτυπημένα και ανακατέψτε μέχρι να ψηθούν."],
-     ["Dice the potatoes and fry until golden.","Add the beaten eggs and stir until cooked."]]},
- {n:["Φακές σούπα","Lentil soup"], i:["lentils","onion","carrot","garlic","tomato"], t:45,
-  s:[["Βράστε τις φακές 5 λεπτά και πετάξτε το νερό.","Προσθέστε φρέσκο νερό, κρεμμύδι, καρότο, σκόρδο και ντομάτα.","Σιγοβράστε 35 λεπτά, ρίξτε λάδι και αλάτι στο τέλος."],
-     ["Boil the lentils for 5 minutes and drain.","Add fresh water, onion, carrot, garlic and tomato.","Simmer for 35 minutes; add oil and salt at the end."]]},
- {n:["Φασολάδα","Bean soup"], i:["beans","carrot","onion","tomato"], t:90,
-  s:[["Μουλιάστε τα φασόλια από το βράδυ.","Βράστε τα με κρεμμύδι, καρότο και ντομάτα μέχρι να μαλακώσουν.","Ρίξτε λάδι και αλάτι στο τέλος."],
-     ["Soak the beans overnight.","Boil with onion, carrot and tomato until soft.","Add oil and salt at the end."]]},
- {n:["Φασολάκια λαδερά","Green beans in tomato sauce"], i:["greenbeans","potato","tomato","onion"], t:50,
-  s:[["Τσιγαρίστε το κρεμμύδι σε λάδι.","Προσθέστε φασολάκια, πατάτες, ντομάτα και λίγο νερό.","Σιγοβράστε 40 λεπτά μέχρι να μείνουν με το λάδι τους."],
-     ["Sauté the onion in oil.","Add green beans, potatoes, tomato and a little water.","Simmer for 40 minutes until the sauce thickens."]]},
- {n:["Μπριάμ","Briam (roasted vegetables)"], i:["zucchini","eggplant","potato","tomato","onion","pepper"], t:70,
-  s:[["Κόψτε όλα τα λαχανικά σε κομμάτια.","Ανακατέψτε τα σε ταψί με λάδι, αλάτι και τριμμένη ντομάτα.","Ψήστε στους 190°C για περίπου 1 ώρα."],
-     ["Cut all the vegetables into pieces.","Mix in a baking tray with oil, salt and grated tomato.","Bake at 190°C for about 1 hour."]]},
- {n:["Χωριάτικη σαλάτα","Greek village salad"], i:["tomato","cucumber","onion","feta","pepper"], t:10,
-  s:[["Κόψτε ντομάτα, αγγούρι, κρεμμύδι και πιπεριά.","Βάλτε τη φέτα από πάνω, λάδι και ρίγανη."],
-     ["Cut tomato, cucumber, onion and pepper.","Top with feta, olive oil and oregano."]]},
- {n:["Μακαρόνια με σάλτσα ντομάτας","Pasta with tomato sauce"], i:["pasta","tomato","onion","garlic"], t:25,
-  s:[["Τσιγαρίστε κρεμμύδι και σκόρδο, προσθέστε τη ντομάτα και σιγοβράστε 15 λεπτά.","Βράστε τα μακαρόνια και σερβίρετε με τη σάλτσα."],
-     ["Sauté onion and garlic, add the tomato and simmer for 15 minutes.","Boil the pasta and serve with the sauce."]]},
- {n:["Κοτόσουπα αυγολέμονο","Chicken soup with egg and lemon"], i:["chicken","rice","eggs","lemon","carrot"], t:75,
-  s:[["Βράστε το κοτόπουλο με το καρότο περίπου 1 ώρα.","Ρίξτε το ρύζι στον ζωμό για 15 λεπτά.","Χτυπήστε αυγά με λεμόνι, ρίξτε σιγά σιγά λίγο ζεστό ζωμό και μετά όλο στην κατσαρόλα, χωρίς να βράσει ξανά."],
-     ["Boil the chicken with the carrot for about 1 hour.","Add the rice to the broth for 15 minutes.","Beat eggs with lemon, temper with some hot broth, then stir into the pot without boiling again."]]},
- {n:["Κοτόπουλο λεμονάτο με πατάτες","Lemon chicken with potatoes"], i:["chicken","potato","lemon","garlic"], t:75,
-  s:[["Βάλτε κοτόπουλο και πατάτες σε ταψί.","Ρίξτε λεμόνι, σκόρδο, λάδι, αλάτι, ρίγανη και ένα ποτήρι νερό.","Ψήστε στους 200°C για περίπου 1 ώρα."],
-     ["Put the chicken and potatoes in a tray.","Add lemon, garlic, oil, salt, oregano and a glass of water.","Bake at 200°C for about 1 hour."]]},
- {n:["Κεφτέδες","Meatballs"], i:["mince","bread","onion","eggs"], t:40,
-  s:[["Μουσκέψτε το ψωμί και στύψτε το.","Ζυμώστε κιμά, ψωμί, τριμμένο κρεμμύδι, αυγό, αλάτι και δυόσμο.","Πλάστε μπαλάκια και τηγανίστε ή ψήστε στον φούρνο."],
-     ["Soak the bread and squeeze it.","Knead the mince with the bread, grated onion, egg, salt and mint.","Shape into balls and fry or bake."]]},
- {n:["Μακαρόνια με κιμά","Pasta with mince sauce"], i:["pasta","mince","tomato","onion"], t:45,
-  s:[["Τσιγαρίστε κρεμμύδι και κιμά.","Ρίξτε ντομάτα και σιγοβράστε 30 λεπτά.","Σερβίρετε με βρασμένα μακαρόνια."],
-     ["Brown the onion and mince.","Add tomato and simmer for 30 minutes.","Serve with boiled pasta."]]},
- {n:["Χαλλούμι σχάρας με ντομάτα","Grilled halloumi with tomato"], i:["halloumi","tomato","bread"], t:10,
-  s:[["Ψήστε φέτες χαλλούμι σε αντικολλητικό τηγάνι 2 λεπτά από κάθε πλευρά.","Σερβίρετε με ντομάτα και ψωμί."],
-     ["Grill halloumi slices in a non-stick pan for 2 minutes per side.","Serve with tomato and bread."]]},
- {n:["Σπανακόρυζο","Spinach rice"], i:["spinach","rice","onion","lemon"], t:30,
-  s:[["Τσιγαρίστε το κρεμμύδι και το σπανάκι.","Ρίξτε το ρύζι και διπλάσιο νερό, βράστε 18 λεπτά.","Σερβίρετε με λεμόνι."],
-     ["Sauté the onion and spinach.","Add the rice and twice as much water; cook for 18 minutes.","Serve with lemon."]]},
- {n:["Ρυζόγαλο","Rice pudding"], i:["rice","milk"], t:40,
-  s:[["Βράστε το ρύζι σε λίγο νερό 10 λεπτά.","Ρίξτε το γάλα και ζάχαρη και ανακατεύετε σε χαμηλή φωτιά μέχρι να πήξει.","Πασπαλίστε κανέλα."],
-     ["Boil the rice in a little water for 10 minutes.","Add the milk and sugar and stir on low heat until thick.","Sprinkle with cinnamon."]]},
- {n:["Τηγανίτες","Pancakes"], i:["flour","milk","eggs"], t:20,
-  s:[["Χτυπήστε αλεύρι, γάλα, αυγό και λίγο αλάτι.","Ψήστε κουταλιές σε λαδωμένο τηγάνι από τις δύο πλευρές.","Σερβίρετε με μέλι ή μαρμελάδα."],
-     ["Whisk flour, milk, egg and a pinch of salt.","Cook spoonfuls in an oiled pan on both sides.","Serve with honey or jam."]]},
- {n:["Ψάρι στον φούρνο με λεμόνι","Baked fish with lemon"], i:["fish","lemon","potato","garlic"], t:45,
-  s:[["Βάλτε πατάτες σε φέτες στο ταψί και το ψάρι από πάνω.","Ρίξτε λεμόνι, σκόρδο, λάδι και αλάτι.","Ψήστε στους 200°C για 30–35 λεπτά."],
-     ["Put sliced potatoes in a tray with the fish on top.","Add lemon, garlic, oil and salt.","Bake at 200°C for 30–35 minutes."]]},
- {n:["Γεμιστά","Stuffed vegetables"], i:["tomato","pepper","rice","onion","zucchini"], t:90,
-  s:[["Αδειάστε ντομάτες, πιπεριές και κολοκυθάκια.","Ανακατέψτε ρύζι, κρεμμύδι, την ψίχα της ντομάτας, λάδι και αλάτι.","Γεμίστε τα και ψήστε στους 190°C για περίπου 1 ώρα και 15 λεπτά."],
-     ["Hollow out tomatoes, peppers and courgettes.","Mix rice, onion, the tomato pulp, oil and salt.","Stuff and bake at 190°C for about 1 hour 15 minutes."]]},
- {n:["Τζατζίκι","Tzatziki"], i:["yogurt","cucumber","garlic"], t:10,
-  s:[["Τρίψτε το αγγούρι και στύψτε το νερό του.","Ανακατέψτε με γιαούρτι, σκόρδο, λάδι και λίγο ξίδι."],
-     ["Grate the cucumber and squeeze out the water.","Mix with yoghurt, garlic, oil and a little vinegar."]]},
- {n:["Αυγά μάτια με ψωμί","Fried eggs with bread"], i:["eggs","bread"], t:8,
-  s:[["Τηγανίστε τα αυγά σε λίγο λάδι.","Σερβίρετε με φρυγανισμένο ψωμί."],["Fry the eggs in a little oil.","Serve with toasted bread."]]},
- {n:["Σούπα λαχανικών","Vegetable soup"], i:["carrot","potato","onion","zucchini"], t:40,
-  s:[["Κόψτε όλα τα λαχανικά σε κύβους.","Βράστε τα σε νερό με αλάτι 30 λεπτά.","Ρίξτε λάδι και λίγο λεμόνι στο τέλος."],
-     ["Dice all the vegetables.","Boil in salted water for 30 minutes.","Add oil and a little lemon at the end."]]},
- {n:["Κολοκυθάκια με αυγά","Courgettes with eggs"], i:["zucchini","eggs","onion"], t:20,
-  s:[["Τσιγαρίστε κρεμμύδι και κολοκυθάκια σε κύβους μέχρι να μαλακώσουν.","Ρίξτε τα αυγά χτυπημένα και ανακατέψτε μέχρι να ψηθούν."],
-     ["Sauté onion and diced courgettes until soft.","Add the beaten eggs and stir until cooked."]]}
-];
-let HAVE=new Set(), cookAuto=false;
+let HAVE=new Set(), cookAuto=false, CAT="all";
 async function initCook(){
   if(!cookAuto){
     const fr=await Store.all("fridge");
-    fr.forEach(f=>{ const n=f.name.toLowerCase();
+    fr.forEach(f=>{ if(f.ing){ HAVE.add(f.ing); return; }
+      const n=(f.name||"").toLowerCase();
       for(const k in ING){ const a=ING[k][1].toLowerCase().split(/[ /]+/)[0].slice(0,5), b=ING[k][2].toLowerCase().split(/[ /]+/)[0].slice(0,5);
         if(n.includes(a)||n.includes(b)) HAVE.add(k); } });
     cookAuto=true;
   }
-  $("ingChips").innerHTML=Object.entries(ING).map(([k,v])=>`<button class="chip${HAVE.has(k)?" on":""}" onclick="toggleIng('${k}')">${v[0]} ${L()?v[1]:v[2]}</button>`).join("");
+  const li=L()?1:2;
+  $("catChips").innerHTML=Object.entries(CATS).map(([k,v])=>{
+    const n = k==="all"?RECIPES.length:RECIPES.filter(r=>r.c===k).length;
+    return `<button class="chip cat${CAT===k?" on":""}" onclick="setCat('${k}')">${v[0]} ${v[li]} <small>(${n})</small></button>`; }).join("");
+  $("ingSum").textContent = HAVE.size ? tr("myIngN",HAVE.size) : tr("myIng");
+  $("ingChips").innerHTML=Object.entries(ING).map(([k,v])=>`<button class="chip${HAVE.has(k)?" on":""}" onclick="toggleIng('${k}')">${v[0]} ${v[li]}</button>`).join("");
   renderRecipes();
 }
+function setCat(k){ CAT=k; initCook(); }
 function toggleIng(k){ HAVE.has(k)?HAVE.delete(k):HAVE.add(k); initCook(); }
+function clearIng(){ HAVE.clear(); initCook(); }
 function renderRecipes(){
-  if(!HAVE.size){ $("recipes").innerHTML=`<div class="empty">${tr("noRecipe")}</div>`; return; }
   const li=L()?0:1;
-  const list=RECIPES.map(r=>({r,miss:r.i.filter(x=>!HAVE.has(x)), hit:r.i.filter(x=>HAVE.has(x)).length}))
-    .filter(x=>x.hit>0).sort((a,b)=>a.miss.length-b.miss.length||b.hit-a.hit).slice(0,12);
-  $("recipes").innerHTML=list.map(({r,miss})=>`<div class="recipe"><b>${r.i.map(x=>ING[x][0]).join("")} ${r.n[li]}</b>
-    <div class="small">⏱ ${tr("mins",r.t)}</div>
-    <div class="${miss.length?"miss":""}">${miss.length?tr("missing",miss.map(x=>ING[x][li+1]).join(", ")):tr("have")}</div>
-    <details><summary>${tr("steps")}</summary><ol>${r.s[li].map(s=>`<li>${s}</li>`).join("")}</ol></details></div>`).join("");
+  let list=RECIPES.filter(r=>CAT==="all"||r.c===CAT).map(r=>({r,miss:r.i.filter(x=>!HAVE.has(x)), hit:r.i.filter(x=>HAVE.has(x)).length}));
+  if(HAVE.size){ if(CAT==="all") list=list.filter(x=>x.hit>0); list.sort((a,b)=>a.miss.length-b.miss.length||b.hit-a.hit); }
+  if(!list.length){ $("recipes").innerHTML=`<div class="empty">${tr("noRecipe")}</div>`; return; }
+  const card=({r,miss})=>`<div class="recipe"><div class="rh"><span class="rc">${CATS[r.c][0]}</span><b>${r.n[li]}</b></div>
+    <div class="small">⏱ ${tr("mins",r.t)} · ${r.i.map(x=>ING[x][0]).join(" ")}</div>
+    ${HAVE.size?`<div class="${miss.length?"miss":"okk"}">${miss.length?tr("missing",miss.map(x=>ING[x][li+1]).join(", ")):tr("have")}</div>`:""}
+    <details><summary>${tr("steps")} ›</summary><p class="small"><b>${tr("ings")}:</b> ${r.i.map(x=>ING[x][li+1]).join(", ")}</p><ol>${r.s[li].map(s=>`<li>${s}</li>`).join("")}</ol></details></div>`;
+  if(CAT==="all" && !HAVE.size){
+    $("recipes").innerHTML=Object.keys(CATS).filter(k=>k!=="all").map(k=>{
+      const g=list.filter(x=>x.r.c===k); if(!g.length) return "";
+      return `<h3 class="h3 cath">${CATS[k][0]} ${CATS[k][li+1]} <small>(${g.length})</small></h3>`+g.map(card).join(""); }).join("");
+  } else {
+    $("recipes").innerHTML=`<p class="small">${tr("recN",list.length)}</p>`+list.map(card).join("");
+  }
 }
 
 /* =====================================================================
@@ -1584,31 +1798,44 @@ const APPS = [
  ["👕","Πλυντήριο ρούχων","Washing machine",2000,1,"Πλύσιμο στους 30–40°C κοστίζει πολύ λιγότερο από τους 60°C.","Washing at 30–40°C costs far less than 60°C."],
  ["🍽️","Πλυντήριο πιάτων","Dishwasher",1800,1,"Βάζετε το πρόγραμμα eco και μόνο όταν είναι γεμάτο.","Use the eco programme, only when full."],
  ["🧊","Ψυγείο (μέσος όρος)","Fridge (average)",60,24,"Μην το βάζετε δίπλα στην κουζίνα ή στον ήλιο.","Keep it away from the cooker and the sun."],
+ ["🧊","Καταψύκτης","Freezer",80,24,"Ξεπαγώνετέ τον όταν ο πάγος ξεπεράσει τα 5 χιλιοστά.","Defrost it when the ice is thicker than 5 mm."],
  ["🔥","Φούρνος","Oven",2400,1,"Μην ανοίγετε την πόρτα συχνά· κάθε άνοιγμα χάνει ζέστη.","Avoid opening the door; each opening loses heat."],
+ ["🍳","Εστία κουζίνας","Cooker hob",1500,1,"Σκεπάζετε την κατσαρόλα· βράζει πιο γρήγορα.","Cover the pot; it boils faster."],
+ ["♨️","Φουρνάκι μικροκυμάτων","Microwave",1000,0.25,"Για ζέσταμα είναι πιο οικονομικό από τον φούρνο.","For reheating it is cheaper than the oven."],
+ ["🥘","Φριτέζα αέρος","Air fryer",1500,0.5,"Για μικρές ποσότητες κοστίζει λιγότερο από τον φούρνο.","For small portions it costs less than the oven."],
  ["☕","Βραστήρας","Kettle",2000,0.25,"Βράζετε μόνο το νερό που χρειάζεστε.","Boil only the water you need."],
  ["👔","Σίδερο","Iron",2200,0.5,"Σιδερώνετε πολλά μαζί, όχι λίγα κάθε μέρα.","Iron in one batch rather than a little every day."],
  ["🔆","Ηλεκτρική σόμπα","Electric heater",2000,4,"Ένα κλιματιστικό inverter ζεσταίνει με περίπου το 1/3 του ρεύματος.","An inverter air conditioner heats with about 1/3 of the electricity."],
+ ["🌬️","Ανεμιστήρας","Fan",50,8,"Πολύ φθηνότερος από το κλιματιστικό για ήπιες μέρες.","Much cheaper than air conditioning on mild days."],
  ["📺","Τηλεόραση","TV",100,4,"Κλείνετέ την από τον διακόπτη, όχι μόνο από το τηλεχειριστήριο.","Switch it off at the plug, not just the remote."],
  ["💻","Υπολογιστής","Computer",150,4,"Ο φορητός καταναλώνει πολύ λιγότερο από τον σταθερό.","A laptop uses much less than a desktop."],
  ["💡","Λάμπα LED","LED bulb",10,6,"Μια LED καταναλώνει περίπου το 1/6 μιας παλιάς λάμπας.","An LED uses about 1/6 of an old bulb."],
+ ["🏊","Αντλία πισίνας","Pool pump",750,8,"Μειώστε τις ώρες λειτουργίας τον χειμώνα.","Reduce running hours in winter."],
  ["💨","Σεσουάρ","Hair dryer",1800,0.25,"",""],
  ["🔌","—","—",0,1,"",""]
 ];
+function E(){ return DATA.electricity||{}; }
+function marginal(){ const e=E(); if(e.energy==null) return e.pricePerKwh||0.3;
+  return (e.energy+e.network+e.fuel+(e.pso||0))*(1+e.vat)+(e.res||0); }
+function fixed2m(){ const e=E(); return ((e.meterFee||0)+(e.supplyFee||0))*(1+(e.vat||0)); }
 let pwInit=false;
 function initPower(){
   const sel=$("pwApp"), prev=sel.value;
   sel.innerHTML=APPS.map((a,i)=>`<option value="${i}">${a[0]} ${i===APPS.length-1?tr("pwCustom"):(L()?a[1]:a[2])}</option>`).join("");
   if(prev) sel.value=prev;
   if(!pwInit){ sel.value="0"; pwPreset();
-    let saved=null; try{ saved=localStorage.getItem("km-price"); }catch(e){}
-    $("pwPrice").value = saved || DATA.electricity.pricePerKwh; pwInit=true; }
-  $("pwNote").innerHTML=`${esc(L()?DATA.electricity.noteEl:DATA.electricity.noteEn)} <a href="${DATA.electricity.source}" target="_blank" rel="noopener">EAC ↗</a>`;
+    let saved=null; try{ saved=localStorage.getItem("km-price-user"); }catch(e){}
+    $("pwPrice").value = saved || (Math.round(marginal()*10000)/10000);
+    $("pwPrice").addEventListener("input",()=>{ try{ localStorage.setItem("km-price-user",$("pwPrice").value); }catch(e){} });
+    pwInit=true; }
+  const e=E();
+  $("pwNote").innerHTML=trf("pwNoteT",{p:(marginal()*100).toLocaleString(L()?"el-GR":"en-GB",{maximumFractionDigits:2})+(L()?" σεντ/kWh":" cents/kWh"),f:eur2(fixed2m())})+
+    (e.fuelPeriodEl?`<br>${tr("pwFrom",L()?e.fuelPeriodEl:e.fuelPeriodEn)}`:"")+` <a href="${e.source||"https://www.eac.com.cy"}" target="_blank" rel="noopener">ΑΗΚ / EAC ↗</a>`;
   renderPwList();
 }
 function pwPreset(){ const a=APPS[+$("pwApp").value]; $("pwW").value=a[3]||""; $("pwH").value=a[4]; $("pwResult").innerHTML=""; }
 function calcPower(){
   const a=APPS[+$("pwApp").value], w=num("pwW"), h=num("pwH"), d=num("pwD")||30, p=num("pwPrice");
-  try{ localStorage.setItem("km-price", p); }catch(e){}
   const perH=w/1000*p, perD=perH*h, perM=perD*d, perY=perM*12;
   const tip=L()?a[5]:a[6];
   $("pwResult").innerHTML=`<div class="result ok">
@@ -1627,24 +1854,90 @@ function renderPwList(){
   $("pwList").innerHTML=l.map(x=>`<div class="row" style="justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line)"><span>${esc(x.name)}</span><b style="flex:0">${eur2(x.perM)}</b></div>`).join("")+
     `<div class="row" style="justify-content:space-between;padding:10px 0"><b>${tr("pwTotal")}</b><b style="flex:0;font-size:1.4rem">${eur2(tot)}</b></div>`;
 }
+/* Λογαριασμός ΑΗΚ: ίδια σειρά και στρογγυλοποίηση με τον πραγματικό λογαριασμό
+   EAC bill: same order and rounding as the real bill */
+function calcBill(){
+  const e=E(), k=num("billKwh"); if(!k||e.energy==null){ return; }
+  const r2=x=>Math.round(x*100)/100;
+  const L1=[[tr("bEnergy")+` (${k} × €${e.energy})`,r2(k*e.energy)],[tr("bNetwork")+` (${k} × €${e.network})`,r2(k*e.network)],
+            [tr("bMeter"),e.meterFee],[tr("bSupply"),e.supplyFee],[tr("bFuel")+` (${k} × €${e.fuel})`,r2(k*e.fuel)],[tr("bPso")+` (${k} × €${e.pso})`,r2(k*e.pso)]];
+  const pre=r2(L1.reduce((s,x)=>s+x[1],0)), res=r2(k*e.res), vat=r2(pre*e.vat), tot=r2(pre+res+vat);
+  const row=(a,b,bold)=>`<div class="row" style="justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--line)${bold?";font-weight:800":""}"><span style="flex:1 1 60%">${a}</span><span style="flex:0 0 auto">${eur2(b)}</span></div>`;
+  $("billResult").innerHTML=`<div class="result ok">`+L1.map(x=>row(x[0],x[1])).join("")+row(tr("bRes")+` (${k} × €${e.res})`,res)+row(tr("bVat")+` ${Math.round(e.vat*100)}%`,vat)+
+    `<p style="margin:12px 0 0">${tr("bTotal")}:</p><div class="amt">${eur2(tot)}</div><p>${tr("bPerKwh",eur2(tot/k))} ${tr("bMonth",eur2(tot/2))}</p></div>`;
+}
 
 /* =====================================================================
    ΕΠΙΣΚΕΥΗ Ή ΚΑΙΝΟΥΡΓΙΟ / REPAIR OR REPLACE
-   [εικονίδιο, ελληνικά, αγγλικά, συνηθισμένη ζωή σε χρόνια]
+   ομάδα: [εικονίδιο, ελληνικά, αγγλικά, [ [εικ, el, en, χρόνια ζωής, συμβουλή el, συμβουλή en, v=αξία σήμερα] ] ]
    ===================================================================== */
 const LIFE = [
- ["🧊","Ψυγείο","Fridge",14],["👕","Πλυντήριο ρούχων","Washing machine",11],["🍽️","Πλυντήριο πιάτων","Dishwasher",10],
- ["🌀","Στεγνωτήριο","Tumble dryer",12],["❄️","Κλιματιστικό","Air conditioner",13],["🔥","Κουζίνα / φούρνος","Cooker / oven",15],
- ["🚿","Θερμοσίφωνας","Water heater",12],["📺","Τηλεόραση","TV",8],["💻","Υπολογιστής","Computer",5],["📱","Κινητό","Mobile phone",4],
- ["🧹","Ηλεκτρική σκούπα","Vacuum cleaner",8],["🍞","Μικροσυσκευή κουζίνας","Small kitchen appliance",6]
+ ["🔌","Ηλεκτρικές συσκευές","Home appliances",[
+  ["🧊","Ψυγείο","Fridge",14,"Αν είναι πάνω από 10 χρονών, ένα καινούργιο οικονομικό ψυγείο κερδίζει μέρος της τιμής του από το ρεύμα.","If it is over 10 years old, a new efficient fridge pays back part of its price in electricity."],
+  ["👕","Πλυντήριο ρούχων","Washing machine",11,"Αντλία, λάστιχο πόρτας και ιμάντας αλλάζουν φθηνά· το ρουλεμάν του κάδου συνήθως όχι.","Pump, door seal and belt are cheap to replace; drum bearings usually are not."],
+  ["🍽️","Πλυντήριο πιάτων","Dishwasher",10,"Πρώτα καθαρίστε το φίλτρο· πολλές «βλάβες» είναι απλώς βουλωμένο φίλτρο.","Clean the filter first; many 'faults' are just a clogged filter."],
+  ["🌀","Στεγνωτήριο","Tumble dryer",12,"Καθαρίστε το χνούδι και το συμπύκνωμα· συχνά λύνει το πρόβλημα.","Clean the lint and condenser; it often solves the problem."],
+  ["❄️","Κλιματιστικό","Air conditioner",13,"Ένα καθάρισμα και γέμισμα υγρού κοστίζει λίγο. Αν είναι παλιό (όχι inverter), το καινούργιο μειώνει πολύ το ρεύμα.","A service and regas is cheap. If it is old (not inverter), a new one cuts electricity a lot."],
+  ["🔥","Κουζίνα / φούρνος","Cooker / oven",15,"Αντιστάσεις και θερμοστάτες αλλάζουν φθηνά.","Heating elements and thermostats are cheap to replace."],
+  ["🚿","Θερμοσίφωνας","Water heater",12,"Η αντίσταση και ο θερμοστάτης αλλάζουν φθηνά· αν τρέχει νερό από το δοχείο, θέλει αλλαγή.","The element and thermostat are cheap; if the tank leaks, replace it."],
+  ["♨️","Φουρνάκι μικροκυμάτων","Microwave",9,"Συνήθως δεν αξίζει ακριβή επισκευή.","Usually not worth an expensive repair."],
+  ["🧹","Ηλεκτρική σκούπα","Vacuum cleaner",8,"Νέο φίλτρο ή σακούλα συχνά επαναφέρει τη δύναμη.","A new filter or bag often restores suction."],
+  ["🍞","Μικροσυσκευή κουζίνας","Small kitchen appliance",6,"",""],
+  ["👔","Σίδερο","Iron",6,"",""]]],
+ ["📱","Ηλεκτρονικά","Electronics",[
+  ["📺","Τηλεόραση","TV",8,"Αν χάλασε η οθόνη, συνήθως συμφέρει καινούργια.","If the screen is broken, a new TV is usually better."],
+  ["💻","Υπολογιστής / laptop","Computer / laptop",5,"Ένας δίσκος SSD ή περισσότερη μνήμη κάνει έναν αργό υπολογιστή σαν καινούργιο.","An SSD or more memory makes a slow computer feel new."],
+  ["📱","Κινητό τηλέφωνο","Mobile phone",4,"Αλλαγή μπαταρίας ή οθόνης συχνά αξίζει αν το κινητό είναι κάτω από 3 χρονών.","A new battery or screen is often worth it if the phone is under 3 years old."],
+  ["📟","Tablet","Tablet",5,"",""],
+  ["🖨️","Εκτυπωτής","Printer",5,"Συχνά τα μελάνια κοστίζουν όσο ένας καινούργιος· σκεφτείτε εκτυπωτή με δοχεία μελανιού.","Ink often costs as much as a new printer; consider one with refillable tanks."]]],
+ ["🚗","Οχήματα","Vehicles",[
+  ["🚗","Αυτοκίνητο","Car",15,"Συγκρίνετε με την αξία του αυτοκινήτου σήμερα. Ζητήστε 2 προσφορές και ρωτήστε για μεταχειρισμένα ανταλλακτικά.","Compare with the car's value today. Get 2 quotes and ask about used parts.",1],
+  ["🏍️","Μοτοσικλέτα / μηχανάκι","Motorbike / scooter",12,"Το τακτικό σέρβις (λάδια, ιμάντας) αποτρέπει τις μεγάλες βλάβες.","Regular service (oil, belt) prevents big failures.",1],
+  ["🚲","Ποδήλατο","Bicycle",10,"Λάστιχα, φρένα και αλυσίδα επισκευάζονται φθηνά — σχεδόν πάντα αξίζει.","Tyres, brakes and chain are cheap to fix — almost always worth it.",1],
+  ["🔋","Ηλεκτρικό ποδήλατο / πατίνι","E-bike / e-scooter",7,"Η μπαταρία είναι το ακριβό κομμάτι· ρωτήστε για ανακατασκευή κυψελών.","The battery is the costly part; ask about rebuilding the cells.",1],
+  ["🛞","Ελαστικά αυτοκινήτου","Car tyres",5,"Ένα τρύπημα επισκευάζεται φθηνά· αν το λάστιχο είναι πάνω από 6 χρονών, αλλάξτε το για ασφάλεια.","A puncture is cheap to fix; if the tyre is over 6 years old, replace it for safety."],
+  ["🔋","Μπαταρία αυτοκινήτου","Car battery",4,"Πρώτα ελέγξτε τη φόρτιση και τους πόλους· αν είναι πάνω από 4 χρονών, αλλάξτε τη.","First check charging and terminals; if it is over 4 years old, replace it."]]],
+ ["🛋️","Έπιπλα","Furniture",[
+  ["🛋️","Καναπές","Sofa",10,"Ο ταπετσιέρης αλλάζει ύφασμα και αφρό· συχνά φθηνότερο για καλό σκελετό.","An upholsterer can replace fabric and foam; often cheaper for a good frame."],
+  ["🪑","Πολυθρόνα","Armchair",10,"",""],
+  ["🪑","Καρέκλες","Chairs",12,"Λίγη ξυλόκολλα και σφίξιμο βιδών διορθώνει τις περισσότερες που κουνιούνται.","A little wood glue and tightened screws fix most wobbly chairs."],
+  ["🪵","Τραπέζι ξύλινο","Wooden table",25,"Ένα καλό ξύλινο τραπέζι αξίζει τρίψιμο και βερνίκι αντί για καινούργιο.","A good wooden table is worth sanding and varnishing rather than replacing."],
+  ["🛏️","Κρεβάτι (σκελετός)","Bed frame",15,"",""],
+  ["🛌","Στρώμα","Mattress",8,"Δεν επισκευάζεται· γυρίζετέ το κάθε 3 μήνες για να κρατήσει περισσότερο.","It cannot be repaired; turn it every 3 months to make it last longer."],
+  ["🚪","Ντουλάπα","Wardrobe",20,"Μεντεσέδες και ράγες αλλάζουν πολύ φθηνά.","Hinges and runners are very cheap to replace."],
+  ["💺","Καρέκλα γραφείου","Office chair",8,"Το αμορτισέρ (πιστόνι) αλλάζει φθηνά.","The gas lift can be replaced cheaply."],
+  ["⛱️","Έπιπλα κήπου","Garden furniture",8,"",""]]],
+ ["🍳","Κουζίνα & σπίτι","Kitchen & home",[
+  ["🍳","Αντικολλητικό τηγάνι","Non-stick pan",3,"Όταν φθαρεί η επίστρωση, αλλάξτε το· δεν επισκευάζεται.","When the coating wears, replace it; it cannot be repaired."],
+  ["🍲","Ανοξείδωτες κατσαρόλες","Stainless-steel pots",25,"Κρατούν μια ζωή· αλλάζει μόνο το χερούλι ή το καπάκι.","They last a lifetime; only the handle or lid needs replacing."],
+  ["⏲️","Χύτρα ταχύτητας","Pressure cooker",15,"Το λάστιχο και η βαλβίδα αλλάζουν φθηνά — αλλάζετέ τα για ασφάλεια.","The gasket and valve are cheap — replace them for safety."],
+  ["🍽️","Πιάτα & ποτήρια","Dishes & glasses",15,"Αγοράστε μόνο τα κομμάτια που λείπουν, όχι ολόκληρο σερβίτσιο.","Buy only the missing pieces, not a whole set."],
+  ["🔪","Μαχαίρια","Knives",15,"Ένα ακόνισμα τα κάνει σαν καινούργια.","Sharpening makes them like new."],
+  ["🚰","Βρύση","Tap / faucet",12,"Αν στάζει, συνήθως φταίει μια φθηνή τσιμούχα ή φυσίγγιο.","If it drips, usually a cheap washer or cartridge is to blame."],
+  ["🪟","Περσίδες / κουρτίνες","Blinds / curtains",10,"",""],
+  ["🔐","Κλειδαριά","Lock",15,"Ο αφαλός (κύλινδρος) αλλάζει χωρίς να αλλάξει όλη η κλειδαριά.","The cylinder can be changed without replacing the whole lock."]]],
+ ["👞","Ρούχα & προσωπικά","Clothes & personal",[
+  ["👞","Δερμάτινα παπούτσια","Leather shoes",8,"Ο τσαγκάρης αλλάζει σόλες και τακούνια φθηνά.","A cobbler replaces soles and heels cheaply."],
+  ["👟","Αθλητικά παπούτσια","Trainers",2,"",""],
+  ["🧥","Παλτό / μπουφάν","Coat / jacket",8,"Φερμουάρ και κουμπιά αλλάζουν φθηνά στη μοδίστρα.","Zips and buttons are cheap to replace at a tailor."],
+  ["👓","Γυαλιά οράσεως","Eyeglasses",4,"Ένα σπασμένο σκελετό μπορεί να τον κολλήσει ο οπτικός· κρατήστε τους φακούς αν δεν άλλαξαν οι βαθμοί.","An optician can often fix a broken frame; keep the lenses if your prescription hasn't changed."],
+  ["⌚","Ρολόι","Watch",10,"Η μπαταρία αλλάζει πολύ φθηνά.","The battery is very cheap to replace."],
+  ["🧳","Βαλίτσα","Suitcase",8,"Ρόδες και χερούλια πωλούνται ξεχωριστά.","Wheels and handles are sold separately."]]]
 ];
-function initRepair(){ const sel=$("rpType"), prev=sel.value;
-  sel.innerHTML=LIFE.map((a,i)=>`<option value="${i}">${a[0]} ${L()?a[1]:a[2]}</option>`).join(""); if(prev) sel.value=prev; }
+function lifeItem(){ const [g,i]=($("rpType").value||"0-0").split("-").map(Number); return LIFE[g][3][i]; }
+function initRepair(){
+  const sel=$("rpType"), prev=sel.value, li=L()?1:2;
+  sel.innerHTML=LIFE.map((g,gi)=>`<optgroup label="${g[0]} ${g[li]}">`+g[3].map((a,i)=>`<option value="${gi}-${i}">${a[0]} ${a[li]}</option>`).join("")+`</optgroup>`).join("");
+  if(prev) sel.value=prev;
+  sel.onchange=rpVis; rpVis();
+}
+function rpVis(){ const a=lifeItem(); $("rpNewLbl").textContent = a[6]?tr("rpNewV"):tr("rpNew"); $("rpResult").innerHTML=""; }
 function calcRepair(){
-  const a=LIFE[+$("rpType").value], age=num("rpAge"), cost=num("rpCost"), nw=num("rpNew");
-  const out=$("rpResult");
+  const a=lifeItem(), age=num("rpAge"), cost=num("rpCost"), nw=num("rpNew");
+  const out=$("rpResult"), tip=L()?a[4]:a[5];
+  const tipHtml = tip?`<div class="note"><b>${tr("rpTip")}</b> ${tip}</div>`:"";
   if(age<2 && age>=0 && $("rpAge").value!==""){
-    out.innerHTML=`<div class="result ok"><b>${tr("rpFree")}</b><button class="big-btn" onclick="go('rights/warranty')">${tr("rpFreeBtn")}</button></div>`; return; }
+    out.innerHTML=`<div class="result ok"><b>${tr("rpFree")}</b><button class="big-btn" onclick="go('rights/warranty')">${tr("rpFreeBtn")} ›</button>${tipHtml}</div>`; return; }
   if(!cost||!nw){ toast(tr("rpNeed")); return; }
   const ratio=cost/nw, lifeP=Math.min(150,Math.round(age/a[3]*100));
   let cls, title;
@@ -1652,8 +1945,8 @@ function calcRepair(){
   else if(ratio>0.35 || lifeP>=70){ cls="mid"; title=tr("rpThink"); }
   else { cls="ok"; title=tr("rpRepair"); }
   out.innerHTML=`<div class="result ${cls}"><b style="font-size:1.4rem">${title}</b>
-    <p>${trf("rpWhy1",{p:Math.round(ratio*100)})}</p>${age?`<p>${trf("rpWhy2",{p:lifeP,y:a[3]})}</p>`:""}
-    <div class="note">${tr("rpRule")}</div></div>`;
+    <p>${trf("rpWhy1",{p:Math.round(ratio*100)})}</p>${age?`<p>${trf("rpWhy2",{p:lifeP,y:a[3]})}</p>`:`<p>${tr("rpLife",a[3])}</p>`}
+    ${tipHtml}<div class="note">${tr("rpRule")}</div></div>`;
 }
 
 /* =====================================================================

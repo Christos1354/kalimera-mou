@@ -1,11 +1,21 @@
 {
-  "version": "7-10-2026",
-  "checked": "2026-10-07",
+  "version": "8-10-2026",
+  "checked": "2026-10-08",
   "electricity": {
-    "pricePerKwh": 0.3,
-    "noteEl": "Στο οικιακό τιμολόγιο 01 της ΑΗΚ (από 1 Μαΐου 2026) η ενέργεια και το δίκτυο κοστίζουν 21,82 σεντ/kWh. Μαζί με την αναπροσαρμογή καυσίμων, τα άλλα τέλη και τον ΦΠΑ, το σύνολο φτάνει περίπου 28–32 σεντ. Για ακρίβεια, βάλτε την τιμή από τον δικό σας λογαριασμό.",
-    "noteEn": "On EAC household tariff 01 (from 1 May 2026) energy plus network cost 21.82 cents/kWh. With the fuel adjustment, other charges and VAT, the total is about 28–32 cents. For accuracy, enter the price from your own bill.",
-    "source": "https://www.eac.com.cy"
+    "pricePerKwh": 0.3188,
+    "noteEl": "Οικιακό τιμολόγιο 01 ΑΗΚ: ενέργεια 17,89 σεντ, δίκτυο 3,93 σεντ, αναπροσαρμογή καυσίμων 8,0151 σεντ, ΥΔΥ 0,051 σεντ ανά kWh, συν ΦΠΑ 5%, Ταμείο ΑΠΕ 0,5 σεντ και πάγια €8,94 το δίμηνο.",
+    "noteEn": "EAC household tariff 01: energy 17.89 c, network 3.93 c, fuel adjustment 8.0151 c, PSO 0.051 c per kWh, plus 5% VAT, RES Fund 0.5 c and fixed charges of €8.94 per two months.",
+    "source": "https://www.eac.com.cy",
+    "energy": 0.1789,
+    "network": 0.0393,
+    "fuel": 0.080151,
+    "pso": 0.00051,
+    "res": 0.005,
+    "vat": 0.05,
+    "meterFee": 0.94,
+    "supplyFee": 8.0,
+    "fuelPeriodEl": "€0,080151/kWh (λογαριασμός 3/8–5/10/2026)",
+    "fuelPeriodEn": "€0.080151/kWh (bill 3 Aug–5 Oct 2026)"
   },
   "flight": {
     "amounts": {
