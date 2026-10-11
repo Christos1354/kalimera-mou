@@ -1,6 +1,6 @@
-// Καλή Μέρα μου – service worker. Έκδοση 8-10-2026 18:30
+// Καλή Μέρα μου – service worker. Έκδοση 11-10-2026 20:30
 // Η σελίδα φέρνει πάντα πρώτα τη νέα έκδοση από το ίντερνετ· χωρίς σύνδεση, δείχνει την αποθηκευμένη.
-const CACHE = "kalimera-v5";
+const CACHE = "kalimera-v6";
 const FILES = ["./", "index.html", "data.json", "manifest.webmanifest", "icon-192.png", "icon-512.png", "apple-touch-icon.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES))); self.skipWaiting(); });
 self.addEventListener("activate", e => {

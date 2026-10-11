@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-title" content="Καλή Μέρα μου">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
-/* Έκδοση / Version: 8-10-2026 18:30 */
+/* Έκδοση / Version: 11-10-2026 20:30 */
 :root{
   --bg:#f4f1ea; --card:#ffffff; --ink:#1d2433; --soft:#5b6475; --line:rgba(127,127,127,.22);
   --blue:#1f6fd1; --teal:#0f9e8e; --gold:#e8a317; --rose:#e0566b; --violet:#7a4fd6; --green:#2f9a46;
@@ -406,6 +406,7 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:6px}
     <button class="tile t-a" onclick="go('rights/flight')"><span class="ic">✈️</span><span><h2 data-t="rFlight"></h2><p data-t="rFlightD"></p></span></button>
     <button class="tile t-b" onclick="go('rights/warranty')"><span class="ic">🔧</span><span><h2 data-t="rWar"></h2><p data-t="rWarD"></p></span></button>
     <button class="tile t-c" onclick="go('rights/tax')"><span class="ic">💶</span><span><h2 data-t="rTax"></h2><p data-t="rTaxD"></p></span></button>
+    <button class="tile t-a" onclick="go('rights/letters')"><span class="ic">✉️</span><span><h2 data-t="rLet"></h2><p data-t="rLetD"></p></span></button>
     <button class="tile t-d" onclick="go('rights/links')"><span class="ic">🏛️</span><span><h2 data-t="rLinks"></h2><p data-t="rLinksD"></p></span></button>
   </div>
   <p class="src" id="checkedRights"></p>
@@ -488,6 +489,37 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:6px}
     <div id="tResult"></div>
   </div>
   <p class="src" id="tSrc"></p>
+</section>
+
+<section id="p-rights-letters" class="page">
+  <h2 class="h">✉️ <span data-t="rLet"></span></h2>
+  <p class="sub" data-t="letIntro"></p>
+  <div class="tiles" id="letTiles"></div>
+  <div class="note" data-t="letDisc"></div>
+</section>
+
+<section id="p-rights-letter" class="page">
+  <div class="card">
+    <h2 class="h" id="letHead"></h2>
+    <p class="sub" id="letDesc"></p>
+    <details class="ingbox" id="meBox"><summary data-t="me"></summary>
+      <p class="small" data-t="meSaved"></p>
+      <label class="f" for="pName" data-t="pName"></label><input id="pName" autocomplete="name">
+      <div class="row">
+        <div><label class="f" for="pId" data-t="pId"></label><input id="pId"></div>
+        <div><label class="f" for="pSi" data-t="pSi"></label><input id="pSi"></div>
+      </div>
+      <label class="f" for="pAddr" data-t="pAddr"></label><input id="pAddr" autocomplete="street-address">
+      <div class="row">
+        <div><label class="f" for="pPhone" data-t="pPhone"></label><input id="pPhone" type="tel" autocomplete="tel"></div>
+        <div><label class="f" for="pEmail" data-t="pEmail"></label><input id="pEmail" type="email" autocomplete="email"></div>
+      </div>
+    </details>
+    <div id="letFields"></div>
+    <button class="big-btn" onclick="makeLetter()" data-t="writeLetter"></button>
+  </div>
+  <div class="card" id="letCard"><div id="letOut"></div><div id="letTips"></div>
+    <p class="small" data-t="letDisc"></p></div>
 </section>
 
 <section id="p-rights-links" class="page">
@@ -584,7 +616,7 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:6px}
   </div>
 </section>
 
-<div class="foot"><span data-t="version"></span> 8-10-2026 18:30</div>
+<div class="foot"><span data-t="version"></span> 11-10-2026 20:30</div>
 </main>
 
 <aside>
@@ -924,12 +956,14 @@ function go(p){ location.hash = (p==="home") ? "" : p; }
 function goBack(){
   const parts = ROUTE.split("/");
   if(ROUTE==="money/add" && ROUTE_ARG) { go("money"); return; }
+  if(ROUTE==="rights/letter") { go("rights/letters"); return; }
   if(parts.length>1) go(parts.slice(0,-1).join("/")); else go("home");
 }
 function route(){
   let h=(location.hash||"").slice(1) || "home";
   let arg=null;
   const m=h.match(/^money\/edit\/(.+)$/); if(m){ h="money/add"; arg=m[1]; }
+  const m2=h.match(/^rights\/letter\/(.+)$/); if(m2){ h="rights/letter"; arg=m2[1]; }
   const id="p-"+h.replace(/\//g,"-");
   if(!$(id)) h="home";
   ROUTE=h; ROUTE_ARG=arg;
@@ -951,6 +985,8 @@ function renderCurrent(){
   if(r==="rights/warranty") initWarranty();
   if(r==="rights/tax") initTax();
   if(r==="rights/links") renderLinks();
+  if(r==="rights/letters") letterTiles();
+  if(r==="rights/letter") openLetter(ROUTE_ARG);
   if(r==="house/fridge") renderFridge();
   if(r==="house/cook") initCook();
   if(r==="house/power") initPower();
@@ -1704,6 +1740,153 @@ R("sweet","Φρουτοσαλάτα","Fruit salad","apple banana orange honey",1
 R("sweet","Κέικ βανίλιας","Vanilla cake","flour eggs milk sugar butter",60,"Χτυπήστε βούτυρο με ζάχαρη.|Προσθέστε αυγά, γάλα, βανίλια, αλεύρι και μπέικιν.|Ψήστε στους 175°C για 45 λεπτά.","Beat butter with sugar.|Add eggs, milk, vanilla, flour and baking powder.|Bake at 175°C for 45 minutes.");
 
 /* =====================================================================
+   ΝΕΑ ΥΛΙΚΑ & ΣΥΝΤΑΓΕΣ (11-10-2026) / MORE INGREDIENTS & RECIPES
+   ===================================================================== */
+Object.assign(ING,{
+ anari:["🧀","Αναρή","Anari cheese"], mozzarella:["🧀","Μοτσαρέλα","Mozzarella"],
+ rabbit:["🐇","Κουνέλι","Rabbit"], liver:["🥩","Συκώτι","Liver"],
+ salmon:["🐟","Σολομός","Salmon"], sardines:["🐟","Σαρδέλες","Sardines"], octopus:["🐙","Χταπόδι","Octopus"], mussels:["🦪","Μύδια","Mussels"],
+ vermicelli:["🍜","Φιδές","Vermicelli"], couscous:["🍚","Κους κους","Couscous"], oats:["🥣","Βρώμη","Oats"], pitta:["🫓","Πίτες","Pitta bread"], cornflour:["🌽","Κορνφλάουρ","Cornflour"],
+ peas:["🫛","Αρακάς","Peas"], beetroot:["🟣","Παντζάρια","Beetroot"], corn:["🌽","Καλαμπόκι","Sweetcorn"], avocado:["🥑","Αβοκάντο","Avocado"], asparagus:["🌿","Αγρέλια / σπαράγγια","Wild asparagus"],
+ tahini:["🥫","Ταχίνι","Tahini"], carob:["🍯","Χαρουπόμελο","Carob syrup"], chocolate:["🍫","Κακάο / σοκολάτα","Cocoa / chocolate"],
+ raisins:["🍇","Σταφίδες","Raisins"], sesame:["⚪","Σουσάμι","Sesame"], rosewater:["🌹","Ροδόσταγμα","Rose water"], figs:["🍐","Σύκα","Figs"], strawberries:["🍓","Φράουλες","Strawberries"]
+});
+
+/* --- Με κιμά --- */
+R("kima","Πιπεριές γεμιστές με κιμά","Peppers stuffed with mince","pepper mince rice onion tomato",70,"Αδειάστε τις πιπεριές.|Ανακατέψτε κιμά, ρύζι, κρεμμύδι, ντομάτα και μαϊντανό και γεμίστε τες.|Ψήστε στους 190°C για 1 ώρα με λίγο νερό στο ταψί.","Hollow out the peppers.|Mix mince, rice, onion, tomato and parsley and stuff them.|Bake at 190°C for 1 hour with a little water in the tray.");
+R("kima","Κεφτέδες κοκκινιστοί","Meatballs in tomato sauce","mince bread onion eggs tomato",50,"Πλάστε κεφτέδες με κιμά, ψωμί, κρεμμύδι και αυγό.|Τσιγαρίστε τους ελαφρά.|Σιγοβράστε τους σε σάλτσα ντομάτας 25 λεπτά. Σερβίρετε με πουρέ ή ρύζι.","Shape meatballs with mince, bread, onion and egg.|Brown them lightly.|Simmer in tomato sauce for 25 minutes. Serve with mash or rice.");
+R("kima","Λαζάνια με κιμά","Lasagne with mince","pasta mince tomato onion milk butter flour cheese",90,"Ετοιμάστε σάλτσα κιμά και μπεσαμέλ.|Στρώστε φύλλα λαζάνιας, κιμά και μπεσαμέλ σε στρώσεις.|Τελειώστε με μπεσαμέλ και τυρί και ψήστε στους 180°C για 40 λεπτά.","Make a mince sauce and béchamel.|Layer lasagne sheets, mince and béchamel.|Finish with béchamel and cheese and bake at 180°C for 40 minutes.");
+R("kima","Πατάτες γεμιστές με κιμά","Potatoes stuffed with mince","potato mince onion tomato cheese",75,"Αδειάστε μεγάλες πατάτες με ένα κουτάλι.|Γεμίστε τες με κιμά σοταρισμένο με κρεμμύδι και ντομάτα.|Βάλτε τυρί από πάνω και ψήστε στους 190°C για 50 λεπτά.","Hollow out large potatoes with a spoon.|Fill with mince sautéed with onion and tomato.|Top with cheese and bake at 190°C for 50 minutes.");
+R("kima","Κιμάς με ρύζι","Mince with rice","mince rice onion tomato",35,"Τσιγαρίστε κρεμμύδι και κιμά.|Ρίξτε ντομάτα, ρύζι και διπλάσιο νερό.|Σιγοβράστε 18 λεπτά σκεπασμένο.","Brown the onion and mince.|Add tomato, rice and twice as much water.|Simmer covered for 18 minutes.");
+R("kima","Κεμπάπ με πίτα","Kebab with pitta","mince onion pitta tomato yogurt",30,"Ζυμώστε κιμά με τριμμένο κρεμμύδι, κύμινο, πάπρικα και αλάτι.|Πλάστε μακρόστενα κεμπάπ και ψήστε στη σχάρα 10 λεπτά.|Σερβίρετε σε πίτα με ντομάτα, κρεμμύδι και γιαούρτι.","Knead mince with grated onion, cumin, paprika and salt.|Shape long kebabs and grill for 10 minutes.|Serve in pitta with tomato, onion and yoghurt.");
+R("kima","Κιμαδόπιτα","Mince pie","mince phyllo onion eggs cheese",70,"Τσιγαρίστε κιμά και κρεμμύδι, αφήστε να κρυώσει.|Ανακατέψτε με αυγά και τυρί.|Στρώστε ανάμεσα σε φύλλα και ψήστε στους 180°C για 45 λεπτά.","Brown mince and onion and let it cool.|Mix with eggs and cheese.|Layer between filo sheets and bake at 180°C for 45 minutes.");
+R("kima","Μελιτζάνες παπουτσάκια","Stuffed aubergines (papoutsakia)","eggplant mince tomato onion milk flour butter cheese",80,"Κόψτε τις μελιτζάνες στη μέση και ψήστε τες 20 λεπτά.|Γεμίστε τες με σάλτσα κιμά.|Βάλτε μπεσαμέλ και τυρί από πάνω και ψήστε στους 180°C για 30 λεπτά.","Halve the aubergines and roast for 20 minutes.|Fill with mince sauce.|Top with béchamel and cheese and bake at 180°C for 30 minutes.");
+
+/* --- Κρεατικά --- */
+R("meat","Κουνέλι στιφάδο","Rabbit stifado","rabbit onion tomato garlic wine",120,"Σοτάρετε το κουνέλι και σβήστε με κρασί.|Ρίξτε πολλά μικρά κρεμμύδια, σκόρδο, ντομάτα, δάφνη και κανέλα.|Σιγοβράστε 1,5 ώρα.","Brown the rabbit and deglaze with wine.|Add plenty of small onions, garlic, tomato, bay and cinnamon.|Simmer for 1.5 hours.");
+R("meat","Χοιρινό με πράσα","Pork with leeks","pork leek lemon",90,"Σοτάρετε το χοιρινό και ρίξτε νερό.|Σιγοβράστε 50 λεπτά.|Προσθέστε τα πράσα για 25 λεπτά και τελειώστε με λεμόνι.","Brown the pork and add water.|Simmer for 50 minutes.|Add the leeks for 25 minutes and finish with lemon.");
+R("meat","Χοιρινό με μανιτάρια και κρέμα","Pork with mushrooms and cream","pork mushrooms cream onion",35,"Σοτάρετε το χοιρινό σε λωρίδες.|Προσθέστε κρεμμύδι και μανιτάρια.|Ρίξτε κρέμα και σιγοβράστε 10 λεπτά. Σερβίρετε με ρύζι.","Brown the pork strips.|Add onion and mushrooms.|Add cream and simmer for 10 minutes. Serve with rice.");
+R("meat","Χοιρινό σνίτσελ","Pork schnitzel","pork flour eggs bread lemon",30,"Χτυπήστε τις μπριζόλες να λεπτύνουν.|Περάστε από αλεύρι, αυγό και τριμμένη φρυγανιά.|Τηγανίστε 3 λεπτά από κάθε πλευρά. Σερβίρετε με λεμόνι.","Pound the steaks thin.|Coat in flour, egg and breadcrumbs.|Fry for 3 minutes per side. Serve with lemon.");
+R("meat","Γύρος σπιτικός με πίτα","Homemade gyros in pitta","pork pitta tomato onion yogurt cucumber",40,"Κόψτε το χοιρινό σε λεπτές λωρίδες και μαρινάρετε με λάδι, ρίγανη, πάπρικα και σκόρδο.|Ψήστε στο τηγάνι ή στον φούρνο μέχρι να ροδίσει.|Σερβίρετε σε πίτα με ντομάτα, κρεμμύδι και τζατζίκι.","Slice the pork thinly and marinate with oil, oregano, paprika and garlic.|Cook in a pan or the oven until browned.|Serve in pitta with tomato, onion and tzatziki.");
+R("meat","Μοσχάρι λεμονάτο","Lemon beef","beef lemon garlic potato",120,"Σοτάρετε το μοσχάρι με σκόρδο.|Ρίξτε λεμόνι, ρίγανη και νερό και σιγοβράστε 1,5 ώρα.|Σερβίρετε με τηγανητές ή βραστές πατάτες.","Brown the beef with garlic.|Add lemon, oregano and water and simmer for 1.5 hours.|Serve with fried or boiled potatoes.");
+R("meat","Μοσχάρι με αρακά","Beef with peas","beef peas tomato onion carrot",100,"Σοτάρετε μοσχάρι και κρεμμύδι.|Ρίξτε ντομάτα και νερό και σιγοβράστε 1 ώρα.|Προσθέστε αρακά και καρότα για 25 λεπτά.","Brown the beef and onion.|Add tomato and water and simmer for 1 hour.|Add peas and carrots for 25 minutes.");
+R("meat","Αρνί με αγκινάρες","Lamb with artichokes","lamb artichoke onion herbs lemon eggs",90,"Σοτάρετε το αρνί με κρεμμύδι και ρίξτε νερό.|Σιγοβράστε 1 ώρα, προσθέστε αγκινάρες και άνηθο για 20 λεπτά.|Δέστε με αυγολέμονο.","Brown the lamb with onion and add water.|Simmer for 1 hour; add artichokes and dill for 20 minutes.|Finish with egg-lemon sauce.");
+R("meat","Συκώτι σοταρισμένο","Sautéed liver","liver onion wine lemon",20,"Κόψτε το συκώτι σε κομμάτια και αλευρώστε το ελαφρά.|Σοτάρετε σε καυτό τηγάνι με κρεμμύδι 4–5 λεπτά.|Σβήστε με κρασί ή λεμόνι και ρίξτε ρίγανη.","Cut the liver into pieces and dust lightly with flour.|Sauté in a hot pan with onion for 4–5 minutes.|Deglaze with wine or lemon and add oregano.");
+R("meat","Χοιρινό ψητό στη γάστρα","Pork roast in a clay pot","pork potato onion garlic lemon",120,"Βάλτε χοιρινό, πατάτες, κρεμμύδι και σκόρδο στη γάστρα.|Ρίξτε λεμόνι, ρίγανη, λάδι και ένα ποτήρι νερό.|Σκεπάστε και ψήστε στους 180°C για 1,5–2 ώρες.","Put pork, potatoes, onion and garlic in a clay pot.|Add lemon, oregano, oil and a glass of water.|Cover and roast at 180°C for 1.5–2 hours.");
+
+/* --- Κοτόπουλο --- */
+R("chicken","Σουβλάκι κοτόπουλο","Chicken souvlaki","chicken lemon garlic pitta",30,"Κόψτε το κοτόπουλο σε κύβους και μαρινάρετε με λεμόνι, σκόρδο, λάδι και ρίγανη.|Περάστε σε καλαμάκια.|Ψήστε 12 λεπτά και σερβίρετε με πίτα.","Cube the chicken and marinate with lemon, garlic, oil and oregano.|Thread onto skewers.|Grill for 12 minutes and serve with pitta.");
+R("chicken","Κοτόπουλο με αρακά","Chicken with peas","chicken peas tomato onion carrot",60,"Σοτάρετε κοτόπουλο και κρεμμύδι.|Ρίξτε ντομάτα, αρακά, καρότα και νερό.|Σιγοβράστε 40 λεπτά.","Brown the chicken and onion.|Add tomato, peas, carrots and water.|Simmer for 40 minutes.");
+R("chicken","Κοτόπουλο κάρι με ρύζι","Chicken curry with rice","chicken onion cream rice",40,"Σοτάρετε κρεμμύδι και κοτόπουλο σε κομμάτια.|Ρίξτε κάρι, λίγο νερό και κρέμα και σιγοβράστε 15 λεπτά.|Σερβίρετε με ρύζι.","Sauté onion and chicken pieces.|Add curry powder, a little water and cream; simmer for 15 minutes.|Serve with rice.");
+R("chicken","Κοτόπουλο με μέλι και μουστάρδα","Honey-mustard chicken","chicken honey lemon potato",50,"Ανακατέψτε μέλι, μουστάρδα, λεμόνι και λάδι.|Αλείψτε το κοτόπουλο και βάλτε το σε ταψί με πατάτες.|Ψήστε στους 200°C για 40 λεπτά.","Mix honey, mustard, lemon and oil.|Brush the chicken and put it in a tray with potatoes.|Bake at 200°C for 40 minutes.");
+R("chicken","Κοτόπουλο με λαχανικά στη γάστρα","Chicken with vegetables in a clay pot","chicken potato carrot zucchini pepper onion",75,"Βάλτε κοτόπουλο και λαχανικά σε κομμάτια στη γάστρα.|Ρίξτε λάδι, ρίγανη, αλάτι και λίγο νερό.|Σκεπάστε και ψήστε στους 190°C για 1 ώρα.","Put chicken and chopped vegetables in a clay pot.|Add oil, oregano, salt and a little water.|Cover and bake at 190°C for 1 hour.");
+R("chicken","Κοτοσαλάτα","Chicken salad","chicken lettuce corn tomato yogurt",20,"Ψήστε ή βράστε το στήθος και κόψτε το σε κομμάτια.|Ανακατέψτε με μαρούλι, καλαμπόκι και ντομάτα.|Ρίξτε σάλτσα από γιαούρτι, λεμόνι και μουστάρδα.","Grill or boil the breast and cut it into pieces.|Mix with lettuce, sweetcorn and tomato.|Dress with yoghurt, lemon and mustard.");
+R("chicken","Μακαρόνια με κοτόπουλο και μανιτάρια","Pasta with chicken and mushrooms","pasta chicken mushrooms cream",30,"Σοτάρετε κοτόπουλο σε λωρίδες και μανιτάρια.|Ρίξτε κρέμα για 5 λεπτά.|Ανακατέψτε με βρασμένα μακαρόνια.","Sauté chicken strips and mushrooms.|Add cream for 5 minutes.|Toss with boiled pasta.");
+
+/* --- Ζυμαρικά & ρύζι --- */
+R("pasta","Ριζότο μανιταριών","Mushroom risotto","rice mushrooms onion butter cheese",35,"Σοτάρετε κρεμμύδι και μανιτάρια σε βούτυρο.|Ρίξτε το ρύζι και ζεστό ζωμό λίγο λίγο, ανακατεύοντας 18 λεπτά.|Τελειώστε με βούτυρο και τριμμένο τυρί.","Sauté onion and mushrooms in butter.|Add the rice and hot stock little by little, stirring for 18 minutes.|Finish with butter and grated cheese.");
+R("pasta","Ριζότο λαχανικών","Vegetable risotto","rice zucchini carrot peas onion",35,"Σοτάρετε κρεμμύδι, κολοκυθάκι και καρότο.|Ρίξτε ρύζι και ζεστό ζωμό λίγο λίγο.|Προσθέστε τον αρακά τα τελευταία 5 λεπτά.","Sauté onion, courgette and carrot.|Add rice and hot stock little by little.|Add the peas for the last 5 minutes.");
+R("pasta","Μακαρόνια με μπρόκολο","Pasta with broccoli","pasta broccoli garlic cheese",20,"Βράστε μακαρόνια και μπρόκολο μαζί.|Σοτάρετε σκόρδο σε λάδι.|Ανακατέψτε όλα με τριμμένο τυρί.","Boil the pasta and broccoli together.|Sauté garlic in oil.|Toss everything with grated cheese.");
+R("pasta","Πένες με σολομό","Penne with salmon","pasta salmon cream lemon",25,"Σοτάρετε τον σολομό σε κομματάκια.|Ρίξτε κρέμα και λίγο λεμόνι.|Ανακατέψτε με βρασμένες πένες και άνηθο.","Sauté the salmon pieces.|Add cream and a little lemon.|Toss with boiled penne and dill.");
+R("pasta","Ρύζι με φιδέ","Rice with vermicelli","rice vermicelli butter",25,"Καβουρδίστε τον φιδέ σε βούτυρο μέχρι να ροδίσει.|Ρίξτε το ρύζι και διπλάσιο νερό ή ζωμό.|Σιγοβράστε 18 λεπτά σκεπασμένο.","Toast the vermicelli in butter until golden.|Add the rice and twice as much water or stock.|Simmer covered for 18 minutes.");
+R("pasta","Κους κους με λαχανικά","Couscous with vegetables","couscous zucchini pepper onion carrot",20,"Ρίξτε βραστό νερό στο κους κους, σκεπάστε για 5 λεπτά.|Σοτάρετε τα λαχανικά σε κυβάκια.|Ανακατέψτε με λάδι και λεμόνι.","Pour boiling water over the couscous and cover for 5 minutes.|Sauté the diced vegetables.|Mix with oil and lemon.");
+R("pasta","Μακαρόνια ναπολιτάνα με μοτσαρέλα","Pasta with tomato and mozzarella","pasta tomato garlic mozzarella",25,"Κάντε σάλτσα ντομάτας με σκόρδο και βασιλικό.|Βράστε τα μακαρόνια.|Ανακατέψτε και βάλτε κομματάκια μοτσαρέλα από πάνω.","Make a tomato sauce with garlic and basil.|Boil the pasta.|Toss and top with pieces of mozzarella.");
+
+/* --- Ψάρια & θαλασσινά --- */
+R("fish","Σολομός στον φούρνο","Baked salmon","salmon lemon potato herbs",30,"Βάλτε τον σολομό σε ταψί με πατάτες σε λεπτές φέτες.|Ρίξτε λεμόνι, λάδι, άνηθο και αλάτι.|Ψήστε στους 200°C για 20 λεπτά.","Put the salmon in a tray with thinly sliced potatoes.|Add lemon, oil, dill and salt.|Bake at 200°C for 20 minutes.");
+R("fish","Σαρδέλες στον φούρνο","Baked sardines","sardines lemon garlic tomato",30,"Καθαρίστε τις σαρδέλες.|Βάλτε τες σε ταψί με ντομάτα, σκόρδο, λεμόνι και λάδι.|Ψήστε στους 200°C για 20 λεπτά.","Clean the sardines.|Put them in a tray with tomato, garlic, lemon and oil.|Bake at 200°C for 20 minutes.");
+R("fish","Χταπόδι ξυδάτο","Marinated octopus","octopus garlic herbs",60,"Βράστε το χταπόδι στο ζουμί του 45 λεπτά.|Κόψτε το σε κομματάκια.|Ρίξτε λάδι, ξίδι, σκόρδο και ρίγανη και αφήστε το λίγες ώρες.","Simmer the octopus in its own juices for 45 minutes.|Cut into pieces.|Dress with oil, vinegar, garlic and oregano and leave for a few hours.");
+R("fish","Χταπόδι στιφάδο","Octopus stifado","octopus onion tomato wine",90,"Βράστε το χταπόδι 30 λεπτά.|Σοτάρετε πολλά μικρά κρεμμύδια, ρίξτε κρασί και ντομάτα.|Προσθέστε το χταπόδι και σιγοβράστε 45 λεπτά.","Simmer the octopus for 30 minutes.|Sauté plenty of small onions, add wine and tomato.|Add the octopus and simmer for 45 minutes.");
+R("fish","Μύδια αχνιστά","Steamed mussels","mussels garlic wine lemon",20,"Καθαρίστε τα μύδια.|Σοτάρετε σκόρδο, ρίξτε κρασί και τα μύδια.|Σκεπάστε για 5 λεπτά μέχρι να ανοίξουν. Πετάξτε όσα μείνουν κλειστά.","Clean the mussels.|Sauté garlic, add wine and the mussels.|Cover for 5 minutes until they open. Discard any that stay closed.");
+R("fish","Μύδια σαγανάκι","Mussels saganaki","mussels tomato feta garlic pepper",25,"Σοτάρετε σκόρδο και πιπεριά, ρίξτε ντομάτα.|Προσθέστε τα μύδια και σκεπάστε μέχρι να ανοίξουν.|Θρυμματίστε φέτα από πάνω.","Sauté garlic and pepper, add tomato.|Add the mussels and cover until they open.|Crumble feta on top.");
+R("fish","Μπακαλιάρος πλακί","Salt cod plaki","cod tomato onion garlic potato",60,"Ξαρμυρίστε τον μπακαλιάρο από την προηγούμενη μέρα.|Βάλτε τον σε ταψί με πατάτες, κρεμμύδι, σκόρδο και ντομάτα.|Ψήστε στους 190°C για 45 λεπτά.","Desalt the cod from the day before.|Put it in a tray with potatoes, onion, garlic and tomato.|Bake at 190°C for 45 minutes.");
+R("fish","Καλαμάρια με σπανάκι","Squid with spinach","squid spinach onion lemon",45,"Σοτάρετε κρεμμύδι και καλαμάρια σε κομμάτια.|Ρίξτε λίγο νερό και σιγοβράστε 25 λεπτά.|Προσθέστε σπανάκι και άνηθο για 10 λεπτά και λεμόνι στο τέλος.","Sauté onion and squid pieces.|Add a little water and simmer for 25 minutes.|Add spinach and dill for 10 minutes and lemon at the end.");
+R("fish","Γαριδοπίλαφο","Shrimp pilaf","shrimp rice tomato onion",35,"Σοτάρετε κρεμμύδι και γαρίδες.|Ρίξτε ντομάτα, ρύζι και ζωμό.|Σιγοβράστε 18 λεπτά.","Sauté onion and shrimps.|Add tomato, rice and stock.|Simmer for 18 minutes.");
+R("fish","Ψαροκεφτέδες","Fish cakes","fish potato onion eggs herbs",40,"Βράστε το ψάρι και λιώστε το με βρασμένη πατάτα.|Ανακατέψτε με κρεμμύδι, αυγό και μαϊντανό.|Πλάστε κεφτέδες και τηγανίστε ή ψήστε.","Boil the fish and mash it with boiled potato.|Mix with onion, egg and parsley.|Shape cakes and fry or bake.");
+
+/* --- Όσπρια --- */
+R("legumes","Ρεβιθοκεφτέδες","Chickpea fritters","chickpeas onion herbs flour",40,"Λιώστε βρασμένα ρεβίθια.|Ανακατέψτε με κρεμμύδι, μαϊντανό, κύμινο και λίγο αλεύρι.|Πλάστε και τηγανίστε ή ψήστε.","Mash boiled chickpeas.|Mix with onion, parsley, cumin and a little flour.|Shape and fry or bake.");
+R("legumes","Ρεβίθια με σπανάκι","Chickpeas with spinach","chickpeas spinach onion tomato",40,"Σοτάρετε κρεμμύδι και ρίξτε ντομάτα.|Προσθέστε βρασμένα ρεβίθια και σιγοβράστε 15 λεπτά.|Ρίξτε σπανάκι για 5 λεπτά.","Sauté onion and add tomato.|Add boiled chickpeas and simmer for 15 minutes.|Add spinach for 5 minutes.");
+R("legumes","Φακές σαλάτα","Lentil salad","lentils onion pepper tomato herbs",30,"Βράστε τις φακές 20 λεπτά να μείνουν σφιχτές.|Ανακατέψτε με κρεμμύδι, πιπεριά, ντομάτα και μαϊντανό.|Ρίξτε λάδι και ξίδι.","Boil the lentils for 20 minutes so they stay firm.|Mix with onion, pepper, tomato and parsley.|Dress with oil and vinegar.");
+R("legumes","Φασόλια με λουκάνικο","Beans with sausage","beans sausage tomato onion",90,"Βράστε τα μουλιασμένα φασόλια μέχρι να μαλακώσουν.|Σοτάρετε λουκάνικα και κρεμμύδι, ρίξτε ντομάτα.|Ανακατέψτε με τα φασόλια και σιγοβράστε 20 λεπτά.","Boil the soaked beans until soft.|Brown sausages and onion, add tomato.|Mix with the beans and simmer for 20 minutes.");
+
+/* --- Λαδερά & λαχανικά --- */
+R("lathera","Αρακάς λαδερός","Peas in tomato sauce","peas potato carrot tomato onion herbs",45,"Τσιγαρίστε το κρεμμύδι.|Ρίξτε αρακά, πατάτες, καρότα, ντομάτα και άνηθο.|Σιγοβράστε 35 λεπτά.","Sauté the onion.|Add peas, potatoes, carrots, tomato and dill.|Simmer for 35 minutes.");
+R("lathera","Κολοκυθάκια γιαχνί","Courgettes in tomato sauce","zucchini potato tomato onion",40,"Τσιγαρίστε το κρεμμύδι.|Ρίξτε κολοκυθάκια, πατάτες και ντομάτα.|Σιγοβράστε 30 λεπτά.","Sauté the onion.|Add courgettes, potatoes and tomato.|Simmer for 30 minutes.");
+R("lathera","Πατάτες φούρνου λεμονάτες","Lemon roast potatoes","potato lemon garlic",60,"Κόψτε τις πατάτες σε κομμάτια.|Ρίξτε λεμόνι, σκόρδο, λάδι, ρίγανη και λίγο νερό.|Ψήστε στους 200°C για 50 λεπτά.","Cut the potatoes into wedges.|Add lemon, garlic, oil, oregano and a little water.|Roast at 200°C for 50 minutes.");
+R("lathera","Μελιτζάνες γιαχνί","Aubergines in tomato sauce","eggplant tomato onion garlic",50,"Κόψτε τις μελιτζάνες σε κύβους και αλατίστε τες 20 λεπτά.|Τσιγαρίστε κρεμμύδι και σκόρδο, ρίξτε ντομάτα.|Προσθέστε τις μελιτζάνες και σιγοβράστε 25 λεπτά.","Dice the aubergines and salt them for 20 minutes.|Sauté onion and garlic, add tomato.|Add the aubergines and simmer for 25 minutes.");
+R("lathera","Μανιτάρια στιφάδο","Mushroom stifado","mushrooms onion tomato wine",40,"Σοτάρετε πολλά μικρά κρεμμύδια.|Ρίξτε μανιτάρια, κρασί και ντομάτα.|Σιγοβράστε 25 λεπτά.","Sauté plenty of small onions.|Add mushrooms, wine and tomato.|Simmer for 25 minutes.");
+R("lathera","Μπρόκολο με πατάτες","Broccoli with potatoes","broccoli potato lemon",25,"Βράστε τις πατάτες 10 λεπτά.|Προσθέστε το μπρόκολο για 6 λεπτά.|Στραγγίξτε και ρίξτε λάδι και λεμόνι.","Boil the potatoes for 10 minutes.|Add the broccoli for 6 minutes.|Drain and dress with oil and lemon.");
+R("lathera","Κουνουπίδι φούρνου με τυρί","Baked cauliflower with cheese","cauliflower milk butter flour cheese",45,"Βράστε το κουνουπίδι 8 λεπτά.|Βάλτε το σε ταψί με μπεσαμέλ.|Ρίξτε τυρί και ψήστε στους 190°C για 25 λεπτά.","Boil the cauliflower for 8 minutes.|Put it in a dish with béchamel.|Top with cheese and bake at 190°C for 25 minutes.");
+R("lathera","Λαχανικά σχάρας","Grilled vegetables","zucchini eggplant pepper mushrooms",25,"Κόψτε τα λαχανικά σε φέτες.|Αλείψτε με λάδι και αλάτι.|Ψήστε στη σχάρα ή στο γκριλ 4 λεπτά από κάθε πλευρά.","Slice the vegetables.|Brush with oil and salt.|Grill for 4 minutes per side.");
+R("lathera","Λαχανοντολμάδες","Stuffed cabbage rolls","cabbage rice onion herbs lemon",80,"Ζεματίστε τα φύλλα του λάχανου.|Γεμίστε τα με ρύζι, κρεμμύδι και άνηθο και τυλίξτε.|Σιγοβράστε 50 λεπτά με νερό και λεμόνι.","Blanch the cabbage leaves.|Fill with rice, onion and dill and roll up.|Simmer for 50 minutes with water and lemon.");
+
+/* --- Σούπες --- */
+R("soup","Πατατόσουπα","Potato soup","potato onion carrot milk",35,"Βράστε πατάτες, κρεμμύδι και καρότο 25 λεπτά.|Χτυπήστε στο μπλέντερ.|Ρίξτε λίγο γάλα και βούτυρο.","Boil potatoes, onion and carrot for 25 minutes.|Blend.|Add a little milk and butter.");
+R("soup","Βελουτέ καρότου","Carrot soup","carrot onion potato",35,"Σοτάρετε κρεμμύδι.|Βράστε καρότα και πατάτα 25 λεπτά.|Χτυπήστε στο μπλέντερ με λίγο λάδι.","Sauté the onion.|Boil carrots and potato for 25 minutes.|Blend with a little oil.");
+R("soup","Σούπα μπρόκολο","Broccoli soup","broccoli potato onion cream",30,"Βράστε μπρόκολο, πατάτα και κρεμμύδι 20 λεπτά.|Χτυπήστε στο μπλέντερ.|Ρίξτε λίγη κρέμα.","Boil broccoli, potato and onion for 20 minutes.|Blend.|Stir in a little cream.");
+R("soup","Κρεμμυδόσουπα","Onion soup","onion butter bread cheese",50,"Καραμελώστε πολλά κρεμμύδια σε βούτυρο 30 λεπτά.|Ρίξτε ζωμό και βράστε 15 λεπτά.|Σερβίρετε με φρυγανισμένο ψωμί και τυρί.","Caramelise plenty of onions in butter for 30 minutes.|Add stock and boil for 15 minutes.|Serve with toasted bread and cheese.");
+R("soup","Ρεβιθόσουπα","Chickpea soup","chickpeas onion carrot lemon",90,"Βράστε τα μουλιασμένα ρεβίθια με κρεμμύδι και καρότο.|Σιγοβράστε μέχρι να μαλακώσουν πολύ.|Σερβίρετε με λάδι και λεμόνι.","Boil the soaked chickpeas with onion and carrot.|Simmer until very soft.|Serve with oil and lemon.");
+R("soup","Κοτόσουπα με κριθαράκι","Chicken soup with orzo","chicken orzo carrot celery",60,"Βράστε το κοτόπουλο με καρότο και σέλινο 45 λεπτά.|Ρίξτε το κριθαράκι για 10 λεπτά.|Σερβίρετε με λεμόνι.","Boil the chicken with carrot and celery for 45 minutes.|Add the orzo for 10 minutes.|Serve with lemon.");
+
+/* --- Σαλάτες & ορεκτικά --- */
+R("salad","Χούμους","Hummus","chickpeas tahini lemon garlic",15,"Χτυπήστε βρασμένα ρεβίθια στο μπλέντερ.|Προσθέστε ταχίνι, λεμόνι, σκόρδο και λίγο νερό.|Σερβίρετε με λάδι και πάπρικα.","Blend boiled chickpeas.|Add tahini, lemon, garlic and a little water.|Serve with oil and paprika.");
+R("salad","Ταχίνι σάλτσα","Tahini dip","tahini lemon garlic herbs",10,"Ανακατέψτε ταχίνι με λεμόνι και σκόρδο.|Ρίξτε νερό λίγο λίγο μέχρι να γίνει κρεμώδες.|Προσθέστε μαϊντανό.","Mix tahini with lemon and garlic.|Add water little by little until creamy.|Add parsley.");
+R("salad","Παντζαροσαλάτα","Beetroot salad","beetroot garlic yogurt",15,"Κόψτε βρασμένα παντζάρια σε κύβους.|Ανακατέψτε με γιαούρτι και σκόρδο, ή με λάδι και ξίδι.","Dice boiled beetroot.|Mix with yoghurt and garlic, or with oil and vinegar.");
+R("salad","Σαλάτα με αβοκάντο","Avocado salad","avocado tomato onion lemon",10,"Κόψτε αβοκάντο, ντομάτα και κρεμμύδι.|Ρίξτε λεμόνι, λάδι και αλάτι.","Cut avocado, tomato and onion.|Dress with lemon, oil and salt.");
+R("salad","Καλαμποκοσαλάτα","Sweetcorn salad","corn lettuce cabbage carrot",10,"Ψιλοκόψτε μαρούλι και λάχανο, τρίψτε καρότο.|Ρίξτε το καλαμπόκι.|Ρίξτε λάδι και λεμόνι.","Shred lettuce and cabbage, grate the carrot.|Add the sweetcorn.|Dress with oil and lemon.");
+R("salad","Τυροκαυτερή","Spicy feta dip","feta pepper yogurt",10,"Ψήστε μια καυτερή πιπεριά και ψιλοκόψτε τη.|Λιώστε τη φέτα με γιαούρτι και λάδι.|Ανακατέψτε με την πιπεριά.","Roast a hot pepper and chop it finely.|Mash the feta with yoghurt and oil.|Mix in the pepper.");
+R("salad","Κολοκυθάκια βραστά σαλάτα","Boiled courgette salad","zucchini lemon",15,"Βράστε τα κολοκυθάκια 8 λεπτά.|Ρίξτε λάδι, λεμόνι και αλάτι.","Boil the courgettes for 8 minutes.|Dress with oil, lemon and salt.");
+
+/* --- Αυγά & γρήγορα --- */
+R("eggs","Ομελέτα με πατάτες","Potato omelette","eggs potato onion",30,"Τηγανίστε πατάτες σε λεπτές φέτες με κρεμμύδι.|Ανακατέψτε με χτυπημένα αυγά.|Ψήστε σε χαμηλή φωτιά και γυρίστε με ένα πιάτο.","Fry thinly sliced potatoes with onion.|Mix with beaten eggs.|Cook on low heat and flip using a plate.");
+R("eggs","Αυγοφέτες","French toast","bread eggs milk",10,"Χτυπήστε αυγά με λίγο γάλα.|Βουτήξτε φέτες ψωμί.|Τηγανίστε μέχρι να ροδίσουν. Σερβίρετε με μέλι ή τυρί.","Beat eggs with a little milk.|Dip slices of bread.|Fry until golden. Serve with honey or cheese.");
+R("eggs","Φριτάτα λαχανικών","Vegetable frittata","eggs zucchini pepper onion cheese",25,"Σοτάρετε τα λαχανικά.|Ρίξτε χτυπημένα αυγά και τυρί.|Ψήστε στον φούρνο στους 180°C για 12 λεπτά.","Sauté the vegetables.|Pour in beaten eggs and cheese.|Bake at 180°C for 12 minutes.");
+R("eggs","Αυγά με σπανάκι","Eggs with spinach","eggs spinach onion feta",15,"Σοτάρετε κρεμμύδι και σπανάκι.|Ανοίξτε μέσα τα αυγά.|Σκεπάστε μέχρι να ψηθούν και βάλτε φέτα.","Sauté onion and spinach.|Crack the eggs in.|Cover until cooked and add feta.");
+R("eggs","Αυγά ποσέ με γιαούρτι","Poached eggs with yoghurt","eggs yogurt garlic butter",15,"Ανακατέψτε γιαούρτι με σκόρδο.|Ποσάρετε τα αυγά σε νερό που σιγοβράζει, 3 λεπτά.|Βάλτε τα στο γιαούρτι και ρίξτε λιωμένο βούτυρο με πάπρικα.","Mix yoghurt with garlic.|Poach the eggs in simmering water for 3 minutes.|Place on the yoghurt and drizzle with melted butter and paprika.");
+R("eggs","Σάντουιτς με τόνο","Tuna sandwich","bread tuna tomato lettuce",5,"Ανακατέψτε τόνο με λίγη μαγιονέζα ή γιαούρτι.|Βάλτε τον σε ψωμί με ντομάτα και μαρούλι.","Mix tuna with a little mayonnaise or yoghurt.|Put it in bread with tomato and lettuce.");
+
+/* --- Πίτες & φούρνου --- */
+R("pies","Μανιταρόπιτα","Mushroom pie","mushrooms phyllo onion cheese eggs",60,"Σοτάρετε μανιτάρια και κρεμμύδι.|Ανακατέψτε με τυρί και αυγά.|Στρώστε ανάμεσα σε φύλλα και ψήστε στους 180°C για 40 λεπτά.","Sauté mushrooms and onion.|Mix with cheese and eggs.|Layer between filo and bake at 180°C for 40 minutes.");
+R("pies","Πατατόπιτα","Potato pie","potato phyllo feta eggs milk",70,"Βράστε και λιώστε τις πατάτες.|Ανακατέψτε με φέτα, αυγά και γάλα.|Στρώστε ανάμεσα σε φύλλα και ψήστε στους 180°C για 45 λεπτά.","Boil and mash the potatoes.|Mix with feta, eggs and milk.|Layer between filo and bake at 180°C for 45 minutes.");
+R("pies","Λαχανόπιτα","Cabbage pie","cabbage phyllo feta onion eggs",70,"Μαράνετε το ψιλοκομμένο λάχανο με κρεμμύδι.|Ανακατέψτε με φέτα και αυγά.|Στρώστε ανάμεσα σε φύλλα και ψήστε στους 180°C για 45 λεπτά.","Soften the shredded cabbage with onion.|Mix with feta and eggs.|Layer between filo and bake at 180°C for 45 minutes.");
+R("pies","Τυροπιτάκια","Little cheese pies","phyllo feta eggs",40,"Ανακατέψτε φέτα με αυγό.|Κόψτε φύλλο σε λωρίδες, βάλτε γέμιση και διπλώστε τρίγωνα.|Ψήστε στους 190°C για 20 λεπτά.","Mix feta with egg.|Cut filo into strips, add filling and fold into triangles.|Bake at 190°C for 20 minutes.");
+R("pies","Σπιτικό ψωμί","Homemade bread","flour sugar",180,"Ανακατέψτε 1 κιλό αλεύρι, 1 φακελάκι μαγιά, λίγη ζάχαρη, αλάτι και χλιαρό νερό.|Ζυμώστε 10 λεπτά και αφήστε να φουσκώσει 1 ώρα.|Πλάστε, αφήστε άλλα 40 λεπτά και ψήστε στους 200°C για 40 λεπτά.","Mix 1 kg flour, 1 sachet yeast, a little sugar, salt and warm water.|Knead for 10 minutes and let it rise for 1 hour.|Shape, rise 40 more minutes and bake at 200°C for 40 minutes.");
+R("pies","Πίτσα με λαχανικά","Vegetable pizza","flour tomato mozzarella pepper mushrooms onion",60,"Ζυμώστε αλεύρι, μαγιά, νερό και λάδι και αφήστε 30 λεπτά.|Ανοίξτε τη ζύμη, βάλτε ντομάτα, μοτσαρέλα και λαχανικά.|Ψήστε στους 220°C για 15 λεπτά.","Knead flour, yeast, water and oil and rest for 30 minutes.|Roll out, top with tomato, mozzarella and vegetables.|Bake at 220°C for 15 minutes.");
+
+/* --- Κυπριακά --- */
+R("cy","Σεφταλιές","Sheftalia","mince onion herbs pitta",40,"Ζυμώστε χοιρινό κιμά με ψιλοκομμένο κρεμμύδι, μαϊντανό, αλάτι και πιπέρι.|Τυλίξτε μικρά κομμάτια σε μπόλια (από τον χασάπη).|Ψήστε στα κάρβουνα ή στο γκριλ 15 λεπτά. Σερβίρετε σε πίτα με σαλάτα.","Knead pork mince with chopped onion, parsley, salt and pepper.|Wrap small portions in caul fat (from the butcher).|Grill for 15 minutes. Serve in pitta with salad.");
+R("cy","Ττάβας","Tavas (lamb with cumin)","lamb onion tomato potato",150,"Βάλτε αρνί, πολλά κρεμμύδια, ντομάτα και πατάτες σε πήλινο.|Ρίξτε κύμινο, αλάτι, πιπέρι και λίγο νερό.|Σκεπάστε και ψήστε σιγά στους 170°C για 2 ώρες.","Put lamb, plenty of onions, tomato and potatoes in a clay pot.|Add cumin, salt, pepper and a little water.|Cover and slow-bake at 170°C for 2 hours.");
+R("cy","Φλαούνες","Flaounes","flour halloumi anari eggs raisins sesame",150,"Ζυμώστε αλεύρι, μαγιά, γάλα και μαστίχα και αφήστε να φουσκώσει.|Ανακατέψτε τριμμένο χαλλούμι, αναρή, αυγά, σιμιγδάλι, σταφίδες και δυόσμο.|Βάλτε γέμιση σε κύκλους ζύμης, διπλώστε, αλείψτε με αυγό, πασπαλίστε σουσάμι και ψήστε στους 180°C για 30 λεπτά.","Knead flour, yeast, milk and mastic and let it rise.|Mix grated halloumi, anari, eggs, semolina, raisins and mint.|Fill dough circles, fold, brush with egg, sprinkle sesame and bake at 180°C for 30 minutes.");
+R("cy","Κολοκοτές","Kolokotes (pumpkin pies)","pumpkin bulgur raisins flour onion",90,"Ανακατέψτε τριμμένη κολοκύθα, πουργούρι, σταφίδες, κρεμμύδι, κανέλα και λάδι.|Ανοίξτε ζύμη από αλεύρι, νερό και λάδι σε κύκλους.|Γεμίστε, κλείστε σε μισοφέγγαρα και ψήστε στους 180°C για 40 λεπτά.","Mix grated pumpkin, bulgur, raisins, onion, cinnamon and oil.|Roll out dough of flour, water and oil into circles.|Fill, fold into half-moons and bake at 180°C for 40 minutes.");
+R("cy","Χαλλουμωτά","Halloumi bread","flour halloumi herbs sesame",120,"Ζυμώστε αλεύρι, μαγιά, νερό και λάδι.|Ανακατέψτε κυβάκια χαλλούμι και δυόσμο μέσα στη ζύμη.|Αφήστε να φουσκώσει, πασπαλίστε σουσάμι και ψήστε στους 190°C για 35 λεπτά.","Knead flour, yeast, water and oil.|Work cubes of halloumi and mint into the dough.|Let it rise, sprinkle sesame and bake at 190°C for 35 minutes.");
+R("cy","Ταχινόπιτα","Tahini pie","tahini flour sugar orange",90,"Ζυμώστε αλεύρι, μαγιά, νερό και λάδι και αφήστε να φουσκώσει.|Ανοίξτε τη ζύμη, απλώστε ταχίνι με ζάχαρη και κανέλα και τυλίξτε σε ρολό και σαλιγκάρι.|Ψήστε στους 180°C για 30 λεπτά.","Knead flour, yeast, water and oil and let it rise.|Roll out, spread tahini with sugar and cinnamon, roll up and coil.|Bake at 180°C for 30 minutes.");
+R("cy","Κυπριακό σουβλάκι σε πίτα","Cypriot souvlaki in pitta","pork pitta cabbage tomato cucumber lemon",30,"Ψήστε χοιρινά σουβλάκια στα κάρβουνα ή στο γκριλ.|Ανοίξτε την πίτα και γεμίστε με λάχανο, ντομάτα, αγγούρι και μαϊντανό.|Βάλτε το κρέας και στίψτε λεμόνι.","Grill pork skewers over charcoal or under the grill.|Open the pitta and fill with cabbage, tomato, cucumber and parsley.|Add the meat and squeeze lemon over.");
+R("cy","Αυγά με αγρέλια","Eggs with wild asparagus","asparagus eggs",15,"Κόψτε τα τρυφερά μέρη των αγρελιών και σοτάρετε 5 λεπτά.|Ρίξτε χτυπημένα αυγά.|Ανακατέψτε μέχρι να ψηθούν.","Cut the tender parts of the asparagus and sauté for 5 minutes.|Add beaten eggs.|Stir until cooked.");
+R("cy","Μαχαλεπί","Mahalepi (rose pudding)","milk cornflour sugar rosewater",20,"Διαλύστε κορνφλάουρ σε λίγο κρύο γάλα (ή νερό).|Βράστε το υπόλοιπο με ζάχαρη και ρίξτε το κορνφλάουρ, ανακατεύοντας μέχρι να πήξει.|Βάλτε σε μπολάκια, ψύξτε και σερβίρετε με σιρόπι ροδόσταγμα.","Dissolve cornflour in a little cold milk (or water).|Boil the rest with sugar, add the cornflour and stir until thick.|Pour into bowls, chill and serve with rose-water syrup.");
+R("cy","Αναρή με χαρουπόμελο","Anari with carob syrup","anari carob",5,"Βάλτε φρέσκια αναρή σε μπολ.|Ρίξτε χαρουπόμελο ή μέλι από πάνω.","Put fresh anari in a bowl.|Drizzle with carob syrup or honey.");
+
+/* --- Γλυκά --- */
+R("sweet","Σοκολατόπιτα","Chocolate cake","chocolate flour eggs sugar butter milk",60,"Χτυπήστε βούτυρο με ζάχαρη και αυγά.|Προσθέστε γάλα, κακάο, αλεύρι και μπέικιν.|Ψήστε στους 175°C για 40 λεπτά και ρίξτε γλάσο σοκολάτας.","Beat butter with sugar and eggs.|Add milk, cocoa, flour and baking powder.|Bake at 175°C for 40 minutes and pour chocolate glaze on top.");
+R("sweet","Κουλουράκια","Butter biscuits","flour butter sugar eggs",50,"Χτυπήστε βούτυρο με ζάχαρη και αυγά.|Προσθέστε αλεύρι και μπέικιν μέχρι να γίνει μαλακή ζύμη.|Πλάστε κουλουράκια και ψήστε στους 180°C για 20 λεπτά.","Beat butter with sugar and eggs.|Add flour and baking powder to a soft dough.|Shape twists and bake at 180°C for 20 minutes.");
+R("sweet","Κρέμα βανίλιας","Vanilla custard","milk eggs sugar cornflour",20,"Ζεστάνετε το γάλα με ζάχαρη και βανίλια.|Χτυπήστε κρόκους με κορνφλάουρ και ρίξτε τους στο γάλα.|Ανακατέψτε μέχρι να πήξει και ψύξτε.","Heat the milk with sugar and vanilla.|Whisk yolks with cornflour and add to the milk.|Stir until thick and chill.");
+R("sweet","Γαλακτομπούρεκο","Galaktoboureko","phyllo semolina milk eggs sugar butter",80,"Κάντε κρέμα με γάλα, σιμιγδάλι, ζάχαρη και αυγά.|Στρώστε βουτυρωμένα φύλλα, την κρέμα και φύλλα από πάνω.|Ψήστε στους 180°C για 45 λεπτά και σιροπιάστε με κρύο σιρόπι.","Make a custard with milk, semolina, sugar and eggs.|Layer buttered filo, the custard and more filo on top.|Bake at 180°C for 45 minutes and pour over cold syrup.");
+R("sweet","Λουκουμάδες","Loukoumades (honey puffs)","flour honey nuts",60,"Ανακατέψτε αλεύρι, μαγιά, χλιαρό νερό και αλάτι και αφήστε να φουσκώσει 1 ώρα.|Ρίξτε κουταλιές σε καυτό λάδι και τηγανίστε μέχρι να ροδίσουν.|Ρίξτε μέλι, κανέλα και καρύδια.","Mix flour, yeast, warm water and salt and let it rise for 1 hour.|Drop spoonfuls into hot oil and fry until golden.|Drizzle with honey, cinnamon and walnuts.");
+R("sweet","Ρεβανί","Revani (semolina cake)","semolina flour eggs sugar yogurt orange",60,"Χτυπήστε αυγά με ζάχαρη.|Προσθέστε γιαούρτι, σιμιγδάλι, αλεύρι, μπέικιν και ξύσμα πορτοκαλιού.|Ψήστε στους 180°C για 35 λεπτά και σιροπιάστε.","Beat eggs with sugar.|Add yoghurt, semolina, flour, baking powder and orange zest.|Bake at 180°C for 35 minutes and soak with syrup.");
+R("sweet","Καρυδόπιτα","Walnut cake","nuts eggs flour sugar",60,"Χτυπήστε αυγά με ζάχαρη.|Προσθέστε τριμμένα καρύδια, φρυγανιά ή αλεύρι, κανέλα και μπέικιν.|Ψήστε στους 180°C για 40 λεπτά και σιροπιάστε.","Beat eggs with sugar.|Add ground walnuts, rusk crumbs or flour, cinnamon and baking powder.|Bake at 180°C for 40 minutes and soak with syrup.");
+R("sweet","Βρώμη με γάλα και μπανάνα","Porridge with banana","oats milk banana honey",10,"Βράστε τη βρώμη με γάλα 5 λεπτά.|Βάλτε μπανάνα σε ροδέλες και μέλι από πάνω.","Simmer the oats in milk for 5 minutes.|Top with sliced banana and honey.");
+R("sweet","Μπισκότα βρώμης","Oat cookies","oats banana raisins",25,"Λιώστε 2 ώριμες μπανάνες.|Ανακατέψτε με βρώμη και σταφίδες.|Βάλτε κουταλιές σε ταψί και ψήστε στους 180°C για 15 λεπτά.","Mash 2 ripe bananas.|Mix with oats and raisins.|Place spoonfuls on a tray and bake at 180°C for 15 minutes.");
+R("sweet","Φράουλες με γιαούρτι και μέλι","Strawberries with yoghurt and honey","strawberries yogurt honey",5,"Κόψτε τις φράουλες.|Βάλτε τες πάνω σε γιαούρτι με μέλι.","Cut the strawberries.|Put them on yoghurt with honey.");
+R("sweet","Σύκα με μέλι και καρύδια","Figs with honey and walnuts","figs honey nuts",5,"Ανοίξτε τα σύκα στη μέση.|Ρίξτε μέλι και καρύδια από πάνω.","Open the figs in half.|Top with honey and walnuts.");
+R("sweet","Σμούθι μπανάνας","Banana smoothie","banana milk honey",5,"Βάλτε μπανάνα, γάλα και μέλι στο μπλέντερ.|Χτυπήστε 30 δευτερόλεπτα.","Put banana, milk and honey in the blender.|Blend for 30 seconds.");
+
+/* Νηστίσιμα: χωρίς κρέας, ψάρι, αυγά και γαλακτοκομικά (επιτρέπονται θαλασσινά)
+   Fasting: no meat, fish, eggs or dairy (seafood allowed) */
+const ANIMAL=new Set("mince chicken pork beef lamb sausage ham liver rabbit fish cod salmon sardines tuna eggs milk yogurt butter cream feta halloumi cheese anari mozzarella".split(" "));
+function isFasting(r){ return !r.i.some(x=>ANIMAL.has(x)) && r.c!=="sweet" || (r.c==="sweet" && !r.i.some(x=>ANIMAL.has(x))); }
+function catMatch(r){ if(CAT==="all") return true; if(CAT==="fast") return isFasting(r); if(CAT==="quick") return r.t<=20; return r.c===CAT; }
+
+/* =====================================================================
    ΤΟ ΨΥΓΕΙΟ ΜΟΥ / MY FRIDGE   [εικονίδιο, ελληνικά, αγγλικά, μέρες, υλικό]
    ===================================================================== */
 const FQ = [
@@ -1759,8 +1942,11 @@ async function initCook(){
     cookAuto=true;
   }
   const li=L()?1:2;
-  $("catChips").innerHTML=Object.entries(CATS).map(([k,v])=>{
-    const n = k==="all"?RECIPES.length:RECIPES.filter(r=>r.c===k).length;
+  const SPEC={fast:["🌿","Νηστίσιμα","Fasting"],quick:["⚡","Γρήγορα (ως 20′)","Quick (≤20 min)"]};
+  const ent=[["all",CATS.all],["fast",SPEC.fast],["quick",SPEC.quick]].concat(Object.entries(CATS).filter(([k])=>k!=="all"));
+  const keep=CAT; 
+  $("catChips").innerHTML=ent.map(([k,v])=>{
+    CAT=k; const n=RECIPES.filter(catMatch).length; CAT=keep;
     return `<button class="chip cat${CAT===k?" on":""}" onclick="setCat('${k}')">${v[0]} ${v[li]} <small>(${n})</small></button>`; }).join("");
   $("ingSum").textContent = HAVE.size ? tr("myIngN",HAVE.size) : tr("myIng");
   $("ingChips").innerHTML=Object.entries(ING).map(([k,v])=>`<button class="chip${HAVE.has(k)?" on":""}" onclick="toggleIng('${k}')">${v[0]} ${v[li]}</button>`).join("");
@@ -1771,14 +1957,14 @@ function toggleIng(k){ HAVE.has(k)?HAVE.delete(k):HAVE.add(k); initCook(); }
 function clearIng(){ HAVE.clear(); initCook(); }
 function renderRecipes(){
   const li=L()?0:1;
-  let list=RECIPES.filter(r=>CAT==="all"||r.c===CAT).map(r=>({r,miss:r.i.filter(x=>!HAVE.has(x)), hit:r.i.filter(x=>HAVE.has(x)).length}));
-  if(HAVE.size){ if(CAT==="all") list=list.filter(x=>x.hit>0); list.sort((a,b)=>a.miss.length-b.miss.length||b.hit-a.hit); }
+  let list=RECIPES.filter(catMatch).map(r=>({r,miss:r.i.filter(x=>!HAVE.has(x)), hit:r.i.filter(x=>HAVE.has(x)).length}));
+  if(HAVE.size){ if(CAT==="all"||CAT==="fast"||CAT==="quick") list=list.filter(x=>x.hit>0); list.sort((a,b)=>a.miss.length-b.miss.length||b.hit-a.hit); }
   if(!list.length){ $("recipes").innerHTML=`<div class="empty">${tr("noRecipe")}</div>`; return; }
   const card=({r,miss})=>`<div class="recipe"><div class="rh"><span class="rc">${CATS[r.c][0]}</span><b>${r.n[li]}</b></div>
     <div class="small">⏱ ${tr("mins",r.t)} · ${r.i.map(x=>ING[x][0]).join(" ")}</div>
     ${HAVE.size?`<div class="${miss.length?"miss":"okk"}">${miss.length?tr("missing",miss.map(x=>ING[x][li+1]).join(", ")):tr("have")}</div>`:""}
     <details><summary>${tr("steps")} ›</summary><p class="small"><b>${tr("ings")}:</b> ${r.i.map(x=>ING[x][li+1]).join(", ")}</p><ol>${r.s[li].map(s=>`<li>${s}</li>`).join("")}</ol></details></div>`;
-  if(CAT==="all" && !HAVE.size){
+  if((CAT==="all"||CAT==="fast"||CAT==="quick") && !HAVE.size){
     $("recipes").innerHTML=Object.keys(CATS).filter(k=>k!=="all").map(k=>{
       const g=list.filter(x=>x.r.c===k); if(!g.length) return "";
       return `<h3 class="h3 cath">${CATS[k][0]} ${CATS[k][li+1]} <small>(${g.length})</small></h3>`+g.map(card).join(""); }).join("");
@@ -1947,6 +2133,311 @@ function calcRepair(){
   out.innerHTML=`<div class="result ${cls}"><b style="font-size:1.4rem">${title}</b>
     <p>${trf("rpWhy1",{p:Math.round(ratio*100)})}</p>${age?`<p>${trf("rpWhy2",{p:lifeP,y:a[3]})}</p>`:`<p>${tr("rpLife",a[3])}</p>`}
     ${tipHtml}<div class="note">${tr("rpRule")}</div></div>`;
+}
+
+/* =====================================================================
+   ΕΠΙΣΤΟΛΕΣ ΠΡΟΣ ΥΠΗΡΕΣΙΕΣ / LETTERS TO PUBLIC SERVICES
+   ===================================================================== */
+Object.assign(T.el,{
+  rLet:"Επιστολές προς υπηρεσίες", rLetD:"Επιδόματα, συντάξεις, λογαριασμοί, παράπονα",
+  letIntro:"Διαλέξτε τι θέλετε να διεκδικήσετε. Συμπληρώνετε λίγα στοιχεία και η εφαρμογή γράφει την επιστολή, έτοιμη να τη στείλετε.",
+  letDisc:"Οι επιστολές είναι πρότυπα για να ζητήσετε γραπτώς αυτό που δικαιούστε. Δεν αποτελούν νομική συμβουλή. Για προσφυγή στο δικαστήριο μιλήστε έγκαιρα με δικηγόρο.",
+  me:"👤 Τα στοιχεία μου", meSaved:"Τα στοιχεία σας φυλάγονται μόνο σε αυτή τη συσκευή (εκτός από τους αριθμούς ταυτότητας).",
+  pName:"Ονοματεπώνυμο", pId:"Αρ. Ταυτότητας", pSi:"Αρ. Κοινωνικών Ασφαλίσεων (αν χρειάζεται)", pAddr:"Διεύθυνση", pPhone:"Τηλέφωνο", pEmail:"Email",
+  lTo:"Προς (υπηρεσία)", writeLetter:"✍️ Γράψε την επιστολή", print:"🖨️ Εκτύπωση",
+  howSend:"📮 Πώς τη στέλνω", sendTip:"Στείλτε την με email ή με συστημένη επιστολή, ή καταθέστε τη σε Κέντρο Εξυπηρέτησης του Πολίτη. Ζητήστε πάντα αριθμό πρωτοκόλλου και κρατήστε αντίγραφο με την ημερομηνία.",
+  needLName:"Γράψτε το ονοματεπώνυμό σας", deadline:"⏰ Προθεσμία προσφυγής στο Διοικητικό Δικαστήριο: περίπου έως {n} (75 ημέρες από την απόφαση).",
+  daysSince:"Έχουν περάσει {n} ημέρες."
+});
+Object.assign(T.en,{
+  rLet:"Letters to public services", rLetD:"Benefits, pensions, bills, complaints",
+  letIntro:"Choose what you want to claim. Fill in a few details and the app writes the letter, ready to send.",
+  letDisc:"These letters are templates for asking in writing for what you are entitled to. They are not legal advice. For a court recourse, speak to a lawyer in good time.",
+  me:"👤 My details", meSaved:"Your details are kept only on this device (except ID numbers).",
+  pName:"Full name", pId:"ID card number", pSi:"Social insurance number (if needed)", pAddr:"Address", pPhone:"Phone", pEmail:"Email",
+  lTo:"To (service)", writeLetter:"✍️ Write the letter", print:"🖨️ Print",
+  howSend:"📮 How to send it", sendTip:"Send it by email or registered post, or hand it in at a Citizen Service Centre. Always ask for a reference (protocol) number and keep a dated copy.",
+  needLName:"Please enter your full name", deadline:"⏰ Deadline for a recourse to the Administrative Court: about {n} (75 days from the decision).",
+  daysSince:"{n} days have passed."
+});
+
+const SERVICES = [
+ ["Υφυπουργείο Κοινωνικής Πρόνοιας – Υπηρεσία Διαχείρισης Επιδομάτων","Deputy Ministry of Social Welfare – Benefits Management Service"],
+ ["Υπηρεσίες Κοινωνικών Ασφαλίσεων","Social Insurance Services"],
+ ["Υπηρεσίες Κοινωνικής Ευημερίας","Social Welfare Services"],
+ ["Τμήμα Κοινωνικής Ενσωμάτωσης Ατόμων με Αναπηρίες","Department for Social Inclusion of Persons with Disabilities"],
+ ["Τμήμα Φορολογίας","Tax Department"],
+ ["Οργανισμός Ασφάλισης Υγείας (ΓεΣΥ)","Health Insurance Organisation (GESY)"],
+ ["Αρχή Ηλεκτρισμού Κύπρου – Εξυπηρέτηση Πελατών","Electricity Authority of Cyprus – Customer Service"],
+ ["Συμβούλιο Υδατοπρομήθειας","Water Board"],
+ ["Δήμος / Κοινότητα","Municipality / Community"]
+];
+const OMB_EL="Γραφείο Επιτρόπου Διοικήσεως και Προστασίας Ανθρωπίνων Δικαιωμάτων\nΔιαγόρου 2, Era House, 1097 Λευκωσία";
+const OMB_EN="Office of the Commissioner for Administration and the Protection of Human Rights\nDiagorou 2, Era House, 1097 Nicosia";
+
+/* Πεδία ανά επιστολή: what, ref, d1, amt, det   (ετικέτες [el,en]) */
+const LETTERS = [
+ {id:"delay", e:"⏳", c:"t-a", t:["Καθυστερεί η αίτησή μου","My application is delayed"],
+  d:["Υποβάλατε αίτηση για επίδομα ή σύνταξη και δεν έχετε απάντηση.","You applied for a benefit or pension and have had no answer."],
+  to:0, what:["Για ποιο επίδομα / θέμα;","Which benefit / matter?","π.χ. Ελάχιστο Εγγυημένο Εισόδημα","e.g. Guaranteed Minimum Income"],
+  ref:["Αριθμός αίτησης (αν υπάρχει)","Application number (if any)"], d1:["Πότε υποβάλατε την αίτηση;","When did you apply?"],
+  det:["Κάτι επιπλέον; (προαιρετικό)","Anything else? (optional)","π.χ. τηλεφώνησα δύο φορές χωρίς απάντηση","e.g. I phoned twice with no answer"],
+  subj:f=>[`Καθυστέρηση στην εξέταση της αίτησής μου για ${f.what}`,`Delay in examining my application for ${f.what}`],
+  body:f=>[
+`Στις ${f.d1t} υπέβαλα αίτηση για ${f.what}${f.ref?` (αρ. αίτησης ${f.ref})`:""}. Μέχρι σήμερα, ${f.days} ημέρες αργότερα, δεν έχω λάβει απόφαση ούτε κάποια ενημέρωση.
+${f.det?"\n"+f.det+"\n":""}
+Παρακαλώ να με ενημερώσετε γραπτώς:
+α) σε ποιο στάδιο βρίσκεται η αίτησή μου,
+β) αν χρειάζεται κάποιο επιπλέον έγγραφο από μένα, και
+γ) πότε αναμένεται η απόφαση.
+
+Η διοίκηση οφείλει να εξετάζει τις αιτήσεις των πολιτών μέσα σε εύλογο χρόνο. Αν δεν υπάρξει ανταπόκριση, θα απευθυνθώ στον Επίτροπο Διοικήσεως και Προστασίας Ανθρωπίνων Δικαιωμάτων.`,
+`On ${f.d1t} I applied for ${f.what}${f.ref?` (application no. ${f.ref})`:""}. To date, ${f.days} days later, I have received neither a decision nor any update.
+${f.det?"\n"+f.det+"\n":""}
+Please inform me in writing:
+a) what stage my application has reached,
+b) whether you need any further document from me, and
+c) when a decision is expected.
+
+The administration must examine citizens' applications within a reasonable time. If I receive no response, I will turn to the Commissioner for Administration and the Protection of Human Rights.`],
+  tips:[["Αν σε 4–6 εβδομάδες δεν απαντήσουν, στείλτε την επιστολή «Παράπονο στον Επίτροπο Διοικήσεως»."],["If they don't reply within 4–6 weeks, send the letter “Complaint to the Ombudsman”."]]},
+
+ {id:"reconsider", e:"⚖️", c:"t-b", t:["Διαφωνώ με την απόφαση","I disagree with a decision"],
+  d:["Σας απέρριψαν ή σας έκοψαν επίδομα ή σύνταξη και θέλετε επανεξέταση.","Your benefit or pension was refused or cut and you want it reconsidered."],
+  to:0, what:["Για ποιο επίδομα / θέμα;","Which benefit / matter?","π.χ. Επίδομα χαμηλοσυνταξιούχων","e.g. Low-income pensioners' allowance"],
+  ref:["Αριθμός φακέλου / απόφασης","File / decision number"], d1:["Ημερομηνία της απόφασης","Date of the decision"],
+  det:["Γιατί διαφωνείτε;","Why do you disagree?","π.χ. υπολόγισαν λάθος το εισόδημά μου· η σύνταξή μου είναι μόνο €… τον μήνα","e.g. they counted my income wrongly; my pension is only €… a month"],
+  subj:f=>[`Αίτημα επανεξέτασης της απόφασης για ${f.what}`,`Request to reconsider the decision on ${f.what}`],
+  body:f=>[
+`Με την απόφασή σας ημερομηνίας ${f.d1t}${f.ref?` (αρ. φακέλου ${f.ref})`:""} απορρίφθηκε ή περιορίστηκε το αίτημά μου για ${f.what}. Διαφωνώ με την απόφαση για τους εξής λόγους:
+
+${f.det||"…"}
+
+Παρακαλώ:
+α) να επανεξετάσετε την απόφαση λαμβάνοντας υπόψη τα πιο πάνω και τα έγγραφα που επισυνάπτω,
+β) να μου κοινοποιήσετε γραπτώς την πλήρη αιτιολογία της απόφασης και τα στοιχεία στα οποία βασίστηκε, και
+γ) να με ενημερώσετε αν προβλέπεται ιεραρχική προσφυγή και σε ποια προθεσμία.
+
+Η παρούσα επιστολή δεν αποτελεί παραίτηση από οποιοδήποτε δικαίωμά μου, περιλαμβανομένου του δικαιώματος προσφυγής.`,
+`By your decision dated ${f.d1t}${f.ref?` (file no. ${f.ref})`:""} my request for ${f.what} was refused or reduced. I disagree with the decision for the following reasons:
+
+${f.det||"…"}
+
+Please:
+a) reconsider the decision taking into account the above and the documents I attach,
+b) send me in writing the full reasons for the decision and the information it was based on, and
+c) tell me whether a hierarchical appeal is available and within what deadline.
+
+This letter does not waive any of my rights, including the right to file a recourse.`],
+  tips:[["Η προθεσμία για προσφυγή στο Διοικητικό Δικαστήριο είναι 75 ημέρες από τη μέρα που μάθατε την απόφαση, και συνεχίζει να τρέχει ακόμη κι αν στείλετε αυτή την επιστολή. Αν σκέφτεστε προσφυγή, μιλήστε έγκαιρα με δικηγόρο.","Δείτε στην επιστολή της απόφασης αν αναφέρει ιεραρχική προσφυγή και προθεσμία, και τηρήστε την."],
+        ["The deadline for a recourse to the Administrative Court is 75 days from when you learned of the decision, and it keeps running even if you send this letter. If you are considering a recourse, speak to a lawyer in good time.","Check the decision letter for any hierarchical appeal and its deadline, and keep to it."]],
+  recourse:true},
+
+ {id:"access", e:"📂", c:"t-d", t:["Θέλω να δω τον φάκελό μου","I want to see my file"],
+  d:["Ζητάτε αντίγραφο του φακέλου σας και την αιτιολογία μιας απόφασης.","Ask for a copy of your file and the reasons for a decision."],
+  to:0, what:["Για ποιο θέμα;","Which matter?","π.χ. την αίτησή μου για επίδομα αναπηρίας","e.g. my disability benefit application"],
+  ref:["Αριθμός φακέλου (αν υπάρχει)","File number (if any)"], d1:["Ημερομηνία απόφασης (αν υπάρχει)","Decision date (if any)"],
+  det:["Κάτι συγκεκριμένο που ζητάτε; (προαιρετικό)","Anything specific? (optional)","π.χ. την έκθεση του λειτουργού","e.g. the officer's report"],
+  subj:f=>[`Αίτημα πρόσβασης στα προσωπικά μου δεδομένα και στον φάκελό μου`,`Request for access to my personal data and my file`],
+  body:f=>[
+`Σύμφωνα με το άρθρο 15 του Γενικού Κανονισμού για την Προστασία Δεδομένων (ΕΕ) 2016/679, ζητώ αντίγραφο όλων των προσωπικών μου δεδομένων και των εγγράφων που τηρείτε${f.ref?` στον φάκελο αρ. ${f.ref}`:""} σχετικά με ${f.what}${f.d1?`, καθώς και την πλήρη αιτιολογία της απόφασης ημερομηνίας ${f.d1t}`:""}.
+${f.det?"\nΖητώ ειδικότερα: "+f.det+"\n":""}
+Ο Κανονισμός προβλέπει απάντηση χωρίς αδικαιολόγητη καθυστέρηση και το αργότερο μέσα σε ένα μήνα από τη λήψη του αιτήματος. Παρακαλώ να μου αποστείλετε τα έγγραφα στη διεύθυνση ή στο email που αναφέρω πιο πάνω.`,
+`Under Article 15 of the General Data Protection Regulation (EU) 2016/679, I request a copy of all my personal data and the documents you hold${f.ref?` in file no. ${f.ref}`:""} concerning ${f.what}${f.d1?`, as well as the full reasons for the decision dated ${f.d1t}`:""}.
+${f.det?"\nIn particular I request: "+f.det+"\n":""}
+The Regulation requires a reply without undue delay and at the latest within one month of receiving the request. Please send the documents to the address or email given above.`],
+  tips:[["Αν δεν απαντήσουν σε έναν μήνα, μπορείτε να υποβάλετε παράπονο στον Επίτροπο Προστασίας Δεδομένων Προσωπικού Χαρακτήρα (dataprotection.gov.cy)."],["If they don't reply within one month, you can complain to the Commissioner for Personal Data Protection (dataprotection.gov.cy)."]]},
+
+ {id:"ombudsman", e:"🏛️", c:"t-c", t:["Παράπονο στον Επίτροπο Διοικήσεως","Complaint to the Ombudsman"],
+  d:["Όταν μια υπηρεσία σας αδίκησε ή δεν σας απαντά.","When a service treated you unfairly or doesn't answer."],
+  fixedTo:true, svc:true, what:["Για ποιο θέμα;","Which matter?","π.χ. την αίτησή μου για επίδομα","e.g. my benefit application"],
+  ref:["Αριθμός φακέλου (αν υπάρχει)","File number (if any)"], d1:["Πότε το μάθατε / πότε συνέβη;","When did you learn of it / when did it happen?"],
+  det:["Τι συνέβη;","What happened?","Γράψτε απλά τι έγινε, τι κάνατε εσείς και τι σας απάντησαν","Describe simply what happened, what you did and what they answered"],
+  subj:f=>[`Παράπονο κατά της υπηρεσίας: ${f.svc}`,`Complaint against: ${f.svc}`],
+  body:f=>[
+`Υποβάλλω παράπονο κατά της υπηρεσίας «${f.svc}» σχετικά με ${f.what}${f.ref?` (αρ. φακέλου ${f.ref})`:""}.
+
+Τι συνέβη:
+${f.det||"…"}
+
+Ημερομηνία που συνέβη ή που το πληροφορήθηκα: ${f.d1t}.
+
+Προσπάθησα να λύσω το θέμα απευθείας με την υπηρεσία χωρίς αποτέλεσμα. Επισυνάπτω την αλληλογραφία και τα σχετικά έγγραφα.
+
+Παρακαλώ να εξετάσετε το παράπονό μου και να μεσολαβήσετε ώστε η υπηρεσία να εξετάσει την υπόθεσή μου δίκαια και χωρίς άλλη καθυστέρηση.`,
+`I submit a complaint against “${f.svc}” concerning ${f.what}${f.ref?` (file no. ${f.ref})`:""}.
+
+What happened:
+${f.det||"…"}
+
+Date it happened or I learned of it: ${f.d1t}.
+
+I tried to resolve the matter directly with the service without result. I attach the correspondence and relevant documents.
+
+Please examine my complaint and intervene so that the service deals with my case fairly and without further delay.`],
+  tips:[["Το παράπονο υποβάλλεται μέσα σε 12 μήνες από τότε που μάθατε το πρόβλημα. Μπορείτε να το υποβάλετε και με την ηλεκτρονική φόρμα του Επιτρόπου ή στο τηλέφωνο 22405500."],["The complaint must be made within 12 months of learning of the problem. You can also use the Ombudsman's online form or call 22405500."]],
+  link:"https://eforms.mof.gov.cy/eforms/eforms.nsf/complaintformombudsman_en/complaintformombudsman_en?OpenForm"},
+
+ {id:"pension", e:"🧓", c:"t-a", t:["Λάθος στη σύνταξη / αναδρομικά","Pension error / arrears"],
+  d:["Πιστεύετε ότι η σύνταξή σας υπολογίστηκε λάθος ή σας χρωστούν αναδρομικά.","You believe your pension was miscalculated or you are owed arrears."],
+  to:1, what:["Ποια σύνταξη / επίδομα;","Which pension / benefit?","π.χ. σύνταξη γήρατος","e.g. old-age pension"],
+  ref:["Αριθμός σύνταξης / φακέλου","Pension / file number"], d1:["Από πότε ισχύει το πρόβλημα;","Since when?"],
+  det:["Τι πιστεύετε ότι είναι λάθος;","What do you think is wrong?","π.χ. δεν υπολογίστηκαν τα χρόνια που εργάστηκα στο εξωτερικό","e.g. my years of work abroad were not counted"],
+  subj:f=>[`Αίτημα επανελέγχου του υπολογισμού της ${f.what} και καταβολής αναδρομικών`,`Request to re-check the calculation of my ${f.what} and pay arrears`],
+  body:f=>[
+`Λαμβάνω ${f.what}${f.ref?` (αρ. ${f.ref})`:""}. Πιστεύω ότι από τις ${f.d1t} το ποσό δεν υπολογίζεται σωστά, για τους εξής λόγους:
+
+${f.det||"…"}
+
+Παρακαλώ:
+α) να ελέγξετε τον υπολογισμό,
+β) να μου αποστείλετε αναλυτική κατάσταση των ασφαλιστικών μου περιόδων και του τρόπου υπολογισμού, και
+γ) αν διαπιστωθεί λάθος, να διορθώσετε το ποσό και να μου καταβάλετε τη διαφορά αναδρομικά.`,
+`I receive a ${f.what}${f.ref?` (no. ${f.ref})`:""}. I believe that since ${f.d1t} the amount has not been calculated correctly, for the following reasons:
+
+${f.det||"…"}
+
+Please:
+a) re-check the calculation,
+b) send me a detailed statement of my insurance periods and how the amount was calculated, and
+c) if an error is found, correct the amount and pay me the difference with arrears.`],
+  tips:[["Επισυνάψτε ό,τι έχετε: βεβαιώσεις εργοδοτών, ένσημα από το εξωτερικό, παλιές επιστολές."],["Attach whatever you have: employer certificates, foreign contribution records, old letters."]]},
+
+ {id:"tariff08", e:"💡", c:"t-b", t:["Φθηνότερο ρεύμα (τιμολόγιο 08)","Cheaper electricity (tariff 08)"],
+  d:["Αίτηση στην ΑΗΚ για το ειδικό τιμολόγιο ευάλωτων πελατών.","Ask EAC for the special tariff for vulnerable customers."],
+  to:6, what:["Σε ποια κατηγορία ανήκετε;","Which category do you belong to?","π.χ. δικαιούχος επιδόματος χαμηλοσυνταξιούχων","e.g. recipient of the low-income pensioners' allowance"],
+  ref:["Αριθμός λογαριασμού ΑΗΚ","EAC account number"], d1:null,
+  det:["Κάτι επιπλέον; (προαιρετικό)","Anything else? (optional)","",""],
+  subj:f=>[`Αίτηση ένταξης στο ειδικό τιμολόγιο ευάλωτων πελατών (κωδικός 08)`,`Application for the special tariff for vulnerable customers (code 08)`],
+  body:f=>[
+`Είμαι ${f.what} και επισυνάπτω το σχετικό πιστοποιητικό ή την απόφαση έγκρισης.
+${f.det?"\n"+f.det+"\n":""}
+Παρακαλώ να εντάξετε τον λογαριασμό μου${f.ref?` αρ. ${f.ref}`:""} στο ειδικό τιμολόγιο για ευάλωτους πελάτες (κωδικός 08) από την επόμενη περίοδο τιμολόγησης και να με ενημερώσετε γραπτώς για την ένταξη.`,
+`I am a ${f.what} and I attach the relevant certificate or approval decision.
+${f.det?"\n"+f.det+"\n":""}
+Please move my account${f.ref?` no. ${f.ref}`:""} to the special tariff for vulnerable customers (code 08) from the next billing period and confirm this to me in writing.`],
+  tips:[["Δικαιούνται, μεταξύ άλλων: δικαιούχοι δημοσίου βοηθήματος ή Ελάχιστου Εγγυημένου Εισοδήματος, πολύτεκνοι, χαμηλοσυνταξιούχοι, μονογονεϊκές οικογένειες, άτομα με σοβαρή κινητική αναπηρία, αιμοκαθαιρόμενοι και θύματα πολέμου."],["Eligible include: recipients of public assistance or Guaranteed Minimum Income, large families, low-income pensioners, single parents, people with severe mobility disability, dialysis patients and war victims."]]},
+
+ {id:"bill", e:"🧾", c:"t-d", t:["Λάθος ή πολύ ψηλός λογαριασμός","Wrong or very high bill"],
+  d:["Αμφισβητείτε λογαριασμό ρεύματος, νερού ή τηλεφώνου.","Dispute an electricity, water or phone bill."],
+  to:6, what:null, ref:["Αριθμός λογαριασμού","Account number"], d1:["Ημερομηνία λογαριασμού","Bill date"], amt:["Ποσό λογαριασμού (€)","Bill amount (€)"],
+  det:["Γιατί πιστεύετε ότι είναι λάθος;","Why do you think it is wrong?","π.χ. συνήθως πληρώνω €80 και τώρα ήρθε €320, ενώ λείπαμε έναν μήνα","e.g. I usually pay €80 and now it is €320, though we were away for a month"],
+  subj:f=>[`Αμφισβήτηση λογαριασμού${f.ref?` αρ. ${f.ref}`:""}`,`Dispute of bill${f.ref?` no. ${f.ref}`:""}`],
+  body:f=>[
+`Ο λογαριασμός ημερομηνίας ${f.d1t}${f.amt?`, ύψους ${f.amtT}`:""}, είναι ασυνήθιστα υψηλός σε σχέση με την κανονική μου κατανάλωση.
+
+${f.det||"…"}
+
+Παρακαλώ:
+α) να ελέγξετε την ένδειξη και τη σωστή λειτουργία του μετρητή,
+β) να μου αποστείλετε αναλυτική εξήγηση της χρέωσης,
+γ) να μη διακοπεί η παροχή όσο εξετάζεται το παράπονό μου, και
+δ) αν τελικά επιβεβαιωθεί το ποσό, να μου επιτρέψετε την εξόφληση σε δόσεις.`,
+`The bill dated ${f.d1t}${f.amt?`, for ${f.amtT}`:""}, is unusually high compared with my normal consumption.
+
+${f.det||"…"}
+
+Please:
+a) check the reading and the correct working of the meter,
+b) send me a detailed explanation of the charge,
+c) not disconnect the supply while my complaint is examined, and
+d) if the amount is confirmed, allow me to pay it in instalments.`],
+  tips:[["Φωτογραφίστε την ένδειξη του μετρητή σας σήμερα. Για το ρεύμα, αν δεν λυθεί το θέμα, μπορείτε να απευθυνθείτε στη Ρυθμιστική Αρχή Ενέργειας Κύπρου (ΡΑΕΚ). Δείτε και «Ο λογαριασμός ΑΗΚ» στο Σπίτι μου για να ελέγξετε το ποσό."],["Photograph your meter reading today. For electricity, if it isn't resolved, you can turn to the Cyprus Energy Regulatory Authority (CERA). See also “My EAC bill” in My Home to check the amount."]]},
+
+ {id:"taxrefund", e:"💶", c:"t-c", t:["Καθυστερεί η επιστροφή φόρου","My tax refund is late"],
+  d:["Η δήλωσή σας βγάζει επιστροφή φόρου που δεν πληρώθηκε.","Your tax return shows a refund that hasn't been paid."],
+  to:4, what:["Φορολογικό έτος","Tax year","π.χ. 2025","e.g. 2025"],
+  ref:["Αριθμός Φορολογικής Ταυτότητας (ΑΦΤ)","Tax Identification Number (TIN)"], d1:["Πότε υποβάλατε τη δήλωση;","When did you file the return?"], amt:["Ποσό επιστροφής (€)","Refund amount (€)"],
+  det:["Κάτι επιπλέον; (προαιρετικό)","Anything else? (optional)","",""],
+  subj:f=>[`Καθυστέρηση επιστροφής φόρου για το φορολογικό έτος ${f.what}`,`Delayed tax refund for tax year ${f.what}`],
+  body:f=>[
+`Στις ${f.d1t} υπέβαλα τη δήλωση εισοδήματος για το φορολογικό έτος ${f.what}${f.ref?` (ΑΦΤ ${f.ref})`:""}. Από την εκκαθάριση προκύπτει επιστροφή φόρου${f.amt?` ύψους ${f.amtT}`:""}, η οποία μέχρι σήμερα, ${f.days} ημέρες αργότερα, δεν μου έχει καταβληθεί.
+${f.det?"\n"+f.det+"\n":""}
+Παρακαλώ να με ενημερώσετε για την πορεία της επιστροφής και να προχωρήσετε στην καταβολή της στον τραπεζικό λογαριασμό που έχω δηλώσει.`,
+`On ${f.d1t} I filed my income tax return for tax year ${f.what}${f.ref?` (TIN ${f.ref})`:""}. The assessment shows a tax refund${f.amt?` of ${f.amtT}`:""}, which to date, ${f.days} days later, has not been paid.
+${f.det?"\n"+f.det+"\n":""}
+Please inform me of the status of the refund and pay it into the bank account I have declared.`],
+  tips:[["Ελέγξτε πρώτα στο σύστημα του Τμήματος Φορολογίας ότι ο τραπεζικός σας λογαριασμός (IBAN) είναι σωστός."],["First check in the Tax Department system that your bank account (IBAN) is correct."]]},
+
+ {id:"service", e:"😠", c:"t-b", t:["Παράπονο για κακή εξυπηρέτηση","Complaint about poor service"],
+  d:["Σε υπηρεσία, νοσοκομείο, δήμο ή εταιρεία κοινής ωφέλειας.","At a service, hospital, municipality or utility."],
+  to:5, what:["Για ποιο θέμα;","Which matter?","π.χ. την εξυπηρέτηση στο γκισέ","e.g. the service at the counter"],
+  ref:["Αριθμός αναφοράς (αν υπάρχει)","Reference number (if any)"], d1:["Πότε συνέβη;","When did it happen?"],
+  det:["Τι συνέβη;","What happened?","Γράψτε απλά τι έγινε και τι θα θέλατε να γίνει","Describe simply what happened and what you would like done"],
+  subj:f=>[`Παράπονο για ${f.what}`,`Complaint about ${f.what}`],
+  body:f=>[
+`Θέλω να υποβάλω παράπονο για ${f.what}${f.ref?` (αρ. αναφοράς ${f.ref})`:""}, που συνέβη στις ${f.d1t}.
+
+${f.det||"…"}
+
+Παρακαλώ να εξετάσετε το παράπονό μου, να μου απαντήσετε γραπτώς και να μου πείτε τι μέτρα θα ληφθούν ώστε να λυθεί το πρόβλημά μου και να μην επαναληφθεί.`,
+`I wish to complain about ${f.what}${f.ref?` (ref. ${f.ref})`:""}, which happened on ${f.d1t}.
+
+${f.det||"…"}
+
+Please examine my complaint, reply in writing and tell me what will be done to resolve my problem and prevent it from happening again.`],
+  tips:[["Αν η υπηρεσία είναι δημόσια και δεν απαντήσει, μπορείτε να στείλετε «Παράπονο στον Επίτροπο Διοικήσεως»."],["If it is a public service and it doesn't reply, you can send a “Complaint to the Ombudsman”."]]}
+];
+
+function letterTiles(){
+  const li=L()?0:1;
+  $("letTiles").innerHTML=LETTERS.map(x=>`<button class="tile ${x.c}" onclick="go('rights/letter/${x.id}')"><span class="ic">${x.e}</span><span><h2>${x.t[li]}</h2><p>${x.d[li]}</p></span></button>`).join("");
+}
+function getMe(){ try{ return JSON.parse(localStorage.getItem("km-me")||"{}"); }catch(e){ return {}; } }
+function saveMe(){ const m={name:$("pName").value.trim(),addr:$("pAddr").value.trim(),phone:$("pPhone").value.trim(),email:$("pEmail").value.trim()};
+  try{ localStorage.setItem("km-me",JSON.stringify(m)); }catch(e){} }
+let LET=null;
+function openLetter(id){
+  LET=LETTERS.find(x=>x.id===id)||LETTERS[0];
+  const li=L()?0:1, me=getMe();
+  $("letHead").innerHTML=`${LET.e} ${LET.t[li]}`; $("letDesc").textContent=LET.d[li];
+  ["pName","pAddr","pPhone","pEmail"].forEach(k=>{ const key={pName:"name",pAddr:"addr",pPhone:"phone",pEmail:"email"}[k]; if(!$(k).value) $(k).value=me[key]||""; });
+  $("meBox").open = !me.name;
+  // πεδία / fields
+  const fld=(id,lab,type,ph)=>lab?`<label class="f" for="${id}">${lab}</label>`+(type==="ta"?`<textarea id="${id}" placeholder="${esc(ph||"")}"></textarea>`:`<input id="${id}" ${type?`type="${type}"`:""} placeholder="${esc(ph||"")}">`):"";
+  let h="";
+  if(LET.fixedTo){ h+=`<label class="f">${tr("lTo")}</label><div class="note" style="margin-top:0;white-space:pre-line">${L()?OMB_EL:OMB_EN}</div>`;
+    h+=`<label class="f" for="gSvc">${L()?"Κατά ποιας υπηρεσίας;":"Against which service?"}</label><input id="gSvc" list="svcList">`; }
+  else h+=`<label class="f" for="gTo">${tr("lTo")}</label><input id="gTo" list="svcList">`;
+  h+=`<datalist id="svcList">${SERVICES.map(s=>`<option value="${esc(s[li])}">`).join("")}</datalist>`;
+  if(LET.what) h+=fld("gWhat",LET.what[li],"",LET.what[li+2]);
+  h+=`<div class="row">`;
+  if(LET.ref) h+=`<div>${fld("gRef",LET.ref[li])}</div>`;
+  if(LET.d1) h+=`<div>${fld("gD1",LET.d1[li],"date")}</div>`;
+  if(LET.amt) h+=`<div>${fld("gAmt",LET.amt[li],"number")}</div>`;
+  h+=`</div>`;
+  if(LET.det) h+=fld("gDet",LET.det[li],"ta",LET.det[li+2]);
+  $("letFields").innerHTML=h;
+  if($("gTo")) $("gTo").value = LET.to!=null ? SERVICES[LET.to][li] : "";
+  $("letOut").innerHTML=""; $("letTips").innerHTML="";
+}
+function makeLetter(){
+  if(!LET) return;
+  const name=$("pName").value.trim(); if(!name){ toast(tr("needLName")); $("meBox").open=true; $("pName").focus(); return; }
+  saveMe();
+  const v=id=>$(id)?$(id).value.trim():"";
+  const d1=v("gD1"), d1d=d1?parseISO(d1):null, li=L()?0:1;
+  const f={ what:v("gWhat")||(LET.what?"…":""), ref:v("gRef"), d1, d1t:d1d?fmtDate(d1d):"…", days:d1d?Math.max(0,-daysUntil(d1d)):"…",
+    amt:v("gAmt"), amtT:v("gAmt")?eur2(parseFloat(v("gAmt").replace(",","."))):"", det:v("gDet"), svc:v("gSvc")||"…" };
+  const to = LET.fixedTo ? (L()?OMB_EL:OMB_EN) : (v("gTo")||"…");
+  const id=v("pId"), si=v("pSi"), addr=$("pAddr").value.trim(), ph=$("pPhone").value.trim(), em=$("pEmail").value.trim();
+  const subj=LET.subj(f)[li];
+  const head=[name, addr, [ph&&((L()?"Τηλ.: ":"Tel.: ")+ph), em&&("Email: "+em)].filter(Boolean).join(" · "),
+    id&&((L()?"Αρ. Ταυτότητας: ":"ID card no.: ")+id), si&&((L()?"Αρ. Κοιν. Ασφαλίσεων: ":"Social insurance no.: ")+si)].filter(Boolean).join("\n");
+  const body = `${head}\n\n${fmtDate(new Date())}\n\n${L()?"Προς":"To"}:\n${to}\n\n${L()?"Θέμα":"Subject"}: ${subj}\n\n${L()?"Αξιότιμε κύριε / Αξιότιμη κυρία,":"Dear Sir or Madam,"}\n\n${LET.body(f)[li]}\n\n${L()?"Με εκτίμηση,":"Yours faithfully,"}\n\n${name}`;
+  letterBox("letOut", subj, body, "letter_"+LET.id+"_"+stamp()+".txt");
+  $("letOut").insertAdjacentHTML("beforeend",`<button class="big-btn alt" onclick="printLetter()">${tr("print")}</button>`);
+  let tips=(LET.tips?LET.tips[li]:[]).map(t=>`<p>${t}</p>`).join("");
+  if(LET.recourse && d1d) tips=`<p><b>${tr("deadline",fmtDate(addDays(d1d,75)))}</b></p>`+tips;
+  if(LET.link) tips+=`<a class="btn pri" style="width:100%;margin-top:6px" href="${LET.link}" target="_blank" rel="noopener">${L()?"Ηλεκτρονική φόρμα του Επιτρόπου ↗":"Ombudsman online form ↗"}</a>`;
+  $("letTips").innerHTML=`<div class="note"><b>${tr("howSend")}</b><p>${tr("sendTip")}</p>${tips}</div>`;
+  setTimeout(()=>$("letOut").scrollIntoView({behavior:"smooth",block:"start"}),50);
+}
+function printLetter(){
+  const ta=$("letOut-ta"); if(!ta) return;
+  const w=window.open("","_blank"); if(!w){ window.print(); return; }
+  w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${esc(document.title)}</title><style>body{font:16px/1.6 Georgia,serif;margin:2.5cm;white-space:pre-wrap}</style></head><body>${esc(ta.value)}</body></html>`);
+  w.document.close(); w.focus(); setTimeout(()=>w.print(),300);
 }
 
 /* =====================================================================
