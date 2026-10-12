@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-title" content="Καλή Μέρα μου">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
-/* Έκδοση / Version: 11-10-2026 20:30 */
+/* Έκδοση / Version: 12-10-2026 10:00 */
 :root{
   --bg:#f4f1ea; --card:#ffffff; --ink:#1d2433; --soft:#5b6475; --line:rgba(127,127,127,.22);
   --blue:#1f6fd1; --teal:#0f9e8e; --gold:#e8a317; --rose:#e0566b; --violet:#7a4fd6; --green:#2f9a46;
@@ -122,6 +122,17 @@ details summary::-webkit-details-marker{display:none}
 .rc{font-size:1.5rem;width:44px;height:44px;border-radius:12px;background:var(--bg);display:grid;place-items:center;flex:none}
 .cath{margin:22px 0 4px;padding:8px 12px;border-radius:12px;background:var(--bg)}
 .okk{color:var(--green);font-weight:700}
+.fab{position:fixed;right:16px;bottom:calc(22px + env(safe-area-inset-bottom));z-index:40;
+  width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,#34b356,#1f8a3d);color:#fff;
+  box-shadow:0 8px 22px rgba(20,90,40,.45), inset 0 2px 0 rgba(255,255,255,.35);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.05;font-weight:800}
+.fab[hidden]{display:none}
+.fab .fi{font-size:1.7rem}.fab .fn{font-size:1rem}.fab .fl{font-size:.68rem;font-weight:700;opacity:.95}
+.fab:active{transform:scale(.94)}
+.rgrp{margin:20px 0 6px;padding:10px 14px;border-radius:14px;font-weight:800;font-size:1.15rem}
+.rgrp.g0{background:rgba(47,154,70,.15);color:var(--green)}
+.rgrp.g1{background:rgba(232,163,23,.18);color:#a86a00}
+.rgrp.g2{background:rgba(224,122,18,.16);color:var(--orange)}
 .tile .ic{font-size:2.4rem;width:62px;height:62px;flex:none;display:grid;place-items:center;
   background:rgba(255,255,255,.22);border-radius:18px}
 .tile h2{margin:0;font-size:1.4rem;line-height:1.2}
@@ -563,13 +574,14 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:6px}
     <h2 class="h">🍲 <span data-t="hCook"></span></h2>
     <p class="sub" data-t="cookIntro"></p>
     <div class="chips" id="catChips"></div>
-    <details class="ingbox"><summary id="ingSum"></summary>
+    <details class="ingbox" id="ingBox" open><summary id="ingSum"></summary>
       <p class="small" data-t="pantry"></p>
+      <input id="ingSearch" type="search" oninput="filterIng()" style="margin-bottom:12px">
       <div class="chips" id="ingChips"></div>
       <button class="btn" style="margin-top:12px" onclick="clearIng()">✖ <span data-t="clearIng"></span></button>
     </details>
   </div>
-  <div class="card"><div id="recipes"></div></div>
+  <div class="card" id="recCard"><div id="recipes"></div></div>
 </section>
 
 <section id="p-house-power" class="page">
@@ -616,7 +628,7 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:6px}
   </div>
 </section>
 
-<div class="foot"><span data-t="version"></span> 11-10-2026 20:30</div>
+<div class="foot"><span data-t="version"></span> 12-10-2026 10:00</div>
 </main>
 
 <aside>
@@ -627,6 +639,7 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:6px}
 
 <div class="overlay" id="ov" onclick="closePhoto()"><img id="ovImg" alt=""><button data-t="close"></button></div>
 <div class="toast" id="toast"></div>
+<button class="fab" id="fab" onclick="fabGo()" hidden></button>
 
 <script>
 /* =====================================================================
@@ -971,6 +984,7 @@ function route(){
   document.body.classList.toggle("r-home", h==="home");
   window.scrollTo(0,0);
   if(h!=="minute") stopBreath();
+  if(h!=="house/cook" && $("fab")) $("fab").hidden=true;
   if(h==="minute") startMinute(false);
   renderCurrent();
 }
@@ -1534,7 +1548,9 @@ Object.assign(T.el,{
   frManual:"Κάτι άλλο;", frAdded:"Προστέθηκε: {n}", frDays:"{n} μ.", frList:"Τι έχω τώρα",
   emptyFridge:"Το ψυγείο είναι άδειο. Πατήστε ό,τι έχετε από τα κουμπιά πάνω.",
   ate:"✓ Το φάγαμε", threw:"🗑️ Πετάχτηκε", savedCount:"Φέτος φάγατε στην ώρα τους {n} τρόφιμα 👏",
-  cookIntro:"Διαλέξτε κατηγορία. Αν πατήσετε τι έχετε στο σπίτι, οι συνταγές που ταιριάζουν έρχονται πρώτες.",
+  cookIntro:"Πατήστε τι έχετε στο σπίτι. Θα δείτε πρώτα τις συνταγές που γίνονται μόνο με αυτά, και μετά όσες χρειάζονται το πολύ 1–2 υλικά ακόμη. Το πράσινο κουμπί κάτω δεξιά σας πάει κατευθείαν στις συνταγές.",
+  ingFind:"🔎 Βρείτε υλικό (π.χ. ντομ)", g0:"✅ Τα έχετε όλα", g1:"➕ Λείπει 1 υλικό", g2:"➕ Λείπουν 2 υλικά", fabRec:"συνταγές", fabUp:"υλικά",
+  noRecipe2:"Με αυτά τα υλικά δεν βρέθηκε συνταγή που να χρειάζεται το πολύ 2 υλικά ακόμη. Πατήστε περισσότερα υλικά ή διαλέξτε «Όλες».",
   myIng:"🧺 Τι έχω στο σπίτι", myIngN:"🧺 Τι έχω στο σπίτι ({n} επιλεγμένα)", clearIng:"Καθαρισμός επιλογών",
   pantry:"Λάδι, αλάτι, πιπέρι, ρίγανη, μπαχαρικά, ξίδι και πελτέ ντομάτας τα θεωρούμε δεδομένα.",
   have:"Τα έχετε όλα! 🎉", missing:"Λείπουν: {n}", noRecipe:"Δεν βρέθηκε συνταγή με αυτά τα υλικά σε αυτή την κατηγορία.",
@@ -1556,7 +1572,9 @@ Object.assign(T.en,{
   frManual:"Something else?", frAdded:"Added: {n}", frDays:"{n} d", frList:"What I have now",
   emptyFridge:"The fridge is empty. Tap what you have from the buttons above.",
   ate:"✓ Eaten", threw:"🗑️ Thrown away", savedCount:"This year you ate {n} foods in time 👏",
-  cookIntro:"Choose a category. If you tap what you have at home, matching recipes come first.",
+  cookIntro:"Tap what you have at home. First you see recipes made only with those, then those needing at most 1–2 more ingredients. The green button at the bottom right takes you straight to the recipes.",
+  ingFind:"🔎 Find an ingredient (e.g. tom)", g0:"✅ You have everything", g1:"➕ 1 ingredient missing", g2:"➕ 2 ingredients missing", fabRec:"recipes", fabUp:"ingredients",
+  noRecipe2:"No recipe found needing at most 2 more ingredients. Tap more ingredients or choose “All”.",
   myIng:"🧺 What I have at home", myIngN:"🧺 What I have at home ({n} selected)", clearIng:"Clear selection",
   pantry:"Oil, salt, pepper, oregano, spices, vinegar and tomato paste are assumed.",
   have:"You have everything! 🎉", missing:"Missing: {n}", noRecipe:"No recipe found with these ingredients in this category.",
@@ -1899,7 +1917,7 @@ const FQ = [
 async function renderFridge(){
   const li=L()?1:2;
   $("frQuick").innerHTML = FQ.map(g=>`<h3 class="h3" style="margin:16px 0 8px">${g[0]} ${L()?g[1]:g[2]}</h3><div class="chips">`+
-     g[3].map((x,j)=>`<button class="chip qa" onclick="quickFridge(${FQ.indexOf(g)},${j})">${x[0]} ${x[li]} <small>· ${tr("frDays",x[3])}</small></button>`).join("")+`</div>`).join("");
+     g[3].map((x,j)=>[x,j]).sort((p,q)=>byName(p[0][li],q[0][li])).map(([x,j])=>`<button class="chip qa" onclick="quickFridge(${FQ.indexOf(g)},${j})">${x[0]} ${x[li]} <small>· ${tr("frDays",x[3])}</small></button>`).join("")+`</div>`).join("");
   if(!$("frDate").value) $("frDate").value=iso(addDays(new Date(),3));
   const items=(await Store.all("fridge")).map(it=>({it,days:daysUntil(parseISO(it.date))})).sort((a,b)=>a.days-b.days);
   $("fridgeList").innerHTML = items.length ? items.map(({it,days})=>`<div class="item">
@@ -1931,7 +1949,9 @@ async function delFridge(id,eaten){
 /* =====================================================================
    ΤΙ ΜΑΓΕΙΡΕΥΩ / WHAT CAN I COOK
    ===================================================================== */
-let HAVE=new Set(), cookAuto=false, CAT="all";
+let HAVE=new Set(), cookAuto=false, CAT="all", SHOWN=0;
+const LOC=()=>L()?"el":"en";
+const byName=(x,y)=>x.localeCompare(y,LOC(),{sensitivity:"base"});
 async function initCook(){
   if(!cookAuto){
     const fr=await Store.all("fridge");
@@ -1943,35 +1963,70 @@ async function initCook(){
   }
   const li=L()?1:2;
   const SPEC={fast:["🌿","Νηστίσιμα","Fasting"],quick:["⚡","Γρήγορα (ως 20′)","Quick (≤20 min)"]};
-  const ent=[["all",CATS.all],["fast",SPEC.fast],["quick",SPEC.quick]].concat(Object.entries(CATS).filter(([k])=>k!=="all"));
-  const keep=CAT; 
+  const rest=Object.entries(CATS).filter(([k])=>k!=="all").sort((x,y)=>byName(x[1][li],y[1][li]));
+  const ent=[["all",CATS.all],["fast",SPEC.fast],["quick",SPEC.quick]].concat(rest);
+  const keep=CAT;
   $("catChips").innerHTML=ent.map(([k,v])=>{
     CAT=k; const n=RECIPES.filter(catMatch).length; CAT=keep;
     return `<button class="chip cat${CAT===k?" on":""}" onclick="setCat('${k}')">${v[0]} ${v[li]} <small>(${n})</small></button>`; }).join("");
   $("ingSum").textContent = HAVE.size ? tr("myIngN",HAVE.size) : tr("myIng");
-  $("ingChips").innerHTML=Object.entries(ING).map(([k,v])=>`<button class="chip${HAVE.has(k)?" on":""}" onclick="toggleIng('${k}')">${v[0]} ${v[li]}</button>`).join("");
+  $("ingSearch").placeholder=tr("ingFind");
+  $("ingChips").innerHTML=Object.entries(ING).sort((x,y)=>byName(x[1][li],y[1][li]))
+    .map(([k,v])=>`<button class="chip${HAVE.has(k)?" on":""}" data-n="${esc((v[1]+" "+v[2]).toLowerCase())}" onclick="toggleIng('${k}')">${v[0]} ${v[li]}</button>`).join("");
+  filterIng();
   renderRecipes();
+}
+function filterIng(){
+  const q=($("ingSearch").value||"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  document.querySelectorAll("#ingChips .chip").forEach(c=>{
+    const n=c.dataset.n.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+    c.hidden = q && !n.includes(q); });
 }
 function setCat(k){ CAT=k; initCook(); }
 function toggleIng(k){ HAVE.has(k)?HAVE.delete(k):HAVE.add(k); initCook(); }
-function clearIng(){ HAVE.clear(); initCook(); }
+function clearIng(){ HAVE.clear(); $("ingSearch").value=""; initCook(); }
 function renderRecipes(){
   const li=L()?0:1;
-  let list=RECIPES.filter(catMatch).map(r=>({r,miss:r.i.filter(x=>!HAVE.has(x)), hit:r.i.filter(x=>HAVE.has(x)).length}));
-  if(HAVE.size){ if(CAT==="all"||CAT==="fast"||CAT==="quick") list=list.filter(x=>x.hit>0); list.sort((a,b)=>a.miss.length-b.miss.length||b.hit-a.hit); }
-  if(!list.length){ $("recipes").innerHTML=`<div class="empty">${tr("noRecipe")}</div>`; return; }
+  let list=RECIPES.filter(catMatch).map(r=>({r,miss:r.i.filter(x=>!HAVE.has(x)), hit:r.i.filter(x=>HAVE.has(x)).length}))
+    .sort((a,b)=>byName(a.r.n[li],b.r.n[li]));
   const card=({r,miss})=>`<div class="recipe"><div class="rh"><span class="rc">${CATS[r.c][0]}</span><b>${r.n[li]}</b></div>
     <div class="small">⏱ ${tr("mins",r.t)} · ${r.i.map(x=>ING[x][0]).join(" ")}</div>
-    ${HAVE.size?`<div class="${miss.length?"miss":"okk"}">${miss.length?tr("missing",miss.map(x=>ING[x][li+1]).join(", ")):tr("have")}</div>`:""}
+    ${HAVE.size&&miss.length?`<div class="miss">${tr("missing",miss.map(x=>ING[x][li+1]).join(", "))}</div>`:""}
     <details><summary>${tr("steps")} ›</summary><p class="small"><b>${tr("ings")}:</b> ${r.i.map(x=>ING[x][li+1]).join(", ")}</p><ol>${r.s[li].map(s=>`<li>${s}</li>`).join("")}</ol></details></div>`;
-  if((CAT==="all"||CAT==="fast"||CAT==="quick") && !HAVE.size){
-    $("recipes").innerHTML=Object.keys(CATS).filter(k=>k!=="all").map(k=>{
-      const g=list.filter(x=>x.r.c===k); if(!g.length) return "";
-      return `<h3 class="h3 cath">${CATS[k][0]} ${CATS[k][li+1]} <small>(${g.length})</small></h3>`+g.map(card).join(""); }).join("");
+  let html="";
+  if(HAVE.size){
+    list=list.filter(x=>x.hit>0 && x.miss.length<=2);
+    SHOWN=list.length;
+    if(!list.length){ $("recipes").innerHTML=`<div class="empty">${tr("noRecipe2")}</div>`; updateFab(); return; }
+    [0,1,2].forEach(m=>{ const g=list.filter(x=>x.miss.length===m); if(!g.length) return;
+      html+=`<div class="rgrp g${m}">${tr("g"+m)} (${g.length})</div>`+g.map(card).join(""); });
   } else {
-    $("recipes").innerHTML=`<p class="small">${tr("recN",list.length)}</p>`+list.map(card).join("");
+    SHOWN=list.length;
+    if(!list.length){ $("recipes").innerHTML=`<div class="empty">${tr("noRecipe")}</div>`; updateFab(); return; }
+    if(CAT==="all"||CAT==="fast"||CAT==="quick"){
+      Object.keys(CATS).filter(k=>k!=="all").sort((x,y)=>byName(CATS[x][li+1],CATS[y][li+1])).forEach(k=>{
+        const g=list.filter(x=>x.r.c===k); if(!g.length) return;
+        html+=`<h3 class="h3 cath">${CATS[k][0]} ${CATS[k][li+1]} <small>(${g.length})</small></h3>`+g.map(card).join(""); });
+    } else html=`<p class="small">${tr("recN",list.length)}</p>`+list.map(card).join("");
   }
+  $("recipes").innerHTML=html; updateFab();
 }
+/* Πράσινο κουμπί: πάει στις συνταγές / πίσω στα υλικά
+   Green button: jump to recipes / back to ingredients */
+function recipesInView(){ const r=$("recCard"); return r && r.getBoundingClientRect().top < window.innerHeight*0.45; }
+function updateFab(){
+  const f=$("fab"); if(ROUTE!=="house/cook"){ f.hidden=true; return; }
+  f.hidden=false;
+  f.innerHTML = recipesInView()
+    ? `<span class="fi">⬆️</span><span class="fl">${tr("fabUp")}</span>`
+    : `<span class="fi">🍲</span><span class="fn">${SHOWN}</span><span class="fl">${tr("fabRec")}</span>`;
+}
+function fabGo(){
+  const el = recipesInView() ? $("ingBox") : $("recCard");
+  const y = el.getBoundingClientRect().top + window.scrollY - 70;
+  window.scrollTo({top:y,behavior:"smooth"});
+}
+window.addEventListener("scroll",()=>{ if(ROUTE==="house/cook") updateFab(); },{passive:true});
 
 /* =====================================================================
    ΚΟΣΤΟΣ ΡΕΥΜΑΤΟΣ / ELECTRICITY COST
@@ -2007,7 +2062,9 @@ function fixed2m(){ const e=E(); return ((e.meterFee||0)+(e.supplyFee||0))*(1+(e
 let pwInit=false;
 function initPower(){
   const sel=$("pwApp"), prev=sel.value;
-  sel.innerHTML=APPS.map((a,i)=>`<option value="${i}">${a[0]} ${i===APPS.length-1?tr("pwCustom"):(L()?a[1]:a[2])}</option>`).join("");
+  const last=APPS.length-1;
+  sel.innerHTML=APPS.map((a,i)=>[a,i]).filter(([,i])=>i!==last).sort((p,q)=>byName(L()?p[0][1]:p[0][2],L()?q[0][1]:q[0][2]))
+    .map(([a,i])=>`<option value="${i}">${a[0]} ${L()?a[1]:a[2]}</option>`).join("")+`<option value="${last}">${APPS[last][0]} ${tr("pwCustom")}</option>`;
   if(prev) sel.value=prev;
   if(!pwInit){ sel.value="0"; pwPreset();
     let saved=null; try{ saved=localStorage.getItem("km-price-user"); }catch(e){}
@@ -2113,7 +2170,7 @@ const LIFE = [
 function lifeItem(){ const [g,i]=($("rpType").value||"0-0").split("-").map(Number); return LIFE[g][3][i]; }
 function initRepair(){
   const sel=$("rpType"), prev=sel.value, li=L()?1:2;
-  sel.innerHTML=LIFE.map((g,gi)=>`<optgroup label="${g[0]} ${g[li]}">`+g[3].map((a,i)=>`<option value="${gi}-${i}">${a[0]} ${a[li]}</option>`).join("")+`</optgroup>`).join("");
+  sel.innerHTML=LIFE.map((g,gi)=>`<optgroup label="${g[0]} ${g[li]}">`+g[3].map((a,i)=>[a,i]).sort((p,q)=>byName(p[0][li],q[0][li])).map(([a,i])=>`<option value="${gi}-${i}">${a[0]} ${a[li]}</option>`).join("")+`</optgroup>`).join("");
   if(prev) sel.value=prev;
   sel.onchange=rpVis; rpVis();
 }
