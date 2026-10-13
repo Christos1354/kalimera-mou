@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-title" content="Καλή Μέρα μου">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
-/* Έκδοση / Version: 12-10-2026 10:00 */
+/* Έκδοση / Version: 13-10-2026 10:40 */
 :root{
   --bg:#f4f1ea; --card:#ffffff; --ink:#1d2433; --soft:#5b6475; --line:rgba(127,127,127,.22);
   --blue:#1f6fd1; --teal:#0f9e8e; --gold:#e8a317; --rose:#e0566b; --violet:#7a4fd6; --green:#2f9a46;
@@ -628,7 +628,7 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:6px}
   </div>
 </section>
 
-<div class="foot"><span data-t="version"></span> 12-10-2026 10:00</div>
+<div class="foot"><span data-t="version"></span> 13-10-2026 10:40</div>
 </main>
 
 <aside>
@@ -875,7 +875,10 @@ const PROJECTS = [
  {e:"🧠", c:"#2f9a46", url:"https://mnimi-sofia.pages.dev/", n:["Μνήμη & Σοφία","Memory & Wisdom"], d:["Παιχνίδια μνήμης","Memory games"]},
  {e:"🛡️", c:"#7a4fd6", url:"https://fylakas.pages.dev/", n:["Φύλακας","Guardian"], d:["Προστασία από απάτες","Protection from scams"]},
  {e:"🎼", c:"#8a5a2b", url:"https://byzantini-mousiki.pages.dev/", n:["Οκτώηχος","Oktoechos"], d:["Βυζαντινή μουσική","Byzantine music"]},
- {e:"📸", c:"#0f8f8a", url:"https://photo-cleanup-christos.pages.dev/", n:["Φωτογραφίες & Flip Album","Photos & Flip Album"], d:["Καθαρισμός φωτογραφιών, άλμπουμ","Photo cleanup, album"]}
+ {e:"📸", c:"#0f8f8a", url:"https://photo-cleanup-christos.pages.dev/", n:["Φωτογραφίες & Flip Album","Photos & Flip Album"], d:["Καθαρισμός φωτογραφιών, άλμπουμ","Photo cleanup, album"]},
+ {e:"🔳", c:"#2b3a4a", url:"https://qr-4all.pages.dev/", n:["QR Codes 4all","QR Codes 4all"], d:["Διαβάστε και φτιάξτε κωδικούς QR","Read and create QR codes"]},
+ {e:"🩺", c:"#c0392b", url:"https://ygeia-4all.netlify.app/", n:["Υγεία 4all","Health 4all"], d:["Οδηγός υγείας για όλους","Health guide for everyone"]},
+ {e:"✨", c:"#3b3f8f", url:"https://innerlife-4all.pages.dev/", n:["InnerLife 4all","InnerLife 4all"], d:["Ένα κερί για κάθε πίστη","A candle for every faith"]}
 ];
 function fillProjects(){
   const i = L()?0:1;
@@ -966,7 +969,11 @@ function setLang(l){
    ===================================================================== */
 let ROUTE="home", ROUTE_ARG=null;
 function go(p){ location.hash = (p==="home") ? "" : p; }
+/* Ιστορικό μέσα στην εφαρμογή: το «Πίσω» πάει ένα βήμα πίσω κάθε φορά
+   In-app history: "Back" goes one step back each time */
+const STACK=[];
 function goBack(){
+  if(STACK.length>1){ history.back(); return; }
   const parts = ROUTE.split("/");
   if(ROUTE==="money/add" && ROUTE_ARG) { go("money"); return; }
   if(ROUTE==="rights/letter") { go("rights/letters"); return; }
@@ -979,6 +986,9 @@ function route(){
   const m2=h.match(/^rights\/letter\/(.+)$/); if(m2){ h="rights/letter"; arg=m2[1]; }
   const id="p-"+h.replace(/\//g,"-");
   if(!$(id)) h="home";
+  const key=(location.hash||"#").slice(1)||"home";
+  if(STACK.length>1 && STACK[STACK.length-2]===key) STACK.pop();
+  else if(STACK[STACK.length-1]!==key) STACK.push(key);
   ROUTE=h; ROUTE_ARG=arg;
   document.querySelectorAll(".page").forEach(s=>s.classList.toggle("on", s.id==="p-"+h.replace(/\//g,"-")));
   document.body.classList.toggle("r-home", h==="home");
@@ -1242,7 +1252,7 @@ async function saveItem(){
     freq: (FORM.type==="sub"||FORM.type==="bill")?$("fFreq").value:"o", date:$("fDate").value,
     months: FORM.type==="warranty"?Math.max(1,parseInt($("fMonths").value)||24):null,
     store:$("fStore").value.trim(), notes:$("fNotes").value.trim(), photo:FORM.photo, updated:Date.now() };
-  await Store.put("money",it); toast(tr("saved")); go("money");
+  await Store.put("money",it); toast(tr("saved")); goBack();
 }
 async function delItem(id){
   const it=(await Store.all("money")).find(x=>x.id===id); if(!it) return;
