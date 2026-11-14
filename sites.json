@@ -1,0 +1,187 @@
+{
+ "updated": "14-11-2026_08-40",
+ "sites": [
+  {
+   "e": "📰",
+   "c": "#b3261e",
+   "url": "https://news-4all.pages.dev/",
+   "n": [
+    "Παγκόσμιος Παλμός",
+    "Global Pulse"
+   ],
+   "d": [
+    "Ειδήσεις και σύνοψη",
+    "News and summary"
+   ],
+   "show": true
+  },
+  {
+   "e": "🕯️",
+   "c": "#c97a12",
+   "url": "https://innerlife1111.pages.dev/",
+   "n": [
+    "InnerLife",
+    "InnerLife"
+   ],
+   "d": [
+    "Εσωτερική αναζήτηση",
+    "Inner journey"
+   ],
+   "show": true
+  },
+  {
+   "e": "🎸",
+   "c": "#1f6fd1",
+   "url": "https://chords-4all.pages.dev/",
+   "n": [
+    "Συγχορδίες",
+    "Chords"
+   ],
+   "d": [
+    "Οι συγχορδίες κάθε τραγουδιού",
+    "Chords of any song"
+   ],
+   "show": true
+  },
+  {
+   "e": "🧠",
+   "c": "#2f9a46",
+   "url": "https://mnimi-sofia.pages.dev/",
+   "n": [
+    "Μνήμη & Σοφία",
+    "Memory & Wisdom"
+   ],
+   "d": [
+    "Παιχνίδια μνήμης",
+    "Memory games"
+   ],
+   "show": true
+  },
+  {
+   "e": "🛡️",
+   "c": "#7a4fd6",
+   "url": "https://fylakas.pages.dev/",
+   "n": [
+    "Φύλακας",
+    "Guardian"
+   ],
+   "d": [
+    "Προστασία από απάτες",
+    "Protection from scams"
+   ],
+   "show": true
+  },
+  {
+   "e": "🎼",
+   "c": "#8a5a2b",
+   "url": "https://byzantini-mousiki.pages.dev/",
+   "n": [
+    "Οκτώηχος",
+    "Oktoechos"
+   ],
+   "d": [
+    "Βυζαντινή μουσική",
+    "Byzantine music"
+   ],
+   "show": true
+  },
+  {
+   "e": "📸",
+   "c": "#0f8f8a",
+   "url": "https://photo-cleanup-christos.pages.dev/",
+   "n": [
+    "Φωτογραφίες & Flip Album",
+    "Photos & Flip Album"
+   ],
+   "d": [
+    "Καθαρισμός φωτογραφιών, άλμπουμ",
+    "Photo cleanup, album"
+   ],
+   "show": true
+  },
+  {
+   "e": "🔳",
+   "c": "#2b3a4a",
+   "url": "https://qr-4all.pages.dev/",
+   "n": [
+    "QR Codes 4all",
+    "QR Codes 4all"
+   ],
+   "d": [
+    "Διαβάστε και φτιάξτε κωδικούς QR",
+    "Read and create QR codes"
+   ],
+   "show": true
+  },
+  {
+   "e": "🩺",
+   "c": "#c0392b",
+   "url": "https://ygeia-4all.pages.dev/",
+   "n": [
+    "Υγεία 4all",
+    "Health 4all"
+   ],
+   "d": [
+    "Οδηγός υγείας για όλους",
+    "Health guide for everyone"
+   ],
+   "show": true
+  },
+  {
+   "e": "✨",
+   "c": "#3b3f8f",
+   "url": "https://innerlife-4all.pages.dev/",
+   "n": [
+    "InnerLife 4all",
+    "InnerLife 4all"
+   ],
+   "d": [
+    "Ένα κερί για κάθε πίστη",
+    "A candle for every faith"
+   ],
+   "show": true
+  },
+  {
+   "e": "📘",
+   "c": "#1d4e9e",
+   "url": "https://english-4all.pages.dev/",
+   "n": [
+    "Αγγλικά σε 5 λεπτά",
+    "English in 5 minutes"
+   ],
+   "d": [
+    "Λίγη γραμματική κάθε μέρα",
+    "A little grammar every day"
+   ],
+   "show": true
+  },
+  {
+   "e": "🦉",
+   "c": "#6b4a1f",
+   "url": "https://sofoi-4all.pages.dev/",
+   "n": [
+    "7 ημέρες με τους Σοφούς",
+    "7 Days with the Sages"
+   ],
+   "d": [
+    "Η σοφία στην καθημερινή ζωή",
+    "Wisdom for daily life"
+   ],
+   "show": false
+  },
+  {
+   "e": "🎵",
+   "c": "#7b3f8c",
+   "url": "https://isokrati-4all.pages.dev/",
+   "n": [
+    "Διαστήματα",
+    "Intervals"
+   ],
+   "d": [
+    "Ισοκράτης και βυζαντινές κλίμακες",
+    "Ison and Byzantine scales"
+   ],
+   "show": false
+  }
+ ]
+}
