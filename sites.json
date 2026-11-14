@@ -1,5 +1,5 @@
 {
- "updated": "14-11-2026_11-50",
+ "updated": "14-11-2026_12-49",
  "k": 569572794,
  "sites": [
   {
@@ -31,18 +31,32 @@
    "show": true
   },
   {
-   "e": "🎸",
-   "c": "#1f6fd1",
-   "url": "https://chords-4all.pages.dev/",
+   "e": "🩺",
+   "c": "#c0392b",
+   "url": "https://ygeia-4all.pages.dev/",
    "n": [
-    "Συγχορδίες",
-    "Chords"
+    "Υγεία 4all",
+    "Health 4all"
    ],
    "d": [
-    "Οι συγχορδίες κάθε τραγουδιού",
-    "Chords of any song"
+    "Οδηγός υγείας για όλους",
+    "Health guide for everyone"
    ],
    "show": true
+  },
+  {
+   "e": "🦉",
+   "c": "#6b4a1f",
+   "url": "https://sofoi-4all.pages.dev/",
+   "n": [
+    "7 ημέρες με τους Σοφούς",
+    "7 Days with the Sages"
+   ],
+   "d": [
+    "Η σοφία στην καθημερινή ζωή",
+    "Wisdom for daily life"
+   ],
+   "show": false
   },
   {
    "e": "🧠",
@@ -55,48 +69,6 @@
    "d": [
     "Παιχνίδια μνήμης",
     "Memory games"
-   ],
-   "show": true
-  },
-  {
-   "e": "🛡️",
-   "c": "#7a4fd6",
-   "url": "https://fylakas.pages.dev/",
-   "n": [
-    "Φύλακας",
-    "Guardian"
-   ],
-   "d": [
-    "Προστασία από απάτες",
-    "Protection from scams"
-   ],
-   "show": true
-  },
-  {
-   "e": "🎼",
-   "c": "#8a5a2b",
-   "url": "https://byzantini-mousiki.pages.dev/",
-   "n": [
-    "Οκτώηχος",
-    "Oktoechos"
-   ],
-   "d": [
-    "Βυζαντινή μουσική",
-    "Byzantine music"
-   ],
-   "show": true
-  },
-  {
-   "e": "📸",
-   "c": "#0f8f8a",
-   "url": "https://photo-cleanup-christos.pages.dev/",
-   "n": [
-    "Φωτογραφίες & Flip Album",
-    "Photos & Flip Album"
-   ],
-   "d": [
-    "Καθαρισμός φωτογραφιών, άλμπουμ",
-    "Photo cleanup, album"
    ],
    "show": true
   },
@@ -115,30 +87,16 @@
    "show": true
   },
   {
-   "e": "🩺",
-   "c": "#c0392b",
-   "url": "https://ygeia-4all.pages.dev/",
+   "e": "🛡️",
+   "c": "#7a4fd6",
+   "url": "https://fylakas.pages.dev/",
    "n": [
-    "Υγεία 4all",
-    "Health 4all"
+    "Φύλακας",
+    "Guardian"
    ],
    "d": [
-    "Οδηγός υγείας για όλους",
-    "Health guide for everyone"
-   ],
-   "show": true
-  },
-  {
-   "e": "✨",
-   "c": "#3b3f8f",
-   "url": "https://innerlife-4all.pages.dev/",
-   "n": [
-    "InnerLife 4all",
-    "InnerLife 4all"
-   ],
-   "d": [
-    "Ένα κερί για κάθε πίστη",
-    "A candle for every faith"
+    "Προστασία από απάτες",
+    "Protection from scams"
    ],
    "show": true
   },
@@ -157,18 +115,60 @@
    "show": true
   },
   {
-   "e": "🦉",
-   "c": "#6b4a1f",
-   "url": "https://sofoi-4all.pages.dev/",
+   "e": "✨",
+   "c": "#3b3f8f",
+   "url": "https://innerlife-4all.pages.dev/",
    "n": [
-    "7 ημέρες με τους Σοφούς",
-    "7 Days with the Sages"
+    "InnerLife 4all",
+    "InnerLife 4all"
    ],
    "d": [
-    "Η σοφία στην καθημερινή ζωή",
-    "Wisdom for daily life"
+    "Ένα κερί για κάθε πίστη",
+    "A candle for every faith"
    ],
-   "show": false
+   "show": true
+  },
+  {
+   "e": "📸",
+   "c": "#0f8f8a",
+   "url": "https://photo-cleanup-christos.pages.dev/",
+   "n": [
+    "Φωτογραφίες & Flip Album",
+    "Photos & Flip Album"
+   ],
+   "d": [
+    "Καθαρισμός φωτογραφιών, άλμπουμ",
+    "Photo cleanup, album"
+   ],
+   "show": true
+  },
+  {
+   "e": "🎼",
+   "c": "#8a5a2b",
+   "url": "https://byzantini-mousiki.pages.dev/",
+   "n": [
+    "Οκτώηχος",
+    "Oktoechos"
+   ],
+   "d": [
+    "Βυζαντινή μουσική",
+    "Byzantine music"
+   ],
+   "show": true
+  },
+  {
+   "e": "🎸",
+   "c": "#1f6fd1",
+   "url": "https://chords-4all.pages.dev/",
+   "n": [
+    "Συγχορδίες",
+    "Chords"
+   ],
+   "d": [
+    "Οι συγχορδίες κάθε τραγουδιού",
+    "Chords of any song"
+   ],
+   "show": true
   },
   {
    "e": "🎵",
