@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-title" content="Καλή Μέρα μου">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
-/* Έκδοση / Version: 14-11-2026 08:40 */
+/* Έκδοση / Version: 14-11-2026 11:50 */
 :root{
   --bg:#f4f1ea; --card:#ffffff; --ink:#1d2433; --soft:#5b6475; --line:rgba(127,127,127,.22);
   --blue:#1f6fd1; --teal:#0f9e8e; --gold:#e8a317; --rose:#e0566b; --violet:#7a4fd6; --green:#2f9a46;
@@ -73,13 +73,20 @@ aside h3{font-size:1.3rem;margin:6px 0 12px}
 .plink small{display:block;font-size:.92rem;line-height:1.3;opacity:.95}
 .plink .go{margin-left:auto;font-size:1.4rem}
 
-/* ---------- ρητό της ημέρας / saying of the day ---------- */
-.daycard{display:block;width:100%;text-align:center;font:inherit;color:var(--ink);background:var(--card);cursor:pointer;
-  border:0;border-left:10px solid #f0a92e;border-right:10px solid #e0566b;border-radius:var(--radius);
-  box-shadow:var(--shadow);padding:18px 18px 16px;margin:16px 0 0}
-.daycard .dl{display:block;font-weight:800;font-size:1.05rem;color:#d9801a;margin-bottom:6px}
-.daycard .dq{display:block;font-size:clamp(1.35rem,4.4vw,1.8rem);line-height:1.4;font-weight:700}
-.daycard .dw{display:block;margin-top:6px;font-style:italic;color:var(--soft);font-size:1.05rem}
+/* ---------- ένα λεπτό για μένα + ρητό / a minute for me + saying ---------- */
+.mbox{grid-column:1/-1;border-radius:var(--radius);color:#fff;overflow:hidden;
+  box-shadow:var(--shadow), inset 0 2px 0 rgba(255,255,255,.35), inset 0 -4px 0 rgba(0,0,0,.15)}
+.mbox .tile{box-shadow:none;border-radius:0;background:none;min-height:0;padding-bottom:12px}
+.mq{padding:4px 20px 20px}
+.mq .dq{display:block;font-size:clamp(1.35rem,4.4vw,1.8rem);line-height:1.4;font-weight:700;text-shadow:0 1px 4px rgba(0,0,0,.25)}
+.mq .mrow{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}
+.mq .dw{font-style:italic;font-size:1.05rem;opacity:.95}
+.marrow{flex:none;margin-left:auto;display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;font-size:1.1rem;
+  background:#fff;color:#b8431f;padding:10px 12px 10px 18px;border-radius:999px;box-shadow:0 3px 10px rgba(0,0,0,.3)}
+.marrow i{font-style:normal;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#e0566b;color:#fff;font-size:1.5rem}
+.marrow:active{transform:scale(.96)}
+a.tile{text-decoration:none;box-sizing:border-box}
+.t-news{background:linear-gradient(135deg,#e2552f,#96203a)}
 /* ---------- διαχείριση σάιτ / sites manager ---------- */
 .gear{display:block;margin:14px auto 0;background:none;border:0;font-size:1.3rem;opacity:.45;cursor:pointer;padding:8px 14px}
 .adm input{display:block;width:100%;box-sizing:border-box;font:inherit;font-size:1.15rem;padding:13px 14px;margin:6px 0 14px;
@@ -331,13 +338,18 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:6px}
     <svg id="sky" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
     <div class="greet"><h1 id="greet"></h1><p id="today"></p></div>
   </div>
-  <button class="daycard" onclick="go('minute')">
-    <span class="dl">☀️ <span data-t="dayQuote"></span></span>
-    <span class="dq" id="dayQ"></span><span class="dw" id="dayW"></span>
-  </button>
   <div class="tiles">
-    <button class="tile t-minute" onclick="go('minute')">
-      <span class="ic">☀️</span><span><h2 data-t="tMinute"></h2><p data-t="tMinuteD"></p></span></button>
+    <div class="mbox t-minute">
+      <button class="tile" onclick="go('minute')">
+        <span class="ic">☀️</span><span><h2 data-t="tMinute"></h2><p data-t="tMinuteD"></p></span></button>
+      <div class="mq">
+        <span class="dq" id="dayQ"></span>
+        <div class="mrow"><span class="dw" id="dayW"></span>
+          <a class="marrow" href="https://innerlife1111.pages.dev/" target="_blank" rel="noopener" aria-label="InnerLife">InnerLife <i>➜</i></a></div>
+      </div>
+    </div>
+    <a class="tile t-news" href="https://news-4all.pages.dev/" target="_blank" rel="noopener">
+      <span class="ic">📰</span><span><h2 data-t="tNews"></h2><p data-t="tNewsD"></p></span></a>
     <button class="tile t-money" onclick="go('money')">
       <span class="ic">💶</span><span><h2 data-t="tMoney"></h2><p data-t="tMoneyD"></p><span class="tag" id="moneyTag" hidden></span></span></button>
     <button class="tile t-rights" onclick="go('rights')">
@@ -682,6 +694,13 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:6px}
       <button class="big-btn" onclick="admAdd()">Προσθήκη</button>
     </div>
     <div class="card">
+      <h2 class="h">🔑 Αλλαγή κωδικού</h2>
+      <p class="sub">Ο νέος κωδικός ισχύει παντού μόλις ανεβάσετε το sites.json στο GitHub.</p>
+      <label>Νέος κωδικός</label><input id="aC1" type="password" autocomplete="off">
+      <label>Ξανά ο νέος κωδικός</label><input id="aC2" type="password" autocomplete="off">
+      <button class="big-btn" onclick="admNewCode()">Αλλαγή κωδικού</button>
+    </div>
+    <div class="card">
       <h2 class="h">💾 Για να ισχύσει για όλους</h2>
       <ol class="admsteps">
         <li>Πατήστε το κουμπί από κάτω. Κατεβαίνει το αρχείο <b>sites.json</b>.</li>
@@ -694,7 +713,7 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:6px}
   </div>
 </section>
 
-<div class="foot"><span data-t="version"></span> 14-11-2026 08:40</div>
+<div class="foot"><span data-t="version"></span> 14-11-2026 11:50</div>
 </main>
 
 <aside>
@@ -717,7 +736,7 @@ const T = {
   appName:"Καλή Μέρα μου", myProjects:"Τα άλλα μου έργα", back:"Πίσω", home:"Αρχική", next:"Συνέχεια →", skip:"Παράλειψη",
   again:"Ξανά από την αρχή", version:"Έκδοση", close:"Κλείσιμο ✕", save:"Αποθήκευση", cancel:"Ακύρωση",
   add:"Προσθήκη", check:"Έλεγχος", calc:"Υπολογισμός", clearList:"Καθαρισμός λίστας", open:"Άνοιγμα",
-  tMinute:"Ένα Λεπτό για Μένα", dayQuote:"Το ρητό της ημέρας", tMinuteD:"Σκέψη, ανάσα, παιχνίδι",
+  tMinute:"Ένα Λεπτό για Μένα", tNews:"Παγκόσμιος Παλμός", tNewsD:"Οι ειδήσεις σε 1'", tMinuteD:"Σκέψη, ανάσα, παιχνίδι",
   tMoney:"Τα Λεφτά μου", tMoneyD:"Συνδρομές, λογαριασμοί, προθεσμίες, εγγυήσεις",
   tRights:"Τα Δικαιώματά μου", tRightsD:"Πτήσεις, εγγυήσεις, φόρος, επιδόματα",
   tHouse:"Το Σπίτι μου", tHouseD:"Ψυγείο, μαγείρεμα, ρεύμα, επισκευές",
@@ -821,7 +840,7 @@ const T = {
   appName:"My Good Day", myProjects:"My other projects", back:"Back", home:"Home", next:"Continue →", skip:"Skip",
   again:"Start again", version:"Version", close:"Close ✕", save:"Save", cancel:"Cancel",
   add:"Add", check:"Check", calc:"Calculate", clearList:"Clear list", open:"Open",
-  tMinute:"A Minute for Me", dayQuote:"Saying of the day", tMinuteD:"A thought, a breath, a game",
+  tMinute:"A Minute for Me", tNews:"Global Pulse", tNewsD:"The news in 1 minute", tMinuteD:"A thought, a breath, a game",
   tMoney:"My Money", tMoneyD:"Subscriptions, bills, deadlines, warranties",
   tRights:"My Rights", tRightsD:"Flights, warranties, tax, benefits",
   tHouse:"My Home", tHouseD:"Fridge, cooking, electricity, repairs",
@@ -957,7 +976,7 @@ function okSite(p){ return p && typeof p.url==="string" && /^https:\/\//.test(p.
 async function loadSites(){
   try{
     const r = await fetch("sites.json",{cache:"no-cache"});
-    if(r.ok){ const d = await r.json(); const l=(d&&d.sites||[]).filter(okSite); if(l.length){ PROJECTS=l; SITES0=JSON.stringify(l); fillProjects(); } }
+    if(r.ok){ const d = await r.json(); const l=(d&&d.sites||[]).filter(okSite); if(d && Number.isInteger(d.k)) ADMHASH=d.k; if(l.length){ PROJECTS=l; SITES0=JSON.stringify(l); fillProjects(); } }
   }catch(e){}
 }
 function fillProjects(){
@@ -971,10 +990,10 @@ function siteCol(p){ return /^#[0-9a-fA-F]{3,8}$/.test(p.c||"") ? p.c : "#1f6fd1
 /* =====================================================================
    ΔΙΑΧΕΙΡΙΣΗ ΣΑΙΤ / SITES MANAGER
    ===================================================================== */
-let ADMIN=false, SITES0=JSON.stringify(PROJECTS);
+let ADMIN=false, ADMHASH=569572794, SITES0=JSON.stringify(PROJECTS);
 function admHash(t){ let h=5381; for(const ch of "km:"+t) h=((h*33)^ch.charCodeAt(0))>>>0; return h; }
 function admEnter(){
-  if(admHash($("admCode").value.trim())===569572794){ ADMIN=true; $("admCode").value=""; renderAdmin(); }
+  if(admHash($("admCode").value.trim())===ADMHASH){ ADMIN=true; $("admCode").value=""; renderAdmin(); }
   else { $("admCode").value=""; toast("Λάθος κωδικός"); }
 }
 function renderAdmin(){
@@ -1003,9 +1022,16 @@ function admAdd(){
   admAfter(); toast("Προστέθηκε: "+n);
 }
 function admSave(){
-  const out={updated:stamp(), sites:PROJECTS.map(p=>({e:p.e,c:p.c,url:p.url,n:p.n,d:p.d,show:p.show!==false}))};
+  const out={updated:stamp(), k:ADMHASH, sites:PROJECTS.map(p=>({e:p.e,c:p.c,url:p.url,n:p.n,d:p.d,show:p.show!==false}))};
   downloadFile("sites.json", JSON.stringify(out,null,1), "application/json;charset=utf-8");
   toast("Κατέβηκε το sites.json");
+}
+function admNewCode(){
+  const a=$("aC1").value.trim(), b=$("aC2").value.trim();
+  if(a.length<4){ toast("Ο κωδικός θέλει τουλάχιστον 4 ψηφία"); return; }
+  if(a!==b){ toast("Οι δύο κωδικοί δεν είναι ίδιοι"); return; }
+  ADMHASH=admHash(a); $("aC1").value=$("aC2").value="";
+  toast("Ο κωδικός άλλαξε. Κατεβάστε τώρα το sites.json");
 }
 function admReset(){ PROJECTS=JSON.parse(SITES0); admAfter(); toast("Οι αλλαγές ακυρώθηκαν"); }
 
