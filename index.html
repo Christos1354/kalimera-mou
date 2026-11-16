@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-title" content="Καλή Μέρα μου">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
-/* Έκδοση / Version: 14-11-2026 11:50 */
+/* Έκδοση / Version: 15-11-2026 08:50 */
 :root{
   --bg:#f4f1ea; --card:#ffffff; --ink:#1d2433; --soft:#5b6475; --line:rgba(127,127,127,.22);
   --blue:#1f6fd1; --teal:#0f9e8e; --gold:#e8a317; --rose:#e0566b; --violet:#7a4fd6; --green:#2f9a46;
@@ -85,6 +85,10 @@ aside h3{font-size:1.3rem;margin:6px 0 12px}
   background:#fff;color:#b8431f;padding:10px 12px 10px 18px;border-radius:999px;box-shadow:0 3px 10px rgba(0,0,0,.3)}
 .marrow i{font-style:normal;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#e0566b;color:#fff;font-size:1.5rem}
 .marrow:active{transform:scale(.96)}
+.marrow .mt{display:block;line-height:1.15;text-align:left}
+.marrow .mt b{display:block;font-size:1.15rem}
+.marrow .mt small{display:block;font-size:.8rem;font-weight:800;letter-spacing:.06em;color:#e0566b}
+.tile.t-news p{font-size:1.4rem;line-height:1.25;font-weight:700;opacity:1}
 a.tile{text-decoration:none;box-sizing:border-box}
 .t-news{background:linear-gradient(135deg,#e2552f,#96203a)}
 /* ---------- διαχείριση σάιτ / sites manager ---------- */
@@ -229,7 +233,9 @@ details summary::-webkit-details-marker{display:none}
   background:radial-gradient(circle at 35% 30%,#bfe9ff,#3aa0e8 55%,#1f5fbf);
   box-shadow:0 0 40px rgba(58,160,232,.55);transition:transform 4s ease-in-out}
 .ball.in{transform:scale(2)}
-.ball.out{transform:scale(1);transition-duration:6s}
+.ball.out{transform:scale(1);transition-duration:4s}
+#s1{display:none}
+#m-breath .sub{font-size:1.25rem;font-weight:700;color:var(--ink);text-align:center}
 .breath-word{font-size:1.8rem;font-weight:800;text-align:center;margin-top:-10px}
 .breath-count{text-align:center;color:var(--soft)}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:520px;margin:0 auto}
@@ -345,7 +351,7 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:6px}
       <div class="mq">
         <span class="dq" id="dayQ"></span>
         <div class="mrow"><span class="dw" id="dayW"></span>
-          <a class="marrow" href="https://innerlife1111.pages.dev/" target="_blank" rel="noopener" aria-label="InnerLife">InnerLife <i>➜</i></a></div>
+          <a class="marrow" href="https://innerlife1111.pages.dev/" target="_blank" rel="noopener" aria-label="InnerLife"><span class="mt"><b>InnerLife</b><small>ART FOR LIVING</small></span><i>➜</i></a></div>
       </div>
     </div>
     <a class="tile t-news" href="https://news-4all.pages.dev/" target="_blank" rel="noopener">
@@ -713,7 +719,7 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:6px}
   </div>
 </section>
 
-<div class="foot"><span data-t="version"></span> 14-11-2026 11:50</div>
+<div class="foot"><span data-t="version"></span> 15-11-2026 08:50</div>
 </main>
 
 <aside>
@@ -733,14 +739,14 @@ details summary{cursor:pointer;font-weight:700;color:var(--blue);margin-top:6px}
    ===================================================================== */
 const T = {
  el:{
-  appName:"Καλή Μέρα μου", myProjects:"Τα άλλα μου έργα", back:"Πίσω", home:"Αρχική", next:"Συνέχεια →", skip:"Παράλειψη",
+  appName:"Καλή Μέρα μου", myProjects:"Χρήσιμα Link για τη ζωή μας", back:"Πίσω", home:"Αρχική", next:"Συνέχεια →", skip:"Παράλειψη",
   again:"Ξανά από την αρχή", version:"Έκδοση", close:"Κλείσιμο ✕", save:"Αποθήκευση", cancel:"Ακύρωση",
   add:"Προσθήκη", check:"Έλεγχος", calc:"Υπολογισμός", clearList:"Καθαρισμός λίστας", open:"Άνοιγμα",
   tMinute:"Ένα Λεπτό για Μένα", tNews:"Παγκόσμιος Παλμός", tNewsD:"Οι ειδήσεις σε 1'", tMinuteD:"Σκέψη, ανάσα, παιχνίδι",
   tMoney:"Τα Λεφτά μου", tMoneyD:"Συνδρομές, λογαριασμοί, προθεσμίες, εγγυήσεις",
   tRights:"Τα Δικαιώματά μου", tRightsD:"Πτήσεις, εγγυήσεις, φόρος, επιδόματα",
   tHouse:"Το Σπίτι μου", tHouseD:"Ψυγείο, μαγείρεμα, ρεύμα, επισκευές",
-  step1:"Η σκέψη της ημέρας", step2:"Μια ανάσα ηρεμίας", step3:"Βρες τα ζευγάρια",
+  step1:"Η σκέψη της ημέρας", step2:"Μια ανάσα ηρεμίας και συντονισμού με τον Εαυτό", step3:"Μια μικρή άσκηση για τη Μνήμη",
   inhale:"Εισπνοή", exhale:"Εκπνοή", breathN:"Ανάσα {n} από 3",
   moves:"Κινήσεις: {n}", won:"Μπράβο! Τα βρήκες σε {n} κινήσεις 🎉",
   doneT:"Καλή συνέχεια!", doneD:"Χάρισες στον εαυτό σου ένα λεπτό που αξίζει.",
@@ -837,14 +843,14 @@ const T = {
   letterSubjWar:"Ελαττωματικό προϊόν – αίτημα δωρεάν επισκευής ή αντικατάστασης"
  },
  en:{
-  appName:"My Good Day", myProjects:"My other projects", back:"Back", home:"Home", next:"Continue →", skip:"Skip",
+  appName:"My Good Day", myProjects:"Useful links for our life", back:"Back", home:"Home", next:"Continue →", skip:"Skip",
   again:"Start again", version:"Version", close:"Close ✕", save:"Save", cancel:"Cancel",
   add:"Add", check:"Check", calc:"Calculate", clearList:"Clear list", open:"Open",
   tMinute:"A Minute for Me", tNews:"Global Pulse", tNewsD:"The news in 1 minute", tMinuteD:"A thought, a breath, a game",
   tMoney:"My Money", tMoneyD:"Subscriptions, bills, deadlines, warranties",
   tRights:"My Rights", tRightsD:"Flights, warranties, tax, benefits",
   tHouse:"My Home", tHouseD:"Fridge, cooking, electricity, repairs",
-  step1:"Thought of the day", step2:"A calming breath", step3:"Find the pairs",
+  step1:"Thought of the day", step2:"A breath of calm and attunement with the Self", step3:"A small exercise for Memory",
   inhale:"Breathe in", exhale:"Breathe out", breathN:"Breath {n} of 3",
   moves:"Moves: {n}", won:"Well done! You found them in {n} moves 🎉",
   doneT:"Have a good day!", doneD:"You gave yourself a minute worth having.",
@@ -1143,7 +1149,7 @@ function route(){
   window.scrollTo(0,0);
   if(h!=="minute") stopBreath();
   if(h!=="house/cook" && $("fab")) $("fab").hidden=true;
-  if(h==="minute") startMinute(false);
+  if(h==="minute"){ showThought(); minuteStep(2); }
   renderCurrent();
 }
 window.addEventListener("hashchange",route);
@@ -1265,7 +1271,7 @@ function showDayQuote(){
 }
 function setSteps(n){ ["s1","s2","s3"].forEach((id,i)=>$(id).classList.toggle("on",i<n)); }
 function showM(id){ ["m-thought","m-breath","m-game","m-done"].forEach(x=>$(x).hidden=x!==id); }
-function startMinute(again){ if(again) thoughtIndex=Math.floor(Math.random()*THOUGHTS.length); showThought(); minuteStep(1); }
+function startMinute(again){ if(again) thoughtIndex=Math.floor(Math.random()*THOUGHTS.length); showThought(); minuteStep(2); }
 function minuteStep(n){
   stopBreath(); window.scrollTo(0,0);
   if(n===1){ showM("m-thought"); setSteps(1); }
@@ -1277,10 +1283,10 @@ let bTimers=[];
 function stopBreath(){ bTimers.forEach(clearTimeout); bTimers=[]; const b=$("ball"); if(b) b.className="ball"; }
 function startBreath(){
   stopBreath(); const ball=$("ball"), w=$("bword"), c=$("bcount");
-  for(let i=0;i<3;i++){ const t0=i*10000+300;
+  for(let i=0;i<3;i++){ const t0=i*8000+300;
     bTimers.push(setTimeout(()=>{ ball.className="ball in"; w.textContent=tr("inhale"); c.textContent=tr("breathN",i+1); },t0));
     bTimers.push(setTimeout(()=>{ ball.className="ball out"; w.textContent=tr("exhale"); },t0+4000)); }
-  bTimers.push(setTimeout(()=>{ if(ROUTE==="minute") minuteStep(3); },30500));
+  bTimers.push(setTimeout(()=>{ if(ROUTE==="minute") minuteStep(3); },24500));
 }
 /* ήχοι / sounds */
 let SOUND=true, AC=null;
