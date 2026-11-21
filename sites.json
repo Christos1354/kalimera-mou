@@ -1,5 +1,5 @@
 {
- "updated": "14-11-2026_12-49",
+ "updated": "21-11-2026_16-47",
  "k": 569572794,
  "sites": [
   {
@@ -56,7 +56,7 @@
     "Η σοφία στην καθημερινή ζωή",
     "Wisdom for daily life"
    ],
-   "show": false
+   "show": true
   },
   {
    "e": "🧠",
@@ -182,7 +182,7 @@
     "Ισοκράτης και βυζαντινές κλίμακες",
     "Ison and Byzantine scales"
    ],
-   "show": false
+   "show": true
   }
  ]
 }
